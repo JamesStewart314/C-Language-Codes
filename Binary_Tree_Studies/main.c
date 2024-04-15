@@ -166,5 +166,5 @@ int main(void)
     */
 
     puts("Finished!");
->>>>>>> 9155504f010aadb5574c6883ea8f650b1f4f9372
+
 }
