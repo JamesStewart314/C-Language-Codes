@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1695946903 source:c:\users\allbe\onedrive\햞ea de trabalho\tadpilhale\main.c
+	"Pilha.h"
+
+1696105453 c:\users\allbe\onedrive\햞ea de trabalho\tadpilhale\pilha.h
+	<stdio.h>
+	<stdlib.h>
+
+1696104646 source:c:\users\allbe\onedrive\햞ea de trabalho\tadpilhale\pilha.c
+	"Pilha.h"
+
+1696109022 source:c:\users\allbe\onedrive\햞ea de trabalho\entrega trabalho\tadpilhale\pilha.c
+	"Pilha.h"
+
+1696106896 c:\users\allbe\onedrive\햞ea de trabalho\entrega trabalho\tadpilhale\pilha.h
+	<stdio.h>
+	<stdlib.h>
+
+1696109022 source:c:\users\allbe\onedrive\햞ea de trabalho\entrega trabalho\tadpilhale\main.c
+	"Pilha.h"
+
