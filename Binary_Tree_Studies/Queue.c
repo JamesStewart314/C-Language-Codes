@@ -10,9 +10,11 @@ void init_queue(Queue* q, impressFunctionQ impressfunction, compareFunctionQ com
   return;
 }
 
+
 int queueIsEmpty(Queue* q) {
   return (q->front == NULL);
 }
+
 
 void enqueue(Queue* q, void* data) {
   Node* newnode = (Node *) malloc (sizeof(Node));
@@ -35,6 +37,7 @@ void enqueue(Queue* q, void* data) {
   return;
 }
 
+
 void impressQueue(Queue* q) {
   if (!q) return;
   if (queueIsEmpty(q)) { printf("[]\n"); return; }
@@ -48,6 +51,7 @@ void impressQueue(Queue* q) {
   }
   printf("\b\b]\n");
 }
+
 
 void freeQueue(Queue* q) {
   if (!q) return;
@@ -66,6 +70,7 @@ void freeQueue(Queue* q) {
   return;
 }
 
+
 int searchInQueue(Queue* q, void* data) {
   if (!q) return 0;
   if (queueIsEmpty(q)) return 0;
@@ -77,8 +82,8 @@ int searchInQueue(Queue* q, void* data) {
   }
 
   return 0;
-  
 }
+
 
 void removeFromQueue(Queue* q, void* data) {
   if (!q) return;
@@ -112,6 +117,7 @@ void removeFromQueue(Queue* q, void* data) {
   }
   return;
 }
+
 
 void* dequeue(Queue* q) {
   if (!q) return NULL;
