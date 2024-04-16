@@ -1,20 +1,16 @@
 #include "Queue.h"
 
-impressFunctionQ iqfunc;
-compareFunctionQ cqfunc;
-
 void init_queue(Queue* q, impressFunctionQ impressfunction, compareFunctionQ comparefunction) {
-
-  iqfunc = impressfunction;
-  cqfunc = comparefunction;
   
   q->counter = (unsigned int)0;
   q->front = q->rear = NULL;
+  q->printF = impressfunction;
+  q->compareF = comparefunction;
 
   return;
 }
 
-int is_empty(Queue* q) {
+int queueIsEmpty(Queue* q) {
   return (q->front == NULL);
 }
 
@@ -29,7 +25,7 @@ void enqueue(Queue* q, void* data) {
   newnode->next = NULL;
   (q->counter)++;
 
-  if (is_empty(q)) {
+  if (queueIsEmpty(q)) {
     q->front = q->rear = newnode;
   } else {
     q->rear->next = newnode;
@@ -41,40 +37,42 @@ void enqueue(Queue* q, void* data) {
 
 void impressQueue(Queue* q) {
   if (!q) return;
-  if (q->counter == 0) { printf("[]\n"); return; }
+  if (queueIsEmpty(q)) { printf("[]\n"); return; }
   
   printf("[");
   Node* aux = q->front;
   while (aux) {
-    iqfunc(aux->data);
+    q->printF(aux->data);
     printf(", ");
     aux = aux->next;
   }
   printf("\b\b]\n");
 }
 
-void free_queue(Queue* q) {
+void freeQueue(Queue* q) {
   if (!q) return;
-  if (q->counter == 0) return;
+  if (queueIsEmpty(q)) return;
 
   Node* aux = q->front;
+
   do {
     q->front = q->front->next;
     free(aux);
     aux = q->front;
   } while (aux);
+
   q->counter = 0;
 
   return;
 }
 
-int search_queue(Queue* q, void* data) {
+int searchInQueue(Queue* q, void* data) {
   if (!q) return 0;
-  if (q->rear == NULL) return 0;
+  if (queueIsEmpty(q)) return 0;
 
   Node* aux = q->front;
   while(aux) {
-    if (cqfunc(aux->data, data) == 0) return 1;
+    if (q->compareF(aux->data, data) == 0) return 1;
     aux = aux->next;
   }
 
@@ -82,14 +80,14 @@ int search_queue(Queue* q, void* data) {
   
 }
 
-void remove_queue(Queue* q, void* data) {
+void removeFromQueue(Queue* q, void* data) {
   if (!q) return;
-  if (q->rear == NULL) return;
+  if (queueIsEmpty(q)) return;
 
   Node* aux = q->front, *previous = NULL;
   (q->counter)--;
   while(aux) {
-    if (cqfunc(aux->data, data) == 0) {
+    if (q->compareF(aux->data, data) == 0) {
       // Removing First Element:
       if (!previous) {
         q->front = q->front->next;
@@ -117,7 +115,7 @@ void remove_queue(Queue* q, void* data) {
 
 void* dequeue(Queue* q) {
   if (!q) return NULL;
-  if (q->rear == NULL) return NULL;
+  if (queueIsEmpty(q)) return NULL;
 
   (q->counter)--;
   Node* aux = q->front;
