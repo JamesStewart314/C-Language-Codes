@@ -7,11 +7,11 @@ void impressQueueFunctionBT(void* data) {
 }
 
 int compareQueueFunctionBT(void *data1, void *data2) {
-    int *aux1 = &(((BTT *)data1)->data);
-    int *aux2 = &(((BTT *)data2)->data);
+    int aux1 = ((BTT *)data1)->data;
+    int aux2 = ((BTT *)data2)->data;
 
-    if ((*aux1) > (*aux2)) return 1;
-    if ((*aux1) < (*aux2)) return -1;
+    if (aux1 > aux2) return 1;
+    if (aux1 < aux2) return -1;
     return 0;
 }
 
