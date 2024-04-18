@@ -66,6 +66,12 @@ int main(void) {
   int result = isEqualsTree(TREE1, TREE2);
   printf("%s\n", result ? "TREE1 and TREE2 are Equal!" : "TREE1 and TREE2 are not Equal!");
 
+  puts("Before Removing:");
+  impressTree(TREE1);
+  removeElem(TREE1, 4);
+  puts("After Removing:");
+  impressTree(TREE1);
+
   freeTree(TREE1); freeTree(TREE2);
 
   /* Testing the Binary Search Tree:

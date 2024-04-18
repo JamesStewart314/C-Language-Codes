@@ -19,7 +19,7 @@ BTT *mirrorTree(BTT *tree);
 BTT *biggestElemTree(BTT *tree);
 int isEqualsTree(BTT *tree1, BTT *tree2);
 void impressByLevel(BTT *tree);
-void freeTree(BTT **tree);
-void removeElem(BTT *tree, int value);
+void freeTree(BTT *tree);
+int removeElem(BTT *tree, int value);
 
 #endif

@@ -65,14 +65,14 @@ void impressByLevel(BTT *tree) {
     return;
 }
 
-void freeTree(BTT **tree) {
-    if (!(*tree)) return;
+void freeTree(BTT *tree) {
+    if (!tree) return;
 
-    if ((*tree)->left) freeTree(&((*tree)->left));
-    if ((*tree)->right) freeTree(&((*tree)->right));
+    if (tree->left) freeTree(tree->left);
+    if (tree->right) freeTree(tree->right);
 
-    free(*tree);
-    *tree = NULL;
+    free(tree);
+    tree = NULL;
 
     return;
 }
@@ -122,7 +122,6 @@ BTT *biggestElemTree(BTT *tree) {
             enqueue(treeQueue, aux->right);
         }
 
-        free(aux); aux = NULL;
         aux = (BTT *)dequeue(treeQueue);
     }
     
@@ -178,6 +177,54 @@ void impressTree(BTT *tree) {
     return;
 }
 
-void removeElem(BTT *tree, int value) {
-    // Not Implemented Yet...
+int removeElem(BTT *tree, int value) {
+    if (!tree) return 0;
+    
+    // If the Value Desired is in the Root:
+    if (value == tree->data) {
+        if (!(tree->left) && !(tree->right)) {
+            // Returning the value 1 during 
+            //recursion to indicate that the 
+            // removed value corresponds to a leaf:
+            return 1;
+        }
+
+        // Searching the First Leaf to Substitute the Node:
+        BTT* temptree = tree->left ? tree->left : tree->right;
+        BTT* parent = tree;
+
+        while (temptree) {
+            // If Reached a Leaf, Stop:
+            if (!(temptree->left) && !(temptree->right)) break;
+
+            if (temptree->left) {
+                parent = temptree; 
+                temptree = temptree->left; 
+            } else {
+                parent = temptree;
+                temptree = temptree->right;
+            }
+        }
+
+        tree->data = temptree->data;
+        if (parent->left == temptree) { parent->left = NULL; } else { parent->right = NULL; }
+        free(temptree); return 0;
+    
+    } else {
+        // Value not Found, Searching on Left and Right SubTrees:
+        if (tree->right) { 
+            if (removeElem(tree->right, value)) {
+                free(tree->right);
+                tree->right = NULL;
+            }
+        }
+        if (tree->left) { 
+            if (removeElem(tree->left, value)) {
+                free(tree->left);
+                tree->left = NULL;
+            }
+        }
+    }
+
+    return 0;
 }
