@@ -208,21 +208,21 @@ int removeElem(BTT *tree, int value) {
 
         tree->data = temptree->data;
         if (parent->left == temptree) { parent->left = NULL; } else { parent->right = NULL; }
-        free(temptree); return 0;
+        free(temptree);
     
-    } else {
-        // Value not Found, Searching on Left and Right SubTrees:
-        if (tree->right) { 
-            if (removeElem(tree->right, value)) {
-                free(tree->right);
-                tree->right = NULL;
-            }
+    }
+    
+    // Searching on Left and Right SubTrees:
+    if (tree->right) { 
+        if (removeElem(tree->right, value)) {
+            free(tree->right);
+            tree->right = NULL;
         }
-        if (tree->left) { 
-            if (removeElem(tree->left, value)) {
-                free(tree->left);
-                tree->left = NULL;
-            }
+    }
+    if (tree->left) { 
+        if (removeElem(tree->left, value)) {
+            free(tree->left);
+            tree->left = NULL;
         }
     }
 
