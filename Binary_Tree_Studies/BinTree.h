@@ -15,7 +15,7 @@ BTT *initTree();
 void impressTree(BTT *tree);
 BTT *createNodeTree(int elem, BTT *subTreeLeft, BTT *subTreeRight);
 BTT *copyTree(BTT *tree);
-BTT *mirrorTree(BTT *tree);
+void mirrorTree(BTT *tree);
 BTT *biggestElemTree(BTT *tree);
 int isEqualsTree(BTT *tree1, BTT *tree2);
 void impressByLevel(BTT *tree);
