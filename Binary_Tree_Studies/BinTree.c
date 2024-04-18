@@ -87,7 +87,7 @@ BTT *copyTree(BTT *tree) {
     return createNodeTree(tree->data, copyTree(tree->left), copyTree(tree->right));
 }
 
-BTT *mirrorTree(BTT *tree) {
+void mirrorTree(BTT *tree) {
     if (!tree) return NULL;
 
     BTT *aux = tree->left;
@@ -97,7 +97,7 @@ BTT *mirrorTree(BTT *tree) {
     mirrorTree(tree->left);
     mirrorTree(tree->right);
 
-    return tree;
+    return;
 }
 
 BTT *biggestElemTree(BTT *tree) {
