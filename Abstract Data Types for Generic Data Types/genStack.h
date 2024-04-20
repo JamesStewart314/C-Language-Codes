@@ -35,12 +35,12 @@ void impressStack(gStack *st);                       // Displays the Stack on th
 //
 /*
 
-void impressf(void *data){
+void impressf(void *data) {
     printf("%i", *((int *)data));
     return;
 }
 
-int main(void){
+int main(void) {
 
     gStack *integerStack = stInit(impressf); // Initializing the stack.
 
