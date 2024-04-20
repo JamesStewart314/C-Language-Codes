@@ -35,6 +35,7 @@ void freeQueue(gQueue** q);
 bool searchInQueue(gQueue* q, void* data);
 void removeFromQueue(gQueue* q, void* data);
 void* dequeue(gQueue* q);
+size_t queueCount(gQueue* q);
 
 #endif
 

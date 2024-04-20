@@ -146,3 +146,8 @@ void* dequeue(gQueue* q) {
 
     return aux->data;
 }
+
+size_t queueCount(gQueue *q) {
+    if (!q) return 0;
+    return q->counter;
+}
