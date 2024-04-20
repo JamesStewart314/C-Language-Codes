@@ -55,7 +55,7 @@ int main(void)
     stPush(integerStack, &val3);                          // Stacking the Third element.
     impressStack(integerStack);                           // Displaying the stack in the terminal.
     int* removedObj = (int *)stPop(integerStack);         // Removing the element present at the top of the stack.
-    printf("\nRemoved Object: %i\n", *removedObj);          // Displaying the newly removed object.
+    printf("\nRemoved Object: %i\n", *removedObj);        // Displaying the newly removed object.
     impressStack(integerStack);                           // Displaying the stack in the terminal.
 
     stDestroy(&integerStack);                             // Don't forget to deallocate the memory present on the stack when closing the program.
