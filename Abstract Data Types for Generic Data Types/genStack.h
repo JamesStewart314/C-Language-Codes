@@ -35,27 +35,30 @@ void impressStack(gStack *st);                       // Displays the Stack on th
 //
 /*
 
-void impressf(void *data) {
+void impressf(void *data)
+{
     printf("%i", *((int *)data));
     return;
 }
 
-int main(void) {
+int main(void)
+{
 
     gStack *integerStack = stInit(impressf); // Initializing the stack.
 
-    int val1 = 2, val2 = 3, val3 = 1;        // Creating Elements of ANY TYPE to stack,
-                                             // the choice of objects of type int was
-                                             // completely arbitrary in this case.
+    int val1 = 2, val2 = 3, val3 = 1;                     // Creating Elements of ANY TYPE to stack,
+                                                          // the choice of objects of type int was
+                                                          // completely arbitrary in this case.
 
-    stPush(integerStack, &val1);             // Stacking the First element.
-    stPush(integerStack, &val2);             // Stacking the Second element.
-    stPush(integerStack, &val3);             // Stacking the Third element.
-    impressStack(integerStack);              // Displaying the stack in the terminal.
-    stPop(integerStack);                     // Removing the element present at the top of the stack.
-    impressStack(integerStack);              // Displaying the stack in the terminal.
+    stPush(integerStack, &val1);                          // Stacking the First element.
+    stPush(integerStack, &val2);                          // Stacking the Second element.
+    stPush(integerStack, &val3);                          // Stacking the Third element.
+    impressStack(integerStack);                           // Displaying the stack in the terminal.
+    int* removedObj = (int *)stPop(integerStack);         // Removing the element present at the top of the stack.
+    printf("\nRemoved Object: %i\n", *removedObj);          // Displaying the newly removed object.
+    impressStack(integerStack);                           // Displaying the stack in the terminal.
 
-    stDestroy(&integerStack);                // Don't forget to deallocate the memory present on the stack when closing the program.
+    stDestroy(&integerStack);                             // Don't forget to deallocate the memory present on the stack when closing the program.
 
     return 0;
 }
