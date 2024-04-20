@@ -65,7 +65,7 @@ void *stPop(gStack* st) {
     gNodeStack* aux = st->top;
     st->top = st->top->next;
 
-    return aux;
+    return aux->data;
 }
 
 
