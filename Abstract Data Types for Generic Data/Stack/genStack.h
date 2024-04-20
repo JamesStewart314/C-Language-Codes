@@ -5,7 +5,7 @@
 #ifndef GENSTACK_H
 #define GENSTACK_H
 
-typedef void (*impressFunctionStack)(void* data);
+typedef void (*impressFunctionStack)(void* printSt);
 
 typedef struct GENERICNODESTACK {
     void* data;
@@ -16,11 +16,11 @@ typedef struct GENERICNODESTACK {
 typedef struct GENERICSTACK {
     gNodeStack* top;
     size_t counter;
-    impressFunctionStack ifunc;
+    impressFunctionStack printSt;
 } gStack;
 
 
-gStack* stInit(impressFunctionStack ifunc);          // Initializes the stack;
+gStack* stInit(impressFunctionStack printSt);          // Initializes the stack;
 void stDestroy(gStack **st);                         // Destroys the Stack;
 bool stIsEmpty(gStack *st);                          // Checks if the Stack is Empty;
 void stPush(gStack *st, void* data);                 // Inserts Elements into the Stack;

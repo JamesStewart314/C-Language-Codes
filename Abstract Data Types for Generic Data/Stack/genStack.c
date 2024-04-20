@@ -1,10 +1,10 @@
 #include "genStack.h"
 
-gStack* stInit(impressFunctionStack ifunc) {
+gStack* stInit(impressFunctionStack printSt) {
     gStack* newstack = (gStack *) malloc (sizeof(gStack));
     newstack->counter = (size_t)0;
     newstack->top = NULL;
-    newstack->ifunc = ifunc;
+    newstack->printSt = printSt;
 
     return newstack;
 }
@@ -82,7 +82,7 @@ void impressStack(gStack* st) {
     gNodeStack* aux = st->top;
     printf("[");
     while (aux) {
-        st->ifunc(aux->data);
+        st->printSt(aux->data);
         printf(", ");
         aux = aux->next;
     }
