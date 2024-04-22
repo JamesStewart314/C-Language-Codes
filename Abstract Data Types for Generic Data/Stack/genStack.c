@@ -76,7 +76,7 @@ size_t stCount(gStack* st) {
 
 
 void impressStack(gStack* st) {
-    if (!st) { printf("[]\n"); return; }
+    if (!st) return;
     if (stIsEmpty(st)) { printf("[]\n"); return; }
 
     gNodeStack* aux = st->top;
