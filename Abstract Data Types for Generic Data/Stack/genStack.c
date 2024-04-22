@@ -23,7 +23,7 @@ void stDestroy(gStack **st) {
 
     if (stIsEmpty((*st))) {
         free(*st);
-        *st = NULL;
+        (*st) = NULL;
         return;
     }
 
@@ -35,7 +35,7 @@ void stDestroy(gStack **st) {
     }
 
     free(*st);
-    *st = NULL;
+    (*st) = NULL;
     return;
 }
 
