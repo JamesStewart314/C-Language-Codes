@@ -40,7 +40,6 @@ size_t queueCount(gQueue* q);
 
 //
 // Example of Using the Queue in a Program:
-//
 /*
 
 int compareFunQ(void* data1, void* data2) {
