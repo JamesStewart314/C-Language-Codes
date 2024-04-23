@@ -1,4 +1,3 @@
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -33,7 +32,7 @@ void enqueue(gQueue* q, void* data);
 void impressQueue(gQueue* q);
 void freeQueue(gQueue** q);
 bool searchInQueue(gQueue* q, void* data);
-void removeFromQueue(gQueue* q, void* data);
+void* removeFromQueue(gQueue* q, void* data);
 void* dequeue(gQueue* q);
 size_t queueCount(gQueue* q);
 

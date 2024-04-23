@@ -2,6 +2,12 @@
 
 gStack* stInit(impressFunctionStack printSt, compareFunctionStack compareSt) {
     gStack* newstack = (gStack *) malloc (sizeof(gStack));
+    if (newstack == NULL) {
+        fprintf(stderr, "Error: Failed while trying to allocate memory for a new stack.\n");
+        exit(EXIT_FAILURE);
+        return NULL;
+    }
+
     newstack->counter = (size_t)0;
     newstack->top = NULL;
     newstack->printSt = printSt;
@@ -17,7 +23,7 @@ bool stIsEmpty(gStack* st) {
 }
 
 
-void stDestroy(gStack **st) {
+void stDestroy(gStack** st) {
     if (!st) return;
     if (!(*st)) return;
 
@@ -95,7 +101,7 @@ void impressStack(gStack* st) {
 }
 
 
-void* stRemove(gStack* st, void *data) {
+void* stRemove(gStack* st, void* data) {
     if (!st) return NULL;
     if (stIsEmpty(st)) return NULL;
 

@@ -18,7 +18,10 @@ gQueue* initQueue(impressFunctionQueue printQ, compareFunctionQueue compareQ) {
 }
 
 
-bool queueIsEmpty(gQueue* q) { return (q->front == NULL); }
+bool queueIsEmpty(gQueue* q) { 
+    if (!q) return 1;
+    return (q->front == NULL);
+}
 
 
 void enqueue(gQueue* q, void* data) {
@@ -96,14 +99,14 @@ bool searchInQueue(gQueue* q, void* data) {
 }
 
 
-void removeFromQueue(gQueue* q, void* data) {
-    if (!q) return;
-    if (queueIsEmpty(q)) return;
+void* removeFromQueue(gQueue* q, void* data) {
+    if (!q) return NULL;
+    if (queueIsEmpty(q)) return NULL;
 
     gNodeQueue* aux = q->front, *previous = NULL;
     while(aux) {
         if (q->compareQ(aux->data, data) != 0) {
-            // Element not Found:
+            // Not the Searched Element:
             previous = aux;
             aux = aux->next;
             continue;
@@ -115,24 +118,33 @@ void removeFromQueue(gQueue* q, void* data) {
         // Removing First Element:
         if (!previous) {
             q->front = q->front->next;
-            free(aux);
-            return;
+            
+            void* returnData = aux->data;
+            free(aux); aux = NULL;
+            return returnData;
         }
 
         // Removing Last Element:
-        if (aux->next == NULL) {
+        if (!aux->next) {
             q->rear = previous;
             previous->next = NULL;
-            free(aux);
-            return;
+
+            void* returnData = aux->data;
+            free(aux); aux = NULL;
+            
+            return returnData;
         }
 
         // Removing Element in Middle:
         previous->next = aux->next;
-        free(aux);
-        return;
+        void* returnData = aux->data;
+        free(aux); aux = NULL;
+        
+        return returnData;
     }
-    return;
+
+    // Element not Found:
+    return NULL;
 }
 
 
@@ -141,10 +153,13 @@ void* dequeue(gQueue* q) {
     if (queueIsEmpty(q)) return NULL;
 
     (q->counter)--;
-    gNodeQueue* aux = q->front;
+    gNodeQueue* nodeAux = q->front;
     q->front = q->front->next;
 
-    return aux->data;
+    void* returnData = nodeAux->data;
+    free(nodeAux) ; nodeAux = NULL;
+
+    return returnData;
 }
 
 
