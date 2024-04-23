@@ -163,7 +163,7 @@ void* dequeue(gQueue* q) {
 }
 
 
-size_t queueCount(gQueue *q) {
+size_t queueCount(gQueue* q) {
     if (!q) return 0;
     return q->counter;
 }
