@@ -56,7 +56,7 @@ void impressFunQueue(void* data) {
     return;
 }
 
-int main(void) {
+int main(int argc, char** argv) {
 
     gQueue* integerQueue = initQueue(impressFunQueue, compareFunQ); // Creating the Queue.
 

@@ -34,66 +34,66 @@ bool stSearch(gStack *st, void *data);                                          
 
 #endif
 
-    //
-    // Example of Using the Stack in a Program:
-    /*
+//
+// Example of Using the Stack in a Program:
+/*
 
-    void impressf(void *data) {
-        printf("%i", *((int *)data));
-        return;
-    }
-
-
-    int comparef(void* data1, void* data2) {
-        int aux1 = *((int *)data1);
-        int aux2 = *((int *)data2);
-
-        if (aux1 > aux2) return 1;
-        if (aux1 < aux2) return -1;
-        return 0;
-    }
+void impressf(void* data) {
+    printf("%i", *((int *)data));
+    return;
+}
 
 
-    int main(void) {
+int comparef(void* data1, void* data2) {
+    int aux1 = *((int *)data1);
+    int aux2 = *((int *)data2);
 
-        gStack *integerStack = stInit(impressf, comparef);    // Initializing the stack.
+    if (aux1 > aux2) return 1;
+    if (aux1 < aux2) return -1;
+    return 0;
+}
 
-        int val1 = 1, val2 = 2, val3 = 3, val4 = 4;           // Creating Elements of ANY TYPE to stack,
-                                                              // the choice of objects of type int was
-                                                              // completely arbitrary in this case.
 
-        stPush(integerStack, &val1);                          // Stacking the First element.
-        stPush(integerStack, &val2);                          // Stacking the Second element.
-        stPush(integerStack, &val3);                          // Stacking the Third element.
-        stPush(integerStack, &val4);                          // Stacking the Fourth element.
+int main(int argc, char** argv) {
 
-        puts("Stack Initial State:");
-        stImpress(integerStack);                              // Displaying the stack in the terminal.
+    gStack *integerStack = stInit(impressf, comparef);    // Initializing the stack.
 
-        int* poppedObj = (int *)stPop(integerStack);          // Removing the element present at the top of the stack.
-        printf("\n\nPopped Object: %i\n", *poppedObj);        // Displaying the newly removed object.
-        stImpress(integerStack);                              // Displaying the stack in the terminal.
+    int val1 = 1, val2 = 2, val3 = 3, val4 = 4;           // Creating Elements of ANY TYPE to stack,
+                                                          // the choice of objects of type int was
+                                                          // completely arbitrary in this case.
 
-        void* removedObj = stRemove(integerStack, &val4);     // Trying to Remove an Object from the Stack.
+    stPush(integerStack, &val1);                          // Stacking the First element.
+    stPush(integerStack, &val2);                          // Stacking the Second element.
+    stPush(integerStack, &val3);                          // Stacking the Third element.
+    stPush(integerStack, &val4);                          // Stacking the Fourth element.
 
-        int* removedObjConverted;
-        if(removedObj) {                                       // Checking if the Removed Value is not NULL.
-            removedObjConverted = (int *)removedObj;           // Pointer Casting to Correct Type.
-            printf("\nRemoved Object: %i\n", *removedObjConverted);
-        } else { printf("\n"); }
+    puts("Stack Initial State:");
+    stImpress(integerStack);                              // Displaying the stack in the terminal.
 
-        removedObj = stRemove(integerStack, &val2);
+    int* poppedObj = (int *)stPop(integerStack);          // Removing the element present at the top of the stack.
+    printf("\n\nPopped Object: %i\n", *poppedObj);        // Displaying the newly removed object.
+    stImpress(integerStack);                              // Displaying the stack in the terminal.
 
-        if(removedObj) {                                       // Checking if the Removed Value is not NULL.
-            removedObjConverted = (int *)removedObj;           // Pointer Casting to Correct Type.
-            printf("\nRemoved Object: %i\n", *removedObjConverted);
-        } else { printf("\n"); }
+    void* removedObj = stRemove(integerStack, &val4);     // Trying to Remove an Object from the Stack.
 
-        stImpress(integerStack);                              // Displaying the stack in the terminal.
+    int* removedObjConverted;
+    if(removedObj) {                                      // Checking if the Removed Value is not NULL.
+        removedObjConverted = (int *)removedObj;          // Pointer Casting to Correct Type.
+        printf("\nRemoved Object: %i\n", *removedObjConverted);
+    } else { printf("\n"); }
 
-        stDestroy(&integerStack);                             // Don't forget to deallocate the memory present on the stack when closing the program.
+    removedObj = stRemove(integerStack, &val2);
 
-        return 0;
-    }
+    if(removedObj) {                                       // Checking if the Removed Value is not NULL.
+        removedObjConverted = (int *)removedObj;           // Pointer Casting to Correct Type.
+        printf("\nRemoved Object: %i\n", *removedObjConverted);
+    } else { printf("\n"); }
 
-    */
+    stImpress(integerStack);                               // Displaying the stack in the terminal.
+
+    stDestroy(&integerStack);                              // Don't forget to deallocate the memory present on the stack when closing the program.
+
+    return 0;
+}
+
+*/
