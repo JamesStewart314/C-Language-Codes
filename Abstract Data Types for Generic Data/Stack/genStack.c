@@ -1,10 +1,11 @@
 #include "genStack.h"
 
-gStack* stInit(impressFunctionStack printSt) {
+gStack* stInit(impressFunctionStack printSt, compareFunctionStack compareSt) {
     gStack* newstack = (gStack *) malloc (sizeof(gStack));
     newstack->counter = (size_t)0;
     newstack->top = NULL;
     newstack->printSt = printSt;
+    newstack->compareSt = compareSt;
 
     return newstack;
 }
@@ -12,8 +13,7 @@ gStack* stInit(impressFunctionStack printSt) {
 
 bool stIsEmpty(gStack* st) {
     if (!st) return 1;
-    if (st->counter <= (size_t)0) return 1;
-    return 0;
+    return (st->counter <= (size_t)0);
 }
 
 
@@ -57,15 +57,18 @@ void stPush(gStack* st, void* data) {
 }
 
 
-void *stPop(gStack* st) {
+void* stPop(gStack* st) {
     if (!st) return NULL;
     if (stIsEmpty(st)) return NULL;
 
     (st->counter--);
-    gNodeStack* aux = st->top;
+    gNodeStack* nodeAux = st->top;
     st->top = st->top->next;
 
-    return aux->data;
+    void* returnData = nodeAux->data;
+    free(nodeAux) ; nodeAux = NULL;
+
+    return returnData;
 }
 
 
@@ -89,4 +92,50 @@ void impressStack(gStack* st) {
     printf("\b\b]");
 
     return;
+}
+
+
+void* stRemove(gStack* st, void *data) {
+    if (!st) return NULL;
+    if (stIsEmpty(st)) return NULL;
+
+    gNodeStack* nodeAux = st->top, *nodePrevious = NULL;
+    while (nodeAux) {
+        if (st->compareSt(nodeAux->data, data) == 0) {
+            // Node contains the desired information. Proceeding to remove:
+            (st->counter)--;
+            
+            // Removing the Top of Stack:
+            if (!nodePrevious) {
+                st->top = st->top->next;
+                void* returnData = nodeAux->data;
+                free(nodeAux); nodeAux = NULL;
+
+                return returnData;
+            }
+
+            // Removing the Bottom of Stack:
+            if (!nodeAux->next) {
+                nodePrevious->next = NULL;
+                void* returnData = nodeAux->data;
+                free(nodeAux); nodeAux = NULL;
+
+                return returnData;
+            }
+
+            // Removing Element in Middle:
+            nodePrevious->next = nodeAux->next;
+            void* returnData = nodeAux->data;
+            free(nodeAux); nodeAux = NULL;
+            
+            return returnData;
+
+        }
+
+        nodePrevious = nodeAux;
+        nodeAux = nodeAux->next;
+    }
+
+    // Data not Found:
+    return NULL;
 }
