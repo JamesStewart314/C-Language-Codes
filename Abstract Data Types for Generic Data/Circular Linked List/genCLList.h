@@ -31,6 +31,6 @@ size_t clCount(gCLList* cll);                                                   
 void clDestroy(gCLList** cll);                                                          // Frees memory allocated to the circular linked list.
 bool clIsEmpty(gCLList* cll);                                                           // Informs whether the circular list is empty.
 void clNext(gCLList* cll);                                                              // Changes the current to the next element in the list.
-void clPrevious(gCLList *cll);                                                          // Changes the current to the previous element in the list.
+void clPrevious(gCLList* cll);                                                          // Changes the current to the previous element in the list.
 
 #endif
