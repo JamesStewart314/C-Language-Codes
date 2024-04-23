@@ -25,16 +25,15 @@ typedef struct {
   compareFunctionQueue compareQ;
 } gQueue;
 
-
-gQueue* initQueue(impressFunctionQueue printQ, compareFunctionQueue compareQ);
-bool queueIsEmpty(gQueue* q);
-void enqueue(gQueue* q, void* data);
-void impressQueue(gQueue* q);
-void freeQueue(gQueue** q);
-bool searchInQueue(gQueue* q, void* data);
-void* removeFromQueue(gQueue* q, void* data);
-void* dequeue(gQueue* q);
-size_t queueCount(gQueue* q);
+gQueue *initQueue(impressFunctionQueue printQ, compareFunctionQueue compareQ); // Initializes the Queue;
+bool queueIsEmpty(gQueue* q);                                                  // Checks if the Queue is Empty;
+void enqueue(gQueue *q, void *data);                                           // Inserts Elements into the Queue;
+void impressQueue(gQueue *q);                                                  // Displays the Queue on the Terminal in List Format;
+void freeQueue(gQueue** q);                                                    // Destroys the Queue;
+bool searchInQueue(gQueue *q, void *data);                                     // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;
+void *removeFromQueue(gQueue *q, void *data);                                  // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
+void *dequeue(gQueue *q);                                                      // Returns Void Pointers to Elements Removed from the Queue;
+size_t queueCount(gQueue *q);                                                  // Returns the Number of Elements in the Queue.
 
 #endif
 

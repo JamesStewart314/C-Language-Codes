@@ -33,11 +33,11 @@ void stDestroy(gStack** st) {
         return;
     }
 
-    gNodeStack* aux = (*st)->top;
-    while (aux) {
+    gNodeStack* nodeAux = (*st)->top;
+    while (nodeAux) {
         (*st)->top = (*st)->top->next;
-        free(aux);
-        aux = (*st)->top;
+        free(nodeAux);
+        nodeAux = (*st)->top;
     }
 
     free(*st);
@@ -51,7 +51,7 @@ void stPush(gStack* st, void* data) {
 
     gNodeStack* newnode = (gNodeStack *) malloc (sizeof(gNodeStack));
     if (newnode == NULL) {
-        fprintf(stderr, "Failed to allocate memory for a new stack element.");
+        fprintf(stderr, "Error: Unable to allocate memory to a new Stack node.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -84,16 +84,16 @@ size_t stCount(gStack* st) {
 }
 
 
-void impressStack(gStack* st) {
+void stImpress(gStack* st) {
     if (!st) return;
-    if (stIsEmpty(st)) { printf("[]\n"); return; }
+    if (stIsEmpty(st)) { printf("[]"); return; }
 
-    gNodeStack* aux = st->top;
+    gNodeStack* nodeAux = st->top;
     printf("[");
-    while (aux) {
-        st->printSt(aux->data);
+    while (nodeAux) {
+        st->printSt(nodeAux->data);
         printf(", ");
-        aux = aux->next;
+        nodeAux = nodeAux->next;
     }
     printf("\b\b]");
 
@@ -144,4 +144,17 @@ void* stRemove(gStack* st, void* data) {
 
     // Data not Found:
     return NULL;
+}
+
+bool stSearch(gStack *st, void *data) {
+    if (!st) return 0;
+    if (stIsEmpty(st)) return 0;
+
+    gNodeStack* nodeAux = st->top;
+    while (nodeAux) {
+        if (st->compareSt(nodeAux->data, data) == 0) return 1;
+        nodeAux = nodeAux->next;
+    }
+
+    return 0;
 }

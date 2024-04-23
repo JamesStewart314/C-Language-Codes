@@ -27,7 +27,7 @@ bool queueIsEmpty(gQueue* q) {
 void enqueue(gQueue* q, void* data) {
     gNodeQueue* newnode = (gNodeQueue *) malloc (sizeof(gNodeQueue));
     if (newnode == NULL) {
-        fprintf(stderr, "Error: Unable to allocate memory for new node.\n");
+        fprintf(stderr, "Error: Unable to allocate memory to a new Queue node.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -48,16 +48,16 @@ void enqueue(gQueue* q, void* data) {
 
 void impressQueue(gQueue* q) {
     if (!q) return;
-    if (queueIsEmpty(q)) { printf("[]\n"); return; }
+    if (queueIsEmpty(q)) { printf("[]"); return; }
     
     printf("[");
-    gNodeQueue* aux = q->front;
-    while (aux) {
-        q->printQ(aux->data);
+    gNodeQueue* nodeAux = q->front;
+    while (nodeAux) {
+        q->printQ(nodeAux->data);
         printf(", ");
-        aux = aux->next;
+        nodeAux = nodeAux->next;
     }
-    printf("\b\b]\n");
+    printf("\b\b]");
 }
 
 
@@ -70,13 +70,13 @@ void freeQueue(gQueue** q) {
         return;
     };
 
-    gNodeQueue* aux = (*q)->front;
+    gNodeQueue* nodeAux = (*q)->front;
 
     do {
         (*q)->front = (*q)->front->next;
-        free(aux);
-        aux = (*q)->front;
-    } while (aux);
+        free(nodeAux);
+        nodeAux = (*q)->front;
+    } while (nodeAux);
 
     free(*q);
     (*q) = NULL;
@@ -89,10 +89,10 @@ bool searchInQueue(gQueue* q, void* data) {
     if (!q) return 0;
     if (queueIsEmpty(q)) return 0;
 
-    gNodeQueue* aux = q->front;
-    while(aux) {
-        if (q->compareQ(aux->data, data) == 0) return 1;
-        aux = aux->next;
+    gNodeQueue* nodeAux = q->front;
+    while(nodeAux) {
+        if (q->compareQ(nodeAux->data, data) == 0) return 1;
+        nodeAux = nodeAux->next;
     }
 
     return 0;
@@ -103,12 +103,12 @@ void* removeFromQueue(gQueue* q, void* data) {
     if (!q) return NULL;
     if (queueIsEmpty(q)) return NULL;
 
-    gNodeQueue* aux = q->front, *previous = NULL;
-    while(aux) {
-        if (q->compareQ(aux->data, data) != 0) {
+    gNodeQueue* nodeAux = q->front, *previous = NULL;
+    while(nodeAux) {
+        if (q->compareQ(nodeAux->data, data) != 0) {
             // Not the Searched Element:
-            previous = aux;
-            aux = aux->next;
+            previous = nodeAux;
+            nodeAux = nodeAux->next;
             continue;
         }
         
@@ -119,26 +119,26 @@ void* removeFromQueue(gQueue* q, void* data) {
         if (!previous) {
             q->front = q->front->next;
             
-            void* returnData = aux->data;
-            free(aux); aux = NULL;
+            void* returnData = nodeAux->data;
+            free(nodeAux); nodeAux = NULL;
             return returnData;
         }
 
         // Removing Last Element:
-        if (!aux->next) {
+        if (!nodeAux->next) {
             q->rear = previous;
             previous->next = NULL;
 
-            void* returnData = aux->data;
-            free(aux); aux = NULL;
+            void* returnData = nodeAux->data;
+            free(nodeAux); nodeAux = NULL;
             
             return returnData;
         }
 
         // Removing Element in Middle:
-        previous->next = aux->next;
-        void* returnData = aux->data;
-        free(aux); aux = NULL;
+        previous->next = nodeAux->next;
+        void* returnData = nodeAux->data;
+        free(nodeAux); nodeAux = NULL;
         
         return returnData;
     }
