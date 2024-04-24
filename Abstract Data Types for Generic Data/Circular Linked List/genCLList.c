@@ -83,9 +83,9 @@ void* clDeleteCurrent(gCLList* cll) {
     if (!cll) return NULL;
     if (clIsEmpty(cll)) return NULL;
 
+    void* returnData = cll->currentNode->data;
     // If Circular List has just one element:
     if (cll->count == 1) {
-        void* returnData = cll->currentNode->data;
         free(cll->currentNode); cll->currentNode = NULL;
         (cll->count)--;
 
@@ -93,7 +93,6 @@ void* clDeleteCurrent(gCLList* cll) {
     }
 
     // If Circular List has more than 1 element:
-    void* returnData = cll->currentNode->data;
     cll->currentNode->previous->next = cll->currentNode->next;
     cll->currentNode->next->previous = cll->currentNode->previous;
 
