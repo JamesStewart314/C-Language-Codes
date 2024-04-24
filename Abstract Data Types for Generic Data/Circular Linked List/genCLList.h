@@ -27,7 +27,7 @@ bool clIsEmpty(gCLList* cll);                                                   
 void* clGetCurrent(gCLList* cll);                                                       // Returns the data of current element of the circular list.
 void clInsert(gCLList* cll, void* data);                                                // Inserts a new element after the current element.
 
-void *clDeleteCurrent(gCLList *cll);                                                    //  Remove the current element, the new current becomes the next 
+void* clDeleteCurrent(gCLList* cll);                                                    //  Remove the current element, the new current becomes the next 
                                                                                         // element after the current one and the function returns the 
                                                                                         // information present in the current node just removed.
 
