@@ -37,7 +37,7 @@ void clDestroy(gCLList** cll);                                                  
 void clNext(gCLList* cll);                                                              // Changes the current to the next element in the list.
 void clPrevious(gCLList* cll);                                                          // Changes the current to the previous element in the list.
 void clImpress(gCLList* cll);                                                           // Displays the circular list on the terminal;
-bool clSearch(gCLList *cll, void *data);                                                // Checks whether an element is present in the Circular List, returning 1 if it is and 0 otherwise.
+bool clSearch(gCLList* cll, void* data);                                                // Checks whether an element is present in the Circular List, returning 1 if it is and 0 otherwise.
 
 #endif
 
