@@ -122,20 +122,22 @@ void* clDelete(gCLList* cll, void* data) {
     // Searching for the element in the rest of the list:
     nodeAux = nodeAux->next;
     while (nodeAux != cll->currentNode) {
-        if (cll->compareCLL(nodeAux->data, data) == 0) {
-            // Element found (Circular List is guaranteed to have at least 2 elements in this part of the code):
-
-            nodeAux->previous->next = nodeAux->next;
-            nodeAux->next->previous = nodeAux->previous;
-            
-            void* returnData = nodeAux->data;
-            free(nodeAux) ; nodeAux = NULL;
-            (cll->count)--;
-
-            return returnData;
+        if (cll->compareCLL(nodeAux->data, data) != 0) {
+            // Does not represent the desired element, proceeding to the next iteration:
+            nodeAux = nodeAux->next;
+            continue;
         }
 
-        nodeAux = nodeAux->next;
+        // Element found (Circular List is guaranteed to have at least 2 elements in this part of the code):
+        nodeAux->previous->next = nodeAux->next;
+        nodeAux->next->previous = nodeAux->previous;
+
+        void *returnData = nodeAux->data;
+        free(nodeAux);
+        nodeAux = NULL;
+        (cll->count)--;
+
+        return returnData;
     }
 
     // Element not Found:
