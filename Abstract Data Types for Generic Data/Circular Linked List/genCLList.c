@@ -132,9 +132,8 @@ void* clDelete(gCLList* cll, void* data) {
         nodeAux->previous->next = nodeAux->next;
         nodeAux->next->previous = nodeAux->previous;
 
-        void *returnData = nodeAux->data;
-        free(nodeAux);
-        nodeAux = NULL;
+        void* returnData = nodeAux->data;
+        free(nodeAux); nodeAux = NULL;
         (cll->count)--;
 
         return returnData;
