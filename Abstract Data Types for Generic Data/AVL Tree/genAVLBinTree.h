@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
 
     printf("Integer Tree Initial State: ");
     binTreeImpress(integerTree); printf("\n\n");
+    
     binTreeInsert(integerTree, &antiVal1);
     binTreeInsert(integerTree, &val3);
     binTreeInsert(integerTree, &antiVal4);
