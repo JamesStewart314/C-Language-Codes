@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
         printf("The largest value present in the tree corresponds to: %d\n", *biggestValueOnTree);
     }
 
-    printf("Integer Tree and Copy the Copy of Integer Tree are Equal?: %s\n\n", isEqualsBinTree(integerTree, integerTreeCopy) ? "Yes" : "No");
+    printf("Integer Tree and Copy of the Integer Tree are Equal?: %s\n\n", isEqualsBinTree(integerTree, integerTreeCopy) ? "Yes" : "No");
 
     puts("Displaying them by Symetrical Impress:");
     printf("Original: ");
