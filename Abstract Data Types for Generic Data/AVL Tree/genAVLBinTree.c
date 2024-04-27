@@ -458,6 +458,10 @@ void removeElemBinTree(binTree* tree, void* data) {
     if (!tree) return;
     if (binTreeIsEmpty(tree)) return;
 
+    // Element is Not in the Tree:
+    if (!binTreeSearch(tree, data)) return;
+
+    (tree->counter)--;
     binTreeNode* result = removeElemBinTreeNode(tree->root, data, tree->compareF);
     if (result == NULL) return;
     tree->root = result;
