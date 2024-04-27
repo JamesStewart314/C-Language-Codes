@@ -41,9 +41,6 @@ size_t queueCount(gQueue *q);                                                  /
 // Example of Using the Queue in a Program:
 /*
 
-#include "genQueue.h"
-
-
 int compareFunQ(void* data1, void* data2) {
     int aux1 = *((int *)data1);
     int aux2 = *((int *)data2);

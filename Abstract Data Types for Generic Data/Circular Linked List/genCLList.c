@@ -10,7 +10,7 @@ gCLList* clInit(impressFunctionCLList printCLL, compareFunctionCLList compareCLL
 
     newCLList->printCLL = printCLL;
     newCLList->compareCLL = compareCLL;
-    newCLList->count = (size_t)0;
+    newCLList->counter = (size_t)0;
     newCLList->currentNode = NULL;
 
     return newCLList;
@@ -19,7 +19,7 @@ gCLList* clInit(impressFunctionCLList printCLL, compareFunctionCLList compareCLL
 
 bool clIsEmpty(gCLList* cll) {
     if (!cll) return 1;
-    return (cll->count <= (size_t)0);
+    return (cll->counter <= (size_t)0);
 }
 
 
@@ -50,18 +50,18 @@ void clInsert(gCLList* cll, void* data) {
         cll->currentNode = newnode;
 
         // Incrementing the circular list counter:
-        (cll->count)++;
+        (cll->counter)++;
 
         return;
     }
 
 
     // If the Circular List has just one element:
-    if (cll->count == 1) {
+    if (cll->counter == 1) {
         cll->currentNode->next = cll->currentNode->previous = newnode;
         newnode->next = newnode->previous = cll->currentNode;
         // Incrementing the circular list counter:
-        (cll->count)++;
+        (cll->counter)++;
 
         return;
     }
@@ -73,7 +73,7 @@ void clInsert(gCLList* cll, void* data) {
     cll->currentNode->next = newnode;
     newnode->previous = cll->currentNode;
     // Incrementing the circular list counter:
-    (cll->count)++;
+    (cll->counter)++;
 
     return;
 }
@@ -85,9 +85,9 @@ void* clDeleteCurrent(gCLList* cll) {
 
     void* returnData = cll->currentNode->data;
     // If Circular List has just one element:
-    if (cll->count == 1) {
+    if (cll->counter == 1) {
         free(cll->currentNode); cll->currentNode = NULL;
-        (cll->count)--;
+        (cll->counter)--;
 
         return returnData;
     }
@@ -100,7 +100,7 @@ void* clDeleteCurrent(gCLList* cll) {
     cll->currentNode = cll->currentNode->next;
 
     free(nodeAux) ; nodeAux = NULL;
-    (cll->count)--;
+    (cll->counter)--;
 
     return returnData;
 }
@@ -134,7 +134,7 @@ void* clDelete(gCLList* cll, void* data) {
 
         void* returnData = nodeAux->data;
         free(nodeAux); nodeAux = NULL;
-        (cll->count)--;
+        (cll->counter)--;
 
         return returnData;
     }
@@ -146,7 +146,7 @@ void* clDelete(gCLList* cll, void* data) {
 
 size_t clCount(gCLList* cll) {
     if (!cll) return 0;
-    return cll->count;
+    return cll->counter;
 }
 
 

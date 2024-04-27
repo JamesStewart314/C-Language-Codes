@@ -16,7 +16,7 @@ typedef struct GENERICNODECLLIST {
 
 typedef struct {
     gNodeCLList* currentNode;
-    size_t count;
+    size_t counter;
     impressFunctionCLList printCLL;
     compareFunctionCLList compareCLL;
 } gCLList;
@@ -44,6 +44,8 @@ bool clSearch(gCLList* cll, void* data);                                        
 //
 // Example of Using the Circular Linked List in a Program:
 /*
+
+#include "genCLList.h"
 
 void impressf(void* data) {
     printf("%d", *((int *)data));

@@ -38,9 +38,6 @@ bool stSearch(gStack *st, void *data);                                          
 // Example of Using the Stack in a Program:
 /*
 
-#include "genStack.h"
-
-
 void impressf(void* data) {
     printf("%i", *((int *)data));
     return;
