@@ -10,7 +10,7 @@ typedef int (*compareFunctionBinTree)(void* data1, void* data2);
 
 typedef struct BINTREENODE {
     void* data;
-    unsigned int height;
+    size_t height;
     struct BINTREENODE *left, *right;
 } binTreeNode;
 
@@ -34,7 +34,7 @@ void impressByLevelBinTree(binTree* tree);
 void freeBinTree(binTree** tree);
 void removeElemBinTree(binTree* tree, void* data);
 bool binTreeSearch(binTree* tree, void* data);
-size_t countBinTree(binTree* tree);
+size_t binTreeCount(binTree* tree);
 
 
 //
