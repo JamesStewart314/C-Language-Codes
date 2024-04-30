@@ -694,7 +694,7 @@ void freeBinTree(binTree** tree) {
         return;
     }
 
-    freeBinTreeRecursively(&(*tree)->root);
+    freeBinTreeRecursively((*tree)->root);
     free(*tree); (*tree) = NULL;
 
     return;
