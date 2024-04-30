@@ -32,7 +32,7 @@ void impressBinTreeSymetric(binTreeNode* subtree, binTree* originalStructure) {
     if (binTreeIsEmpty(originalStructure)) return;
 
     impressBinTreeSymetric(subtree->left, originalStructure);
-    originalStructure->printF(subtree->data); printf(" - ");
+    originalStructure->printF(subtree->data); printf(", ");
     impressBinTreeSymetric(subtree->right, originalStructure);
 
     return;
