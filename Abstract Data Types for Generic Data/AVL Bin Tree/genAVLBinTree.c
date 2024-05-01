@@ -74,11 +74,6 @@ binTreeNode* balanceBinTree(binTreeNode* subtree) {
     if (!subtree) return NULL;
     if (!subtree->left && !subtree->right) return subtree;
 
-    //  First balancing the left and right sides of the 
-    // AVL binary tree, respectively:
-    subtree->left = balanceBinTree(subtree->left);
-    subtree->right = balanceBinTree(subtree->right);
-
     //  If the balance factor modulus of the Parent node 
     // is less than two, then the tree is already balanced:
     int balanceFactor = getSubTreeBF(subtree);
@@ -328,7 +323,9 @@ binTreeNode* removeElemBinTreeNode(binTreeNode* subtree, void* data, compareFunc
         // to correct any changes to its value:
         subtree->height = recalculateSubTreeHeight(subtree);
 
-        return subtree;
+        // Rebalancing tree after removing the value and 
+        // returning the tree balanced:
+        return balanceBinTree(subtree);
     }
 
     // The element to be removed is on the left side of the tree:
@@ -347,7 +344,9 @@ binTreeNode* removeElemBinTreeNode(binTreeNode* subtree, void* data, compareFunc
         // to correct any changes to its value:
         subtree->height = recalculateSubTreeHeight(subtree);
 
-        return subtree;
+        // Rebalancing tree after removing the value and
+        // returning the tree balanced:
+        return balanceBinTree(subtree);
     }
 
     // Otherwise, Element Found.
@@ -387,8 +386,24 @@ binTreeNode* removeElemBinTreeNode(binTreeNode* subtree, void* data, compareFunc
     subtree->data = substitute->data;
     // Removing the replacement node recursively:
     subsParent->right = removeElemBinTreeNode(substitute, substitute->data, compareF);
+    subsParent->height = recalculateSubTreeHeight(subsParent);
 
     return subtree;
+}
+
+
+void binTreeTextReprRecursively(binTreeNode* subtree, impressFunctionBinTree printF) {
+    if (!subtree) { printf("<>"); return; }
+    
+    int randColor = (rand() % 7) + 30;
+
+    printf("\033[%dm<\033[0m", randColor);
+    printF(subtree->data); printf(" ");
+    binTreeTextReprRecursively(subtree->left, printF); printf(" ");
+    binTreeTextReprRecursively(subtree->right, printF);
+    printf("\033[%dm>\033[0m", randColor);
+
+    return;
 }
 
 
@@ -708,12 +723,10 @@ void removeElemBinTree(binTree* tree, void* data) {
     // Element is Not in the Tree:
     if (!binTreeSearch(tree, data)) return;
 
-    (tree->counter)--;
     binTreeNode* result = removeElemBinTreeNode(tree->root, data, tree->compareF);
-    if (result == NULL) return;
+    (tree->counter)--;
     tree->root = result;
 
-    balanceBinTree(tree->root);
     return;
 }
 
@@ -721,4 +734,15 @@ void removeElemBinTree(binTree* tree, void* data) {
 size_t binTreeCount(binTree *tree) {
     if (!tree) return 0;
     return tree->counter;
+}
+
+
+void binTreeTextRepr(binTree* tree) {
+    if (!tree) return;
+    if (binTreeIsEmpty(tree)) { printf("< <> <>>"); return; }
+
+    srand((unsigned)time(NULL));
+
+    binTreeTextReprRecursively(tree->root, tree->printF);
+    return;
 }

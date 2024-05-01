@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
-#include "genQueue.h"
-#include "genStack.h"
+#include "../Queue/genQueue.h"
+#include "../Stack/genStack.h"
 
 typedef void (*impressFunctionBinTree)(void* data);
 typedef int (*compareFunctionBinTree)(void* data1, void* data2);
@@ -35,6 +36,7 @@ void freeBinTree(binTree** tree);
 void removeElemBinTree(binTree* tree, void* data);
 bool binTreeSearch(binTree* tree, void* data);
 size_t binTreeCount(binTree* tree);
+void binTreeTextRepr(binTree* tree);
 
 
 //
