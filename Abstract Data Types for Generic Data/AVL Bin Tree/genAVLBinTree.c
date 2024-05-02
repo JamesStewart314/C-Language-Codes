@@ -92,27 +92,31 @@ avlBinTreeNode* balanceBinTree(avlBinTreeNode* subtree) {
     int balanceFactor = getSubTreeBF(subtree);
     if (abs(balanceFactor) < 2) return subtree;
 
-    //  If the modulus of the balance factor is less than two, 
-    // the tree is naturally balanced. Otherwise, an obvious 
-    // imbalance is identified, which can be directed to the 
-    // left (BF = (+2)) or to the right (BF = (-2)):
+    /*
+      If the modulus of the balance factor is less than two, 
+     the tree is naturally balanced. Otherwise, an obvious 
+     imbalance is identified, which can be directed to the 
+     left (BF = (+2)) or to the right (BF = (-2)):
+    */
 
     if (balanceFactor == 2) {
-
-        //  The tree is unbalanced to the left. In this case,
-        // there are two possible scenarios: If the Parent node
-        // has a Child node branching to the left and a Grandchild
-        // node equally branching to the left, this arrangement
-        // corresponds directly to a combination of Parent-Child
-        // Balancing Factors of ((+2), (+1)), we therefore apply
-        // the L.L.(Left-Left) rotation. If, on the other hand,
-        // we have that the Parent node has a Son node branching to the
-        // left and a Grandson node branching to the right, resulting
-        // in a combination of Parent-Child Balancing Factors of
-        // ((+2), (-1)), we apply the L.R.(Left-Right) rotation, 
-        // which consists of a composition of the R.R.(Right-Right) 
-        // rotation applied to the CHILD node followed by an 
-        // L.L.(Left-Left) rotation applied to the PARENT node.
+        
+        /*
+          The tree is unbalanced to the left. In this case,
+         there are two possible scenarios: If the Parent node
+         has a Child node branching to the left and a Grandchild
+         node equally branching to the left, this arrangement
+         corresponds directly to a combination of Parent-Child
+         Balancing Factors of ((+2), (+1)), we therefore apply
+         the L.L.(Left-Left) rotation. If, on the other hand,
+         we have that the Parent node has a Son node branching to the
+         left and a Grandson node branching to the right, resulting
+         in a combination of Parent-Child Balancing Factors of
+         ((+2), (-1)), we apply the L.R.(Left-Right) rotation, 
+         which consists of a composition of the R.R.(Right-Right) 
+         rotation applied to the CHILD node followed by an 
+         L.L.(Left-Left) rotation applied to the PARENT node.
+        */
 
         // Calculating Child node balancing factor:
         int subBalanceFactor = getSubTreeBF(subtree->left);
@@ -125,12 +129,14 @@ avlBinTreeNode* balanceBinTree(avlBinTreeNode* subtree) {
             //  In the Left-Right case, we apply the composition of
             // rotations mentioned previously in their respective order:
 
-            //  Within this context, given that the Child node branching
-            // to the left receives a decrement of just one unit in its 
-            // height, in contrast to the decrement of two units associated 
-            // with the R.R. rotation, we proceed initially by increasing 
-            // its height by one unit, ensuring that the result after the 
-            // execution of the operations results in the expected output:
+            /*
+              Within this context, given that the Child node branching
+             to the left receives a decrement of just one unit in its 
+             height, in contrast to the decrement of two units associated 
+             with the R.R. rotation, we proceed initially by increasing 
+             its height by one unit, ensuring that the result after the 
+             execution of the operations results in the expected output:
+            */
             (subtree->left->height)++;
 
             // Applying R.R. rotation to the CHILD node on the left:
@@ -142,20 +148,22 @@ avlBinTreeNode* balanceBinTree(avlBinTreeNode* subtree) {
         }
 
     } else if (balanceFactor == (-2)) {
-
-        //  The tree is unbalanced to the right. In this case,
-        // there are two possible scenarios: If the Parent node 
-        // has a Child node branching to the right and a Grandchild 
-        // branching equally to the right, this arrangement directly 
-        // corresponds to a combination of Parent-Child Balance Factors 
-        // of ((-2), (-1)), we therefore apply the R.R.(Right-Right) 
-        // rotation. If, on the other hand, we have that the Parent node 
-        // has a Child branching to the right and a Grandson node 
-        // branching to the left, resulting in a combination of 
-        // Parent-Child Balancing Factors of ((-2), (+1)) , we apply the 
-        // R.L.(Right-Left) rotation, which consists of a composite of 
-        // the L.L.(Left-Left) rotation applied to the CHILD node followed 
-        // by an R.R.(Right-Right) rotation applied to the PARENT node.
+        
+        /*
+          The tree is unbalanced to the right. In this case,
+         there are two possible scenarios: If the Parent node 
+         has a Child node branching to the right and a Grandchild 
+         branching equally to the right, this arrangement directly 
+         corresponds to a combination of Parent-Child Balance Factors 
+         of ((-2), (-1)), we therefore apply the R.R.(Right-Right) 
+         rotation. If, on the other hand, we have that the Parent node 
+         has a Child branching to the right and a Grandson node 
+         branching to the left, resulting in a combination of 
+         Parent-Child Balancing Factors of ((-2), (+1)) , we apply the 
+         R.L.(Right-Left) rotation, which consists of a composite of 
+         the L.L.(Left-Left) rotation applied to the CHILD node followed 
+         by an R.R.(Right-Right) rotation applied to the PARENT node.
+        */
 
         // Calculating Child node balancing factor:
         int subBalanceFactor = getSubTreeBF(subtree->right);
@@ -168,12 +176,14 @@ avlBinTreeNode* balanceBinTree(avlBinTreeNode* subtree) {
             //  In the Left-Right case, we apply the composition of
             // rotations mentioned previously in their respective order:
 
-            //  Within this context, given that the Child node branching
-            // to the right receives a decrement of just one unit in its
-            // height, in contrast to the decrement of two units associated
-            // with the L.L. rotation, we proceed initially by increasing
-            // its height by one unit, ensuring that the result after the
-            // execution of the operations results in the expected output:
+            /*
+              Within this context, given that the Child node branching
+             to the right receives a decrement of just one unit in its
+             height, in contrast to the decrement of two units associated
+             with the L.L. rotation, we proceed initially by increasing
+             its height by one unit, ensuring that the result after the
+             execution of the operations results in the expected output:
+            */
             (subtree->right->height)++;
 
             // Applying L.L. rotation to the CHILD node on the right:
@@ -212,11 +222,13 @@ avlBinTreeNode* avlBinTreeInsertNode(avlBinTreeNode* subtree, avlBinTreeNode* ne
         if (!subtree->right) {
             subtree->right = newleaf;
 
-            //  If there is no subtree to 
-            // the left of the current node, 
-            // subtree's height is increased 
-            // by one unit after the new node 
-            // is inserted:
+            /*
+              If there is no subtree to 
+             the left of the current node, 
+             subtree's height is increased 
+             by one unit after the new node 
+             is inserted:
+            */
             if (!subtree->left) (subtree->height)++;
             return subtree;
         }
@@ -247,10 +259,12 @@ avlBinTreeNode* avlBinTreeInsertNode(avlBinTreeNode* subtree, avlBinTreeNode* ne
         if (!subtree->left) {
             subtree->left = newleaf;
 
-            //  If there is no subtree to 
-            // the right of the current node,
-            // its height is increased by one 
-            // after the new node is inserted:
+            /*
+              If there is no subtree to 
+             the right of the current node,
+             its height is increased by one 
+             after the new node is inserted:
+            */
             if (!subtree->right) (subtree->height)++;
             return subtree;
         }
@@ -307,10 +321,12 @@ avlBinTreeNode* avlBinTreeRemoveElemNode(avlBinTreeNode* subtree, void* data, co
         // element to be removed is not present in the tree:
         if (!subtree->right) return subtree;
 
-        // We recursively invoke the function on the right side 
-        // of the subtree and reassign the pointer returned by 
-        // the remove function to preserve the modifications of 
-        // the original tree:
+        /*
+         We recursively invoke the function on the right side 
+         of the subtree and reassign the pointer returned by 
+         the remove function to preserve the modifications of 
+         the original tree:
+        */
         subtree->right = avlBinTreeRemoveElemNode(subtree->right, data, compareF);
 
         // Recalculating the height of the tree 
@@ -328,10 +344,12 @@ avlBinTreeNode* avlBinTreeRemoveElemNode(avlBinTreeNode* subtree, void* data, co
         // element to be removed is not present in the tree:
         if (!subtree->left) return subtree;
 
-        // We recursively invoke the function on the left side
-        // of the subtree and reassign the pointer returned by
-        // the remove function to preserve the modifications of
-        // the original tree:
+        /*
+         We recursively invoke the function on the left side
+         of the subtree and reassign the pointer returned by
+         the remove function to preserve the modifications of
+         the original tree:
+        */
         subtree->left = avlBinTreeRemoveElemNode(subtree->left, data, compareF);
 
         // Recalculating the height of the tree
@@ -369,10 +387,12 @@ avlBinTreeNode* avlBinTreeRemoveElemNode(avlBinTreeNode* subtree, void* data, co
         return balanceBinTree(returnNode);
     }
 
-    //  If none of the previously mentioned situations occur, to replace 
-    // the root node while preserving the current structure of the binary
-    // tree, it is necessary to locate the node with the highest value in 
-    // the subtree to the left of the root and use it as the new root:
+    /*
+      If none of the previously mentioned situations occur, to replace 
+     the root node while preserving the current structure of the binary
+     tree, it is necessary to locate the node with the highest value in 
+     the subtree to the left of the root and use it as the new root:
+    */
     avlBinTreeNode *substitute = nodeAux->left, *subsParent = NULL;
     while (substitute->right) {
         // Walking the left subtree looking for 
@@ -395,30 +415,34 @@ avlBinTreeNode* avlBinTreeRemoveElemNode(avlBinTreeNode* subtree, void* data, co
 }
 
 
-//  This function is used to generate a linear textual representation 
-// of the binary tree directly in the terminal. The interpretation of 
-// this representation is carried out according to the following structure:
-//
-//     <(root content) <(left side subtree)> <(right side subtree)>>
-//
-// When the displayed node corresponds to a leaf in the tree, its textual 
-//                     representation will be :
-//
-//                  <(leaf node content) <> <>>
-//
-//  Additionally, I implemented a color application on the side delimiters 
-// of each tree to help identify the beginning and end of each tree, 
-// respectively.Following this convention, empty trees - that is, trees 
-// whose representation corresponds to<<><>>, or simply<> - will always 
-// be colored white, aiming to avoid a visual overload of colors in the 
-// tree representation.
+/*
+     This function is used to generate a linear textual representation 
+    of the binary tree directly in the terminal. The interpretation of 
+ this representation is carried out according to the following structure:
+
+       <(root content) <(left side subtree)> <(right side subtree)>>
+
+  When the displayed node corresponds to a leaf in the tree, its textual 
+                        representation will be :
+
+                      <(leaf node content) <> <>>
+
+  Additionally, I implemented a color application on the side delimiters 
+     of each tree to help identify the beginning and end of each tree, 
+    respectively.Following this convention, empty trees - that is, trees 
+    whose representation corresponds to<<><>>, or simply<> - will always 
+    be colored white, aiming to avoid a visual overload of colors in the 
+                           tree representation.
+*/
 void binTreeTextReprRecursively(avlBinTreeNode* subtree, impressFunctionAVLBinTree printF) {
     if (!subtree) { printf("<>"); return; }
 
-    //  Drawing a random number between 31 and 36 - with inclusive limits -
-    // to represent a bounding color combination for the current tree. 
-    // The color representation is given by the following values, respectively:
-    // 31: Red ; 32: Green ; 33: Yellow ; 34: Blue ; 35: Magenta ; 36: Cyan.
+    /*
+      Drawing a random number between 31 and 36 - with inclusive limits -
+     to represent a bounding color combination for the current tree. 
+     The color representation is given by the following values, respectively:
+     31: Red ; 32: Green ; 33: Yellow ; 34: Blue ; 35: Magenta ; 36: Cyan.
+    */
     
     int randColor = (rand() % 6) + 31;
 
@@ -511,20 +535,24 @@ bool avlBinTreeSearch(avlBinTree* tree, void* data) {
         break;
     }
 
-    // At the end of operations, there are two possibilities that the
-    // content stored by the nodeAux pointer can assume: NULL or a
-    // specific memory address. If nodeAux is NULL, the returned value
-    // will be 0, indicating the absence of the element sought in the tree;
-    // otherwise the value 1 will be returned, signaling the finding of 
-    // the desired value in the tree:
+    /*
+     At the end of operations, there are two possibilities that the
+     content stored by the nodeAux pointer can assume: NULL or a
+     specific memory address. If nodeAux is NULL, the returned value
+     will be 0, indicating the absence of the element sought in the tree;
+     otherwise the value 1 will be returned, signaling the finding of 
+     the desired value in the tree:
+    */
     return ((nodeAux != NULL) ? 1 : 0);
 }
 
 
-//  Function whose purpose is to insert elements into the binary tree. 
-// It is worth highlighting the indispensability of inserting elements 
-// that mutually share the same type of data, otherwise the behavior of 
-// the binary tree will be unpredictable or cause a collapse in the program:
+/*
+  Function whose purpose is to insert elements into the binary tree. 
+ It is worth highlighting the indispensability of inserting elements 
+ that mutually share the same type of data, otherwise the behavior of 
+ the binary tree will be unpredictable or cause a collapse in the program:
+*/
 void avlBinTreeInsert(avlBinTree* tree, void* data) {
     if (!tree) return;
 
@@ -583,12 +611,14 @@ avlBinTree* avlBinTreeCopy(avlBinTree* tree) {
     // If the tree is empty, simply return a new, freshly initialized binary tree:
     if (avlBinTreeIsEmpty(tree)) return newtree;
 
-    //  In order to create a replica identical to the original tree, it 
-    // is essential to preserve the organization of the elements contained 
-    // in it. To achieve this objective, a viable strategy consists of 
-    // employing an auxiliary data structure - in this case, a queue - 
-    // with the aim of storing the elements and inserting them in their 
-    // corresponding order.
+    /*
+      In order to create a replica identical to the original tree, it 
+     is essential to preserve the organization of the elements contained 
+     in it. To achieve this objective, a viable strategy consists of 
+     employing an auxiliary data structure - in this case, a queue - 
+     with the aim of storing the elements and inserting them in their 
+     corresponding order.
+    */
     gQueue* treeQueue = initQueue(tree->printF, tree->compareF);
     
     // We first start by enqueuing the root node of the tree.
@@ -637,11 +667,13 @@ void* avlBinTreeGetBiggestElem(avlBinTree* tree) {
 }
 
 
-//  This function returns a Boolean value for the purpose of determining 
-// equality between two AVL binary trees. The criteria for establishing 
-// equality between two binary trees consist of comparing the number of 
-// elements contained in each tree and the arrangement of these elements 
-// within the tree structure:
+/*
+  This function returns a Boolean value for the purpose of determining 
+ equality between two AVL binary trees. The criteria for establishing 
+ equivalence between two binary trees consist of comparing the number of 
+ elements contained in each tree and the arrangement of these elements 
+ within the tree structure:
+*/
 bool avlBinTreeIsEquals(avlBinTree* tree1, avlBinTree* tree2) {
 
     // If at least one of the function parameters is NULL, 
@@ -658,10 +690,12 @@ bool avlBinTreeIsEquals(avlBinTree* tree1, avlBinTree* tree2) {
     // differs, consequently they will not be equal:
     if (tree1->counter != tree2->counter) return 0;
 
-    //  If the functions responsible for comparing the elements associated 
-    // with binary trees are different, it is impossible to establish a 
-    // coherent comparison between the trees. This way, the function is 
-    // terminated immediately, without determining a precise result for comparison:
+    /* 
+      If the functions responsible for comparing the elements associated 
+     with binary trees are different, it is impossible to establish a 
+     coherent comparison between the trees. This way, the function is 
+     terminated immediately, without determining a precise result for comparison:
+    */
     if (tree1->compareF != tree2->compareF) {
         fprintf(stderr, "Error: It is not possible to compare two binary trees whose comparison functions differ from each other.\n");
         exit(EXIT_FAILURE);
@@ -752,13 +786,15 @@ void avlBinTreeimpressByLevel(avlBinTree* tree) {
     if (!tree) return;
     if (avlBinTreeIsEmpty(tree)) { printf("<>"); return; }
 
-    // In order to traverse the elements contained in the 
-    // AVL Binary Tree by level, we will need an auxiliary 
-    // structure to store and obtain the nodes in an orderly 
-    // manner, since the nature of this ordering (traversal by level) 
-    // makes the task recursively unfeasible. In this way, a generic 
-    // data queue will be created to perform this function and assist 
-    // in the execution of this task:
+    /*
+     In order to traverse the elements contained in the 
+     AVL Binary Tree by level, we will need an auxiliary 
+     structure to store and obtain the nodes in an orderly 
+     manner, since the nature of this ordering (traversal by level) 
+     makes the task recursively unfeasible. In this way, a generic 
+     data queue will be created to perform this function and assist 
+     in the execution of this task:
+    */
     gQueue* treeQueue = initQueue(tree->printF, tree->compareF);
     // initially enqueuing the root of the tree:
     enqueue(treeQueue, tree->root);
