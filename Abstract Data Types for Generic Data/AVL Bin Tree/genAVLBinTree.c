@@ -917,10 +917,10 @@ long long int avlBinTreeGetNodeHeight(avlBinTree* tree, void* data) {
     if (auxNode == NULL) return (-1);
 
     /*
-      Subtracting a height unit to correct 
+      Subtracting one height unit to correct 
      the convention adopted at the beginning
      of this code and return the true height 
-     of the node sought:
+     of the searched node:
     */
     return ((long long int)getSubTreeHeigt(auxNode) - (long long int)(1));
 }
