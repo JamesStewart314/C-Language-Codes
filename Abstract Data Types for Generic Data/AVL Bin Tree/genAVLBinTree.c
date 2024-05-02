@@ -429,10 +429,10 @@ avlBinTreeNode* avlBinTreeRemoveElemNode(avlBinTreeNode* subtree, void* data, co
 
   Additionally, I implemented a color application on the side delimiters 
      of each tree to help identify the beginning and end of each tree, 
-    respectively.Following this convention, empty trees - that is, trees 
-    whose representation corresponds to<<><>>, or simply<> - will always 
+    respectively. Following this convention, empty trees - that is, trees 
+    whose representation corresponds to < <> <>>, or simply <> - will always 
     be colored white, aiming to avoid a visual overload of colors in the 
-                           tree representation.
+                          tree representation.
 */
 void binTreeTextReprRecursively(avlBinTreeNode* subtree, impressFunctionAVLBinTree printF) {
     if (!subtree) { printf("<>"); return; }
