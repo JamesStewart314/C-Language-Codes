@@ -45,19 +45,19 @@ long long int avlBinTreeGetNodeHeight(avlBinTree* tree, void* data);            
 
 
 /* 
-   Warning: The data structure code contained in this folder has dependencies 
-  on two other data structures located in the same superdirectory of this 
-  directory - namely, the Queue (genQueue) and Stack (genStack) data structures. 
-  Consequently, the compilation command for any project that uses this AVL Binary 
-  Tree code must include the path of the directories that contain the header files 
-  of the dependencies mentioned above.
+             Warning: The data structure code contained in this folder has dependencies 
+              on two other data structures located in the same superdirectory of this 
+           directory - namely, the Queue (genQueue) and Stack (genStack) data structures. 
+           Consequently, the compilation command for any project that uses this AVL Binary 
+           Tree code must include the path of the directories that contain the header files 
+                              of the dependencies mentioned above.
 
-  Here is a practical example of compilation using the GCC compiler of 
-                   the program commented right below:
-
+               Here is a practical example of compilation using the GCC compiler of 
+                                 the program commented right below:
 • gcc main.c genAVLBinTree.c ../Queue/genQueue.c ../Stack/genStack.c -o executableProgram -I ../Stack -I ../Queue
 
 */
+
 
 //
 // Example of Usage in a Program:
