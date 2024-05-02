@@ -86,8 +86,8 @@ int comparef(void* data1, void* data2) {
 }
 
 
-// Function used to clean the terminal with the help of ANSI codes 
-// to perform this task on Windows and Unix-Like systems:
+// Function used to clean the terminal
+// on Windows and Unix-Like systems:
 void clear_screen() { 
 
     #if defined(WIN32)
