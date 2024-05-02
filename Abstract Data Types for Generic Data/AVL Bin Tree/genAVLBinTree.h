@@ -45,7 +45,6 @@ size_t avlBinTreeCount(avlBinTree* tree);                                       
 void avlBinTreeTextRepr(avlBinTree* tree);                                                          // Displays an accurate linear textual representation of the structure and arrangement of the elements contained in the AVL Binary Tree;
 long long int avlBinTreeGetNodeHeight(avlBinTree* tree, void* data);                                // Determines the height of a given node in the AVL Binary Tree. If the given element is not contained in the Tree, the function returns the value (-1).
 
-
 #endif
 
 
