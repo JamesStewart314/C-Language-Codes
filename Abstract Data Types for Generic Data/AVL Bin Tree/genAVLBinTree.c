@@ -417,21 +417,21 @@ avlBinTreeNode* avlBinTreeRemoveElemNode(avlBinTreeNode* subtree, void* data, co
 
 /*
      This function is used to generate a linear textual representation 
-    of the binary tree directly in the terminal. The interpretation of 
- this representation is carried out according to the following structure:
+     of the binary tree directly in the terminal. The interpretation of 
+  this representation is carried out according to the following structure:
 
        <(root content) <(left side subtree)> <(right side subtree)>>
 
-  When the displayed node corresponds to a leaf in the tree, its textual 
-                        representation will be :
+    When the displayed node corresponds to a leaf in the tree, its textual 
+                          representation will be :
 
-                      <(leaf node content) <> <>>
+                         <(leaf node content) <> <>>
 
-  Additionally, I implemented a color application on the side delimiters 
-     of each tree to help identify the beginning and end of each tree, 
-    respectively. Following this convention, empty trees - that is, trees 
-    whose representation corresponds to < <> <>>, or simply <> - will always 
-    be colored white, aiming to avoid a visual overload of colors in the 
+    Additionally, I implemented a color application on the side delimiters 
+       of each tree to help identify the beginning and end of each tree, 
+     respectively. Following this convention, empty trees - that is, trees 
+   whose representation corresponds to < <> <>>, or simply <> - will always 
+     be colored white, aiming to avoid a visual overload of colors in the 
                           tree representation.
 */
 void binTreeTextReprRecursively(avlBinTreeNode* subtree, impressFunctionAVLBinTree printF) {
