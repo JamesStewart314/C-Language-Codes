@@ -32,7 +32,7 @@ bool gQueueSearch(gQueue* q, void* data);                                       
 void* gQueueRemove(gQueue* q, void* data);                                            // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
 void* gQueueDequeue(gQueue* q);                                                       // Returns Void Pointers to Elements Removed from the Queue;
 size_t gQueueCount(gQueue* q);                                                        // Returns the Number of Elements in the Queue;
-void gQueueClear(gQueue *q);                                                          // Removes all elements contained in the queue.
+void gQueueClear(gQueue* q);                                                          // Removes all elements contained in the queue.
 
 #endif
 

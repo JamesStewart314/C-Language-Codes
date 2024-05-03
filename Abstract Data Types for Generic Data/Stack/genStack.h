@@ -26,7 +26,7 @@ gStack* initgStack(impressFunctionGenStack printF, compareFunctionGenStack compa
 bool gStackIsEmpty(gStack* st);                                                          // Checks if the Stack is Empty;
 void gStackDestroy(gStack** st);                                                         // Destroys the Stack;
 void gStackPush(gStack* st, void* data);                                                 // Inserts Elements into the Stack;
-void* gStackPop(gStack* st);                                                             // Returns Void Pointers to Elements Removed from the Stack.
+void* gStackPop(gStack* st);                                                             // Returns Void Pointers to Elements Removed from the Stack;
 void* gStackRemove(gStack* st, void* data);                                              // Removes and returns a given element from the stack. If it is not present, the function returns NULL;
 size_t gStackCount(gStack* st);                                                          // Returns the Number of Elements in the Stack;
 void gStackImpress(gStack* st);                                                          // Displays the Stack on the Terminal in List Format;
