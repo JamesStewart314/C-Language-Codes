@@ -195,16 +195,6 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
 
     (list->counter)--;
 
-    // Removing from start:
-    if (!previous) {
-        void* returnData = auxNode->data;
-        
-        list->front = list->front->next;
-        free(auxNode); auxNode = NULL;
-
-        return returnData;
-    }
-
     // Removing from end:
     if (!auxNode->next) {
         void* returnData = auxNode->data;
