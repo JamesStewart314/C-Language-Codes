@@ -1,15 +1,21 @@
 #include "genCLList.h"
 
-gCLList* clInit(impressFunctionCLList printCLL, compareFunctionCLList compareCLL) {
+gCLList* initgCLList(impressFunctionGenCLList printF, compareFunctionGenCLList compareF) {
+
+    if (!printF || !compareF) {
+        fprintf(stderr, "Error: At least one of the provided functions is NULL when creating a new generic Circular Linked List.\n");
+        return NULL;
+    }
+
     gCLList* newCLList = (gCLList *) malloc (sizeof(gCLList));
     if (newCLList == NULL) {
-        fprintf(stderr, "Error: Failed while trying to allocate memory for a new Circular Linked List.\n");
+        fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Circular Linked List.\n");
         exit(EXIT_FAILURE);
         return NULL;
     }
 
-    newCLList->printCLL = printCLL;
-    newCLList->compareCLL = compareCLL;
+    newCLList->printF = printF;
+    newCLList->compareF = compareF;
     newCLList->counter = (size_t)0;
     newCLList->currentNode = NULL;
 
@@ -17,26 +23,26 @@ gCLList* clInit(impressFunctionCLList printCLL, compareFunctionCLList compareCLL
 }
 
 
-bool clIsEmpty(gCLList* cll) {
+bool gCLLIsEmpty(gCLList* cll) {
     if (!cll) return 1;
     return (cll->counter <= (size_t)0);
 }
 
 
-void* clGetCurrent(gCLList* cll) {
+void* gCLLGetCurrent(gCLList* cll) {
     if (!cll) return NULL;
-    if (clIsEmpty(cll)) return NULL;
+    if (gCLLIsEmpty(cll)) return NULL;
 
     return cll->currentNode->data;
 }
 
 
-void clInsert(gCLList* cll, void* data) {
+void gCLLInsert(gCLList* cll, void* data) {
     if (!cll) return;
 
-    gNodeCLList* newnode = (gNodeCLList *) malloc (sizeof(gNodeCLList));
+    gCLListNode* newnode = (gCLListNode *) malloc (sizeof(gCLListNode));
     if (newnode == NULL) {
-        fprintf(stderr, "Error: Unable to allocate memory to a new Circular Linked List node.\n");
+        fprintf(stderr, "Error: Unable to allocate memory to a new generic Circular Linked List node.\n");
         exit(EXIT_FAILURE);
         return;
     }
@@ -44,7 +50,7 @@ void clInsert(gCLList* cll, void* data) {
     newnode->data = data;
 
     // If the Circular List is Empty:
-    if (clIsEmpty(cll)) {
+    if (gCLLIsEmpty(cll)) {
         // The single node in the circular list points exclusively to itself:
         newnode->next = newnode->previous = newnode;
         cll->currentNode = newnode;
@@ -79,9 +85,9 @@ void clInsert(gCLList* cll, void* data) {
 }
 
 
-void* clDeleteCurrent(gCLList* cll) {
+void* gCLLDeleteCurrent(gCLList* cll) {
     if (!cll) return NULL;
-    if (clIsEmpty(cll)) return NULL;
+    if (gCLLIsEmpty(cll)) return NULL;
 
     void* returnData = cll->currentNode->data;
     // If Circular List has just one element:
@@ -96,44 +102,44 @@ void* clDeleteCurrent(gCLList* cll) {
     cll->currentNode->previous->next = cll->currentNode->next;
     cll->currentNode->next->previous = cll->currentNode->previous;
 
-    gNodeCLList* nodeAux = cll->currentNode;
+    gCLListNode* auxNode = cll->currentNode;
     cll->currentNode = cll->currentNode->next;
 
-    free(nodeAux) ; nodeAux = NULL;
+    free(auxNode) ; auxNode = NULL;
     (cll->counter)--;
 
     return returnData;
 }
 
 
-void* clDelete(gCLList* cll, void* data) {
+void* gCLLRemove(gCLList* cll, void* data) {
     if (!cll) return NULL;
-    if (clIsEmpty(cll)) return NULL;
+    if (gCLLIsEmpty(cll)) return NULL;
 
     // Going through the list until we find the element we want to remove:
 
     // Checking if the searched element is the current node:
-    gNodeCLList* nodeAux = cll->currentNode;
-    if (cll->compareCLL(nodeAux->data, data) == 0) {
+    gCLListNode* auxNode = cll->currentNode;
+    if (cll->compareF(auxNode->data, data) == 0) {
         // Element found in current node:
-        return clDeleteCurrent(cll);
+        return gCLLDeleteCurrent(cll);
     }
 
     // Searching for the element in the rest of the list:
-    nodeAux = nodeAux->next;
-    while (nodeAux != cll->currentNode) {
-        if (cll->compareCLL(nodeAux->data, data) != 0) {
+    auxNode = auxNode->next;
+    while (auxNode != cll->currentNode) {
+        if (cll->compareF(auxNode->data, data) != 0) {
             // Does not represent the desired element, proceeding to the next iteration:
-            nodeAux = nodeAux->next;
+            auxNode = auxNode->next;
             continue;
         }
 
         // Element found (Circular List is guaranteed to have at least 2 elements in this part of the code):
-        nodeAux->previous->next = nodeAux->next;
-        nodeAux->next->previous = nodeAux->previous;
+        auxNode->previous->next = auxNode->next;
+        auxNode->next->previous = auxNode->previous;
 
-        void* returnData = nodeAux->data;
-        free(nodeAux); nodeAux = NULL;
+        void* returnData = auxNode->data;
+        free(auxNode); auxNode = NULL;
         (cll->counter)--;
 
         return returnData;
@@ -144,80 +150,77 @@ void* clDelete(gCLList* cll, void* data) {
 }
 
 
-size_t clCount(gCLList* cll) {
+size_t gCLLCount(gCLList* cll) {
     if (!cll) return 0;
     return cll->counter;
 }
 
 
-void clDestroy(gCLList** cll) {
+void gCLLDestroy(gCLList** cll) {
     if (!cll) return;
     if (!(*cll)) return;
-    if (clIsEmpty(*cll)) {
+    if (gCLLIsEmpty(*cll)) {
         free(*cll); (*cll) = NULL;
         return;
     }
 
     // Erase the Current Element Until the List is Empty:
-    while (clDeleteCurrent(*cll)) {}
+    while (gCLLDeleteCurrent(*cll)) {}
     free(*cll); (*cll) = NULL;
     return;
 }
 
 
-void clNext(gCLList* cll) {
+void gCLLNext(gCLList* cll) {
     if (!cll) return;
-    if (clIsEmpty(cll)) return;
+    if (gCLLIsEmpty(cll)) return;
 
     cll->currentNode = cll->currentNode->next;
     return;
 }
 
 
-void clPrevious(gCLList* cll) {
+void gCLLPrevious(gCLList* cll) {
     if (!cll) return;
-    if (clIsEmpty(cll)) return;
+    if (gCLLIsEmpty(cll)) return;
 
     cll->currentNode = cll->currentNode->previous;
     return;
 }
 
 
-void clImpress(gCLList* cll) {
+void gCLLImpress(gCLList* cll) {
     if (!cll) return;
-    if (clIsEmpty(cll)) {
-        printf("[]");
-        return;
-    }
+    if (gCLLIsEmpty(cll)) { printf("()"); return; }
 
-    gNodeCLList* nodeAux = cll->currentNode;
-    printf("[ <- ");
-    cll->printCLL(nodeAux->data);
+    gCLListNode* auxNode = cll->currentNode;
+    printf("( <- ");
+    cll->printF(auxNode->data);
     printf(", ");
-    nodeAux = nodeAux->next;
+    auxNode = auxNode->next;
 
-    while (nodeAux != cll->currentNode) {
-        cll->printCLL(nodeAux->data);
+    while (auxNode != cll->currentNode) {
+        cll->printF(auxNode->data);
         printf(", ");
-        nodeAux = nodeAux->next;
+        auxNode = auxNode->next;
     }
 
-    printf("\b\b -> ]");
+    printf("\b\b -> )");
     return;
 }
 
 
-bool clSearch(gCLList* cll, void* data) {
+bool gCLLSearch(gCLList* cll, void* data) {
     if (!cll) return 0;
-    if (clIsEmpty(cll)) return 0;
+    if (gCLLIsEmpty(cll)) return 0;
 
-    gNodeCLList* nodeAux = cll->currentNode;
-    if (cll->compareCLL(nodeAux->data, data) == 0) return 1;
+    gCLListNode* auxNode = cll->currentNode;
+    if (cll->compareF(auxNode->data, data) == 0) return 1;
     
-    nodeAux = nodeAux->next;
-    while (nodeAux != cll->currentNode) {
-        if (cll->compareCLL(nodeAux->data, data) == 0) return 1;
-        nodeAux = nodeAux->next;
+    auxNode = auxNode->next;
+    while (auxNode != cll->currentNode) {
+        if (cll->compareF(auxNode->data, data) == 0) return 1;
+        auxNode = auxNode->next;
     }
 
     return 0;

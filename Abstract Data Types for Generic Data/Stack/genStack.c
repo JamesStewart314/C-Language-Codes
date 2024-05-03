@@ -1,57 +1,61 @@
 #include "genStack.h"
 
-gStack* stInit(impressFunctionStack printSt, compareFunctionStack compareSt) {
+gStack* initgStack(impressFunctionGenStack printF, compareFunctionGenStack compareF) {
+
+    if (!printF || !compareF) {
+        fprintf(stderr, "Error: At least one of the provided functions is NULL when creating a new generic Stack.\n");
+        return NULL;
+    }
+
     gStack* newstack = (gStack *) malloc (sizeof(gStack));
     if (newstack == NULL) {
-        fprintf(stderr, "Error: Failed while trying to allocate memory for a new stack.\n");
+        fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Stack.\n");
         exit(EXIT_FAILURE);
         return NULL;
     }
 
     newstack->counter = (size_t)0;
     newstack->top = NULL;
-    newstack->printSt = printSt;
-    newstack->compareSt = compareSt;
+    newstack->printF = printF;
+    newstack->compareF = compareF;
 
     return newstack;
 }
 
 
-bool stIsEmpty(gStack* st) {
+bool gStackIsEmpty(gStack* st) {
     if (!st) return 1;
     return (st->counter <= (size_t)0);
 }
 
 
-void stDestroy(gStack** st) {
+void gStackDestroy(gStack** st) {
     if (!st) return;
     if (!(*st)) return;
 
-    if (stIsEmpty((*st))) {
-        free(*st);
-        (*st) = NULL;
+    if (gStackIsEmpty((*st))) {
+        free(*st); (*st) = NULL;
         return;
     }
 
-    gNodeStack* nodeAux = (*st)->top;
-    while (nodeAux) {
+    gStackNode* auxNode = (*st)->top;
+    while (auxNode != NULL) {
         (*st)->top = (*st)->top->next;
-        free(nodeAux);
-        nodeAux = (*st)->top;
+        free(auxNode); auxNode = (*st)->top;
     }
 
-    free(*st);
-    (*st) = NULL;
+    free(*st); (*st) = NULL;
+
     return;
 }
 
 
-void stPush(gStack* st, void* data) {
+void gStackPush(gStack* st, void* data) {
     if (!st) return;
 
-    gNodeStack* newnode = (gNodeStack *) malloc (sizeof(gNodeStack));
+    gStackNode* newnode = (gStackNode *) malloc (sizeof(gStackNode));
     if (newnode == NULL) {
-        fprintf(stderr, "Error: Unable to allocate memory to a new Stack node.\n");
+        fprintf(stderr, "Error: Unable to allocate memory to a new generic Stack node.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -63,97 +67,101 @@ void stPush(gStack* st, void* data) {
 }
 
 
-void* stPop(gStack* st) {
+void* gStackPop(gStack* st) {
     if (!st) return NULL;
-    if (stIsEmpty(st)) return NULL;
+    if (gStackIsEmpty(st)) return NULL;
 
     (st->counter--);
-    gNodeStack* nodeAux = st->top;
+    gStackNode* auxNode = st->top;
     st->top = st->top->next;
 
-    void* returnData = nodeAux->data;
-    free(nodeAux) ; nodeAux = NULL;
+    void* returnData = auxNode->data;
+    free(auxNode) ; auxNode = NULL;
 
     return returnData;
 }
 
 
-size_t stCount(gStack* st) {
+size_t gStackCount(gStack* st) {
     if (!st) return (size_t)0;
     return st->counter;
 }
 
 
-void stImpress(gStack* st) {
+void gStackImpress(gStack* st) {
     if (!st) return;
-    if (stIsEmpty(st)) { printf("[]"); return; }
+    if (gStackIsEmpty(st)) { printf("[]"); return; }
 
-    gNodeStack* nodeAux = st->top;
+    gStackNode* auxNode = st->top;
     printf("[");
-    while (nodeAux) {
-        st->printSt(nodeAux->data);
-        printf(", ");
-        nodeAux = nodeAux->next;
+    while (auxNode != NULL) {
+        st->printF(auxNode->data);
+        printf(" -> ");
+        auxNode = auxNode->next;
     }
-    printf("\b\b]");
+    printf("NULL]");
 
     return;
 }
 
 
-void* stRemove(gStack* st, void* data) {
+void* gStackRemove(gStack* st, void* data) {
     if (!st) return NULL;
-    if (stIsEmpty(st)) return NULL;
+    if (gStackIsEmpty(st)) return NULL;
 
-    gNodeStack* nodeAux = st->top, *nodePrevious = NULL;
-    while (nodeAux) {
-        if (st->compareSt(nodeAux->data, data) == 0) {
-            // Node contains the desired information. Proceeding to remove:
-            (st->counter)--;
-            
-            // Removing the Top of Stack:
-            if (!nodePrevious) {
-                st->top = st->top->next;
-                void* returnData = nodeAux->data;
-                free(nodeAux); nodeAux = NULL;
-
-                return returnData;
-            }
-
-            // Removing the Bottom of Stack:
-            if (!nodeAux->next) {
-                nodePrevious->next = NULL;
-                void* returnData = nodeAux->data;
-                free(nodeAux); nodeAux = NULL;
-
-                return returnData;
-            }
-
-            // Removing Element in Middle:
-            nodePrevious->next = nodeAux->next;
-            void* returnData = nodeAux->data;
-            free(nodeAux); nodeAux = NULL;
-            
-            return returnData;
-
+    gStackNode* auxNode = st->top, *previousNode = NULL;
+    while (auxNode) {
+        if (st->compareF(auxNode->data, data) != 0) {
+            // Not the desired element:
+            previousNode = auxNode;
+            auxNode = auxNode->next;
+            continue;
         }
 
-        nodePrevious = nodeAux;
-        nodeAux = nodeAux->next;
+        // Node contains the desired 
+        // information. Proceeding 
+        // to remove:
+        (st->counter)--;
+        
+        // Removing the Top of Stack:
+        if (!previousNode) {
+            st->top = st->top->next;
+            void* returnData = auxNode->data;
+            free(auxNode); auxNode = NULL;
+
+            return returnData;
+        }
+
+        // Removing the Bottom of Stack:
+        if (!auxNode->next) {
+            previousNode->next = NULL;
+            void* returnData = auxNode->data;
+            free(auxNode); auxNode = NULL;
+
+            return returnData;
+        }
+
+        // Removing Element in Middle:
+        previousNode->next = auxNode->next;
+        void* returnData = auxNode->data;
+        free(auxNode); auxNode = NULL;
+        
+        return returnData;
+        
     }
 
-    // Data not Found:
+    // Element not Found:
     return NULL;
 }
 
-bool stSearch(gStack *st, void *data) {
+bool gStackSearch(gStack* st, void* data) {
     if (!st) return 0;
-    if (stIsEmpty(st)) return 0;
+    if (gStackIsEmpty(st)) return 0;
 
-    gNodeStack* nodeAux = st->top;
-    while (nodeAux) {
-        if (st->compareSt(nodeAux->data, data) == 0) return 1;
-        nodeAux = nodeAux->next;
+    gStackNode* auxNode = st->top;
+    while (auxNode != NULL) {
+        if (st->compareF(auxNode->data, data) == 0) return 1;
+        auxNode = auxNode->next;
     }
 
     return 0;

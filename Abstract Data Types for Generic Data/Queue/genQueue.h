@@ -5,35 +5,34 @@
 #ifndef GENERICQUEUE_H
 #define GENERICQUEUE_H
 
-typedef void (*impressFunctionQueue)(void* data);
-typedef int (*compareFunctionQueue)(void* data1, void* data2);
+typedef void (*impressFunctionGenQueue)(void* data);
+typedef int (*compareFunctionGenQueue)(void* data1, void* data2);
 
 
-typedef struct GENERICNODEQUEUE {
+typedef struct GENERICQUEUENODE {
     void* data;
-    struct GENERICNODEQUEUE *next;
-} gNodeQueue;
+    struct GENERICQUEUENODE* next;
+} gQueueNode;
 
 
 typedef struct {
   size_t counter;
-
-  gNodeQueue* front;
-  gNodeQueue* rear;
-
-  impressFunctionQueue printQ;
-  compareFunctionQueue compareQ;
+  gQueueNode *front, *rear;
+  impressFunctionGenQueue printF;
+  compareFunctionGenQueue compareF;
 } gQueue;
 
-gQueue *initQueue(impressFunctionQueue printQ, compareFunctionQueue compareQ); // Initializes the Queue;
-bool queueIsEmpty(gQueue* q);                                                  // Checks if the Queue is Empty;
-void enqueue(gQueue *q, void *data);                                           // Inserts Elements into the Queue;
-void impressQueue(gQueue *q);                                                  // Displays the Queue on the Terminal in List Format;
-void freeQueue(gQueue** q);                                                    // Destroys the Queue;
-bool searchInQueue(gQueue *q, void *data);                                     // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;
-void *removeFromQueue(gQueue *q, void *data);                                  // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
-void *dequeue(gQueue *q);                                                      // Returns Void Pointers to Elements Removed from the Queue;
-size_t queueCount(gQueue *q);                                                  // Returns the Number of Elements in the Queue.
+
+gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compareF); // Initializes the Queue;
+bool gQueueIsEmpty(gQueue* q);                                                        // Checks if the Queue is Empty;
+void gQueueEnqueue(gQueue* q, void* data);                                            // Inserts Elements into the Queue;
+void gQueueImpress(gQueue* q);                                                        // Displays the Queue on the Terminal in List Format;
+void gQueueDestroy(gQueue** q);                                                       // Destroys the Queue;
+bool gQueueSearch(gQueue* q, void* data);                                             // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;
+void* gQueueRemove(gQueue* q, void* data);                                            // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
+void* gQueueDequeue(gQueue* q);                                                       // Returns Void Pointers to Elements Removed from the Queue;
+size_t gQueueCount(gQueue* q);                                                        // Returns the Number of Elements in the Queue;
+void gQueueClear(gQueue *q);                                                          // Removes all elements contained in the queue.
 
 #endif
 
@@ -44,7 +43,60 @@ size_t queueCount(gQueue *q);                                                  /
 #include "genQueue.h"
 
 
-int compareFunQ(void* data1, void* data2) {
+int comparef(void* data1, void* data2);
+void impressf(void* data);
+
+int main(int argc, char** argv) {
+
+    gQueue* queueOfIntegers = initgQueue(impressf, comparef);           // Creating the Queue.
+
+    int val1 = 1, val2 = 2, val3 = 3;                                   // Creating Elements of ANY TYPE to enqueue,
+                                                                        // the choice of objects of type int was
+                                                                        // completely arbitrary in this case.
+
+    puts("Inserting elements into the queue:");
+    gQueueEnqueue(queueOfIntegers, &val1);                              // Inserting the first element in the Queue.
+    gQueueImpress(queueOfIntegers); printf("\n");                       // Displays the queue in the terminal.
+
+    gQueueEnqueue(queueOfIntegers, &val2);                              // Inserting the second element in the Queue.
+    gQueueImpress(queueOfIntegers); printf("\n");                       // Displays the queue in the terminal.
+
+    gQueueEnqueue(queueOfIntegers, &val3);                              // Inserting the second element in the Queue.
+    gQueueImpress(queueOfIntegers); printf("\n");                       // Showing the final Result.
+
+    puts("\n*Removing 2 from the queue");
+    gQueueRemove(queueOfIntegers, &val2);                               // Removing Val2 from the Queue.
+    gQueueImpress(queueOfIntegers); printf("\n");                       // Displays the queue in the terminal.
+
+    int* dedequeued_value = (int *)gQueueDequeue(queueOfIntegers);      // Getting an element from the queue. 
+                                                                        // If the queue is empty, a pointer to 
+                                                                        // NULL will be returned.
+    if (dedequeued_value) {
+        printf("\nDequeued value: %i\n", *dedequeued_value);
+    }
+
+    gQueueImpress(queueOfIntegers); printf("\n\n");                     // Displays the queue in the terminal.
+    gQueueRemove(queueOfIntegers, &val2);                               // TRYING to remove Val2 - which is no longer present - from the queue.
+    
+    puts("Replacing removed elements:");
+    gQueueEnqueue(queueOfIntegers, &val2);
+    gQueueEnqueue(queueOfIntegers, &val1);
+    gQueueImpress(queueOfIntegers); printf("\n\n");
+    puts("After clearing all queue elements:");
+    gQueueClear(queueOfIntegers);                                       // Removing all elements contained in the queue.
+    gQueueImpress(queueOfIntegers); printf("\n");
+
+
+    gQueueDestroy(&queueOfIntegers);                                    // Cleaning the Queue before exiting.
+    gQueueImpress(queueOfIntegers); printf("\n");                       // TRYING to Display the released queue in the terminal.
+
+    puts("Program Finished!");
+
+    return 0;
+}
+
+
+int comparef(void* data1, void* data2) {
     int aux1 = *((int *)data1);
     int aux2 = *((int *)data2);
 
@@ -53,49 +105,11 @@ int compareFunQ(void* data1, void* data2) {
     return 0;
 }
 
-void impressFunQueue(void* data) {
+
+void impressf(void* data) {
     int* aux = (int *)data;
     printf("%d", *aux);
     return;
-}
-
-int main(int argc, char** argv) {
-
-    gQueue* integerQueue = initQueue(impressFunQueue, compareFunQ); // Creating the Queue.
-
-    int val1 = 1, val2 = 2, val3 = 3;     // Creating Elements of ANY TYPE to enqueue,
-                                          // the choice of objects of type int was
-                                          // completely arbitrary in this case.
-
-    enqueue(integerQueue, &val1);         // Inserting the first element in the Queue.
-    impressQueue(integerQueue);           // Displays the queue in the terminal.
-
-    enqueue(integerQueue, &val2);         // Inserting the second element in the Queue.
-    impressQueue(integerQueue);           // Displays the queue in the terminal.
-
-    enqueue(integerQueue, &val3);         // Inserting the second element in the Queue.
-    impressQueue(integerQueue);           // Displays the queue in the terminal.
-
-    impressQueue(integerQueue);           // Showing the final Result.
-
-    removeFromQueue(integerQueue, &val2); // Removing Val2 from the Queue.
-    impressQueue(integerQueue);           // Displays the queue in the terminal.
-
-    int* dedequeued_value = (int *)dequeue(integerQueue);
-    printf("dequeued value: %i\n", *dedequeued_value);
-
-    impressQueue(integerQueue);           // Displays the queue in the terminal.
-    removeFromQueue(integerQueue, &val2); // TRYING to remove Val2 - which is no longer present - from the queue.
-    impressQueue(integerQueue);           // Displays the queue in the terminal.
-    removeFromQueue(integerQueue, &val3); // Removing Val3 from the Queue.
-    impressQueue(integerQueue);           // Displays the empty queue in the terminal.
-
-    freeQueue(&integerQueue);             // Cleaning the Queue before exiting.
-    impressQueue(integerQueue);           // TRYING to Display the released queue in the terminal.
-
-    puts("Program Finished.");
-
-    return 0;
 }
 
 */
