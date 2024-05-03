@@ -12,10 +12,10 @@
 typedef void (*impressFunctionGenAVLBinTree)(void* data);
 typedef int (*compareFunctionGenAVLBinTree)(void* data1, void* data2);
 
-typedef struct AVLBINTREENODE {
+typedef struct GENERICAVLBINTREENODE {
     void* data;
     size_t height;
-    struct AVLBINTREENODE *left, *right;
+    struct GENERICAVLBINTREENODE *left, *right;
 } gAVLBinTreeNode;
 
 
