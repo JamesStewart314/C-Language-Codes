@@ -85,7 +85,7 @@ void gCLLInsert(gCLList* cll, void* data) {
 }
 
 
-void* gCLLDeleteCurrent(gCLList* cll) {
+void* gCLLRemoveCurrent(gCLList* cll) {
     if (!cll) return NULL;
     if (gCLLIsEmpty(cll)) return NULL;
 
@@ -122,7 +122,7 @@ void* gCLLRemove(gCLList* cll, void* data) {
     gCLListNode* auxNode = cll->currentNode;
     if (cll->compareF(auxNode->data, data) == 0) {
         // Element found in current node:
-        return gCLLDeleteCurrent(cll);
+        return gCLLRemoveCurrent(cll);
     }
 
     // Searching for the element in the rest of the list:
@@ -165,7 +165,7 @@ void gCLLDestroy(gCLList** cll) {
     }
 
     // Erase the Current Element Until the List is Empty:
-    while (gCLLDeleteCurrent(*cll)) {}
+    while (gCLLRemoveCurrent(*cll)) {}
     free(*cll); (*cll) = NULL;
     return;
 }
@@ -224,4 +224,48 @@ bool gCLLSearch(gCLList* cll, void* data) {
     }
 
     return 0;
+}
+
+
+void gCLLClear(gCLList* cll) {
+    if (!cll) return;
+
+    while (gCLLRemoveCurrent(cll)) {}
+    return;
+}
+
+
+void* gCLLGetBiggest(gCLList* cll) {
+    if (!cll) return NULL;
+    if (gCLLIsEmpty(cll)) return NULL;
+
+    // Going through the list until we find the biggest element:
+    void* returnData = cll->currentNode->data;
+    gCLListNode* auxNode = cll->currentNode->next;
+    while (auxNode != cll->currentNode) {
+        if (cll->compareF(auxNode->data, returnData) > 0) {
+            returnData = auxNode->data;
+        }
+        auxNode = auxNode->next;
+    }
+
+    return returnData;
+}
+
+
+void* gCLLGetSmallest(gCLList* cll) {
+    if (!cll) return NULL;
+    if (gCLLIsEmpty(cll)) return NULL;
+
+    // Going through the list until we find the smallest element:
+    void* returnData = cll->currentNode->data;
+    gCLListNode* auxNode = cll->currentNode->next;
+    while (auxNode != cll->currentNode) {
+        if (cll->compareF(auxNode->data, returnData) < 0) {
+            returnData = auxNode->data;
+        }
+        auxNode = auxNode->next;
+    }
+
+    return returnData;
 }

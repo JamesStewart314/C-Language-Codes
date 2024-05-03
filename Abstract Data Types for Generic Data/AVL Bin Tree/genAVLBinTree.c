@@ -658,7 +658,7 @@ gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree) {
 //  Function whose purpose is to return a pointer to the 
 // largest element contained in the binary tree. If the 
 // tree is empty, a pointer to NULL is returned:
-void* gAVLBinTreeGetBiggestElem(gAVLBinTree* tree) {
+void* gAVLBinTreeGetBiggest(gAVLBinTree* tree) {
     if (!tree) return NULL;
     if (gAVLBinTreeIsEmpty(tree)) return NULL;
 
@@ -668,6 +668,22 @@ void* gAVLBinTreeGetBiggestElem(gAVLBinTree* tree) {
     while (biggestElem->right != NULL) { biggestElem = biggestElem->right; }
 
     return biggestElem->data;
+}
+
+
+//  Function whose purpose is to return a pointer to the 
+// smallest element contained in the binary tree. If the 
+// tree is empty, a pointer to NULL is returned:
+void* gAVLBinTreeGetSmallest(gAVLBinTree* tree) {
+    if (!tree) return NULL;
+    if (gAVLBinTreeIsEmpty(tree)) return NULL;
+
+    // To identify the smallest element present in the tree, 
+    // it is necessary to traverse it until reaching the leftmost element:
+    gAVLBinTreeNode* smallestElem = tree->root;
+    while (smallestElem->left != NULL) { smallestElem = smallestElem->left; }
+
+    return smallestElem->data;
 }
 
 
@@ -850,7 +866,7 @@ void gAVLBinTreeDestroy(gAVLBinTree** tree) {
 
 // Function responsible for removing any element from the 
 // AVL Binary Tree if it is contained therein:
-void gAVLBinTreeRemoveElem(gAVLBinTree* tree, void* data) {
+void gAVLBinTreeRemove(gAVLBinTree* tree, void* data) {
     if (!tree) return;
     if (gAVLBinTreeIsEmpty(tree)) return;
 

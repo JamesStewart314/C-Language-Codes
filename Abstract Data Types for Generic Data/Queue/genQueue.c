@@ -119,42 +119,40 @@ void* gQueueRemove(gQueue* q, void* data) {
             auxNode = auxNode->next;
             continue;
         }
-        
-        // Element Found:
-        (q->counter)--;
+        // Comparison result == 0 => element found:
+        break;
+    }
 
-        // Removing First Element:
-        if (!previous) {
-            q->front = q->front->next;
+    // Element not Found:
+    if (!auxNode) return NULL;
+    // Otherwise, element Found:
+    (q->counter)--;
 
-            void* returnData = auxNode->data;
-            free(auxNode); auxNode = NULL;
-            
-            return returnData;
-        }
-
-        // Removing Last Element:
-        if (!auxNode->next) {
-            q->rear = previous;
-            previous->next = NULL;
-
-            void* returnData = auxNode->data;
-            free(auxNode); auxNode = NULL;
-            
-            return returnData;
-        }
-
-        // Removing Element in Middle:
-        previous->next = auxNode->next;
-
+    // Removing First Element:
+    if (!previous) {
+        q->front = q->front->next;
         void* returnData = auxNode->data;
         free(auxNode); auxNode = NULL;
         
         return returnData;
     }
 
-    // Element not Found:
-    return NULL;
+    // Removing Last Element:
+    if (!auxNode->next) {
+        q->rear = previous;
+        q->rear->next = NULL;
+        void* returnData = auxNode->data;
+        free(auxNode); auxNode = NULL;
+        
+        return returnData;
+    }
+
+    // Removing Element in Middle:
+    previous->next = auxNode->next;
+    void* returnData = auxNode->data;
+    free(auxNode); auxNode = NULL;
+    
+    return returnData;
 }
 
 
@@ -185,10 +183,10 @@ void gQueueClear(gQueue* q) {
     if (gQueueIsEmpty(q)) return;
 
     gQueueNode* auxNode = q->front;
-    do {
+    while (auxNode) {
         q->front = q->front->next;
         free(auxNode); auxNode = q->front;
-    } while (auxNode);
+    }
 
     q->counter = (size_t)0;
     q->front = q->rear = NULL;

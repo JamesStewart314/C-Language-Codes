@@ -27,7 +27,7 @@ bool gCLLIsEmpty(gCLList* cll);                                                 
 void* gCLLGetCurrent(gCLList* cll);                                                          // Returns the data of current element of the circular list;
 void gCLLInsert(gCLList* cll, void* data);                                                   // Inserts a new element after the current node;
 
-void* gCLLDeleteCurrent(gCLList* cll);                                                       //  Remove the current element, the new current becomes the next 
+void* gCLLRemoveCurrent(gCLList* cll);                                                       //  Remove the current element, the new current becomes the next 
                                                                                              // element after the current one and the function returns the 
                                                                                              // information present in the current node just removed;
 
@@ -37,7 +37,10 @@ void gCLLDestroy(gCLList** cll);                                                
 void gCLLNext(gCLList* cll);                                                                 // Changes the current to the next element in the list;
 void gCLLPrevious(gCLList* cll);                                                             // Changes the current to the previous element in the list;
 void gCLLImpress(gCLList* cll);                                                              // Displays the circular list on the terminal;
-bool gCLLSearch(gCLList* cll, void* data);                                                   // Checks whether an element is present in the Circular List, returning 1 if it is and 0 otherwise.
+bool gCLLSearch(gCLList* cll, void* data);                                                   // Checks whether an element is present in the Circular List, returning 1 if it is and 0 otherwise;
+void gCLLClear(gCLList* cll);                                                                // Erase all elements in the Circular List;
+void* gCLLGetBiggest(gCLList* cll);                                                          // Return a pointer to the biggest element in the Circular List;
+void* gCLLGetSmallest(gCLList* cll);                                                         // Return a pointer to the smallest element in the Circular List.
 
 #endif
 
@@ -78,7 +81,7 @@ int main(int argc, char** argv) {
     
     printf("\n");                                                            // New line.
 
-    gCLLDeleteCurrent(circularLinkedListOfIntegers);                         // Removing the current node.
+    gCLLRemoveCurrent(circularLinkedListOfIntegers);                         // Removing the current node.
     gCLLImpress(circularLinkedListOfIntegers); printf("\n");                 // Displaying the circular list in the terminal.
     gCLLRemove(circularLinkedListOfIntegers, &val5);                         // Removing 5 from the circular list.
     gCLLImpress(circularLinkedListOfIntegers); printf("\n");                 // Displaying the circular list in the terminal.

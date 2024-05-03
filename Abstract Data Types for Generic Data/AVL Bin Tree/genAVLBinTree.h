@@ -31,7 +31,8 @@ gAVLBinTree* initgAVLBinTree(impressFunctionGenAVLBinTree printF, compareFunctio
 bool gAVLBinTreeIsEmpty(gAVLBinTree* tree);                                                                 // Checks whether an AVL Binary Tree is empty, returning 1 if it is and 0 otherwise;
 void gAVLBinTreeInsert(gAVLBinTree* tree, void* data);                                                      // Inserts a new element into the AVL Binary Tree if it is not already contained there;
 gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree);                                                            // Creates an identical copy of a given AVL Binary Tree and returns a gAVLBinTree pointer to the newly created copy;
-void* gAVLBinTreeGetBiggestElem(gAVLBinTree* tree);                                                         // Returns a void pointer to the largest element contained in the AVL Binary Tree;
+void* gAVLBinTreeGetBiggest(gAVLBinTree* tree);                                                             // Returns a void pointer to the largest element contained in the AVL Binary Tree;
+void* gAVLBinTreeGetSmallest(gAVLBinTree* tree);
 bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2);                                           // This function determines whether two AVL Binary Trees are identical. If they are equal, the function will return the value 1, otherwise it will return 0;
 void gAVLBinTreeImpress(gAVLBinTree* tree);                                                                 // Displays a linear textual representation of the content present in the binary tree through a symmetric traversal in its structure;
 void gAVLBinTreeimpressByLevel(gAVLBinTree* tree);                                                          // Displays a linear textual representation of the content present in the binary tree through a path through levels in its structure;
@@ -39,7 +40,7 @@ void gAVLBinTreeimpressByLevel(gAVLBinTree* tree);                              
 void gAVLBinTreeDestroy(gAVLBinTree** tree);                                                                //  Function whose purpose is to remove memory allocated in an AVL Binary Tree structure. In order to avoid memory leaks, remember to 
                                                                                                             // invoke this function by applying it to the AVL Binary Tree(s) created when you are finished using the structure(s) in your code;
 
-void gAVLBinTreeRemoveElem(gAVLBinTree* tree, void* data);                                                  // Removes a given element from an AVL Binary Tree if it is contained therein;
+void gAVLBinTreeRemove(gAVLBinTree* tree, void* data);                                                      // Removes a given element from an AVL Binary Tree if it is contained therein;
 bool gAVLBinTreeSearch(gAVLBinTree* tree, void* data);                                                      // Determines whether an element is present in the AVL Binary Tree. If the element is present, the function returns the value 1; otherwise it will return 0;
 size_t gAVLBinTreeCount(gAVLBinTree* tree);                                                                 // This function calculates the number of elements present in the binary tree and returns the value resulting from this count;
 void gAVLBinTreeTextRepr(gAVLBinTree* tree);                                                                // Displays an accurate linear textual representation of the structure and arrangement of the elements contained in the AVL Binary Tree;
@@ -116,7 +117,7 @@ int main(int argc, char** argv) {
     gAVLBinTreeimpressByLevel(avlTreeOfIntegersCopy); printf("\n");
     puts("\\-----------------------------------------------------------/");
 
-    int* biggestValueOnTree = (int *)gAVLBinTreeGetBiggestElem(avlTreeOfIntegersCopy);
+    int* biggestValueOnTree = (int *)gAVLBinTreeGetBiggest(avlTreeOfIntegersCopy);
     if (biggestValueOnTree) {
         printf("\nThe largest value present in the tree corresponds to: %d\n", *biggestValueOnTree);
     }
@@ -144,7 +145,7 @@ int main(int argc, char** argv) {
     printf("\n-> Symetrical Impress: ");
     gAVLBinTreeImpress(avlTreeOfIntegersCopy); printf("\n");
 
-    gAVLBinTreeRemoveElem(avlTreeOfIntegersCopy, &val3);
+    gAVLBinTreeRemove(avlTreeOfIntegersCopy, &val3);
     puts("\nAfter Removing Val3 (+3) of the copied tree:");
     puts("/--------------------------------------------------------\\");
     printf("-> Impress by Level:   ");
@@ -153,7 +154,7 @@ int main(int argc, char** argv) {
     gAVLBinTreeImpress(avlTreeOfIntegersCopy); printf("\n");
     puts("\\--------------------------------------------------------/\n");
 
-    gAVLBinTreeRemoveElem(avlTreeOfIntegersCopy, &val2);
+    gAVLBinTreeRemove(avlTreeOfIntegersCopy, &val2);
     puts("After Removing Val2 (+2) of the copied tree:");
     puts("/-----------------------------------------------------\\");
     printf("-> Impress by Level:   ");
@@ -163,7 +164,7 @@ int main(int argc, char** argv) {
     puts("\\-----------------------------------------------------/\n");
 
 
-    gAVLBinTreeRemoveElem(avlTreeOfIntegersCopy, &antiVal1);
+    gAVLBinTreeRemove(avlTreeOfIntegersCopy, &antiVal1);
     puts("After Removing antiVal1 ((-1) and also the root) of the copied tree:");
     puts("/-------------------------------------------------\\");
     printf("-> Impress by Level:   ");
