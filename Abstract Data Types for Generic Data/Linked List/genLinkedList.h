@@ -33,7 +33,7 @@ bool gLinkedListSearch(gLinkedList* list, void* data);                          
 size_t gLinkedListCount(gLinkedList* list);                                                                // Counts the number of nodes in the linked list;
 void gLinkedListClear(gLinkedList* list);                                                                  // Clears the linked list, removing all nodes and freeing allocated memory;
 void* gLinkedListPop(gLinkedList* list, long int index);                                                   // Removes and returns the node at the specified index position in the linked list;
-void *gLinkedListGetBiggest(gLinkedList *list);                                                            // Returns a pointer containing the largest value in the linked list;
+void* gLinkedListGetBiggest(gLinkedList* list);                                                            // Returns a pointer containing the largest value in the linked list;
 void* gLinkedListGetSmallest(gLinkedList* list);                                                           // Returns a pointer containing the smallest value in the linked list;
 void gLinkedListImpress(gLinkedList* list);                                                                // Prints the data stored in each node of the linked list.
 
