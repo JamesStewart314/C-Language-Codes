@@ -183,12 +183,8 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
         return returnData;
     }
     
-    if (index < 0) {
-        index += gLinkedListCount(list);
-        if (index < 0) return NULL;
-    }
-
-    if (index >= gLinkedListCount(list)) return NULL;
+    index = (index < 0) ? (index + gLinkedListCount(list)) : index;
+    if (index >= gLinkedListCount(list) || index < 0) return NULL;
 
     long int auxCounter = 0;
     while (auxCounter < index) {
