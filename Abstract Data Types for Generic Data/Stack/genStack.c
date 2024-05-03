@@ -57,6 +57,7 @@ void gStackPush(gStack* st, void* data) {
     if (newnode == NULL) {
         fprintf(stderr, "Error: Unable to allocate memory to a new generic Stack node.\n");
         exit(EXIT_FAILURE);
+        return;
     }
 
     (st->counter++);

@@ -16,10 +16,10 @@ typedef struct GENERICQUEUENODE {
 
 
 typedef struct {
-  size_t counter;
-  gQueueNode *front, *rear;
-  impressFunctionGenQueue printF;
-  compareFunctionGenQueue compareF;
+    gQueueNode *front, *rear;
+    size_t counter;
+    impressFunctionGenQueue printF;
+    compareFunctionGenQueue compareF;
 } gQueue;
 
 

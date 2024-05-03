@@ -482,6 +482,7 @@ gAVLBinTree* initgAVLBinTree(impressFunctionGenAVLBinTree printF, compareFunctio
     if (newtree == NULL) {
         fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic AVL Binary Tree.\n");
         exit(EXIT_FAILURE);
+        return NULL;
     }
 
     // Assigning the values and pointers to their respective fields:
@@ -568,6 +569,7 @@ void gAVLBinTreeInsert(gAVLBinTree* tree, void* data) {
     if (newleaf == NULL) {
         fprintf(stderr, "Error: Unable to allocate memory to a new Leaf of the generic AVL Binary Tree.\n");
         exit(EXIT_FAILURE);
+        return;
     }
 
     // Appropriately initializing the fields of the 
@@ -700,7 +702,7 @@ bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2) {
     */
     if (tree1->compareF != tree2->compareF) {
         fprintf(stderr, "Error: It is not possible to compare two binary trees whose comparison functions differ from each other.\n");
-        exit(EXIT_FAILURE);
+        return 0;
     }
 
     /*

@@ -25,7 +25,7 @@ gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compa
 
 bool gQueueIsEmpty(gQueue* q) { 
     if (!q) return 1;
-    return (q->front == NULL);
+    return (q->counter <= (size_t)0);
 }
 
 
@@ -34,6 +34,7 @@ void gQueueEnqueue(gQueue* q, void* data) {
     if (newnode == NULL) {
         fprintf(stderr, "Error: Unable to allocate memory to a new generic Queue node.\n");
         exit(EXIT_FAILURE);
+        return;
     }
 
     newnode->data = data;
@@ -64,6 +65,8 @@ void gQueueImpress(gQueue* q) {
         auxNode = auxNode->next;
     }
     printf("\b\b]");
+
+    return;
 }
 
 
