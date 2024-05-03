@@ -32,7 +32,7 @@ bool gAVLBinTreeIsEmpty(gAVLBinTree* tree);                                     
 void gAVLBinTreeInsert(gAVLBinTree* tree, void* data);                                                      // Inserts a new element into the AVL Binary Tree if it is not already contained there;
 gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree);                                                            // Creates an identical copy of a given AVL Binary Tree and returns a gAVLBinTree pointer to the newly created copy;
 void* gAVLBinTreeGetBiggest(gAVLBinTree* tree);                                                             // Returns a void pointer to the largest element contained in the AVL Binary Tree;
-void* gAVLBinTreeGetSmallest(gAVLBinTree* tree);
+void* gAVLBinTreeGetSmallest(gAVLBinTree* tree);                                                            // Returns a void pointer to the smallest element contained in the AVL Binary Tree;
 bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2);                                           // This function determines whether two AVL Binary Trees are identical. If they are equal, the function will return the value 1, otherwise it will return 0;
 void gAVLBinTreeImpress(gAVLBinTree* tree);                                                                 // Displays a linear textual representation of the content present in the binary tree through a symmetric traversal in its structure;
 void gAVLBinTreeimpressByLevel(gAVLBinTree* tree);                                                          // Displays a linear textual representation of the content present in the binary tree through a path through levels in its structure;
