@@ -172,7 +172,7 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
-    gLinkedListNode* auxNode = list->front;
+    gLinkedListNode *auxNode = list->front, *previous = NULL;
 
     if (index == 0) {
         (list->counter)--;
@@ -192,11 +192,40 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
 
     long int auxCounter = 0;
     while (auxCounter < index) {
+        previous = auxNode;
         auxNode = auxNode->next;
         auxCounter++;
     }
 
-    return gLinkedListRemove(list, auxNode->data);
+    (list->counter)--;
+
+    // Removing from start:
+    if (!previous) {
+        void* returnData = auxNode->data;
+        
+        list->front = list->front->next;
+        free(auxNode); auxNode = NULL;
+
+        return returnData;
+    }
+
+    // Removing from end:
+    if (!auxNode->next) {
+        void* returnData = auxNode->data;
+        
+        list->rear = previous;
+        list->rear->next = NULL;
+        free(auxNode); auxNode = NULL;
+
+        return returnData;
+    }
+
+    // Removing element in the middle:
+    void* returnData = auxNode->data;
+    previous->next = auxNode->next;
+    free(auxNode); auxNode = NULL;
+
+    return returnData;
 }
 
 
