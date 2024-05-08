@@ -5,6 +5,11 @@
 #ifndef GENERICLINKEDLIST_H
 #define GENERICLINKEDLIST_H
 
+
+// TODO: Fully generalize the linked list implementation by attaching to the algorithm logic the abstract function responsible for appropriately discarding each element of the list.
+
+//TODO: Create a function to reverse the ordering of the linked list.
+
 #include "genLinkedList.h"
 
 typedef void (*impressFunctionGenLinkedList)(void* data);
