@@ -16,7 +16,10 @@
 typedef void* Pointer;
 
 typedef void (*impressFunctionGenLinkedList)(Pointer data);                                                                                        // Function responsible for displaying each element in the list with appropriate formatting;
-typedef int (*compareFunctionGenLinkedList)(Pointer data1, Pointer data2);                                                                         // Function whose purpose is to compare two elements in the list. Returns zero if the elements are equal, a negative value if the first parameter is less than the second, and a positive value if the first parameter is greater than the second;
+
+typedef int (*compareFunctionGenLinkedList)(Pointer data1, Pointer data2);                                                                         //  Function whose purpose is to compare two elements in the list. Returns zero if the elements are equal, a negative value if  
+                                                                                                                                                   // the first parameter is less than the second, and a positive value if the first parameter is greater than the second;
+
 typedef void (*destroyFuntionGenLinkedList)(Pointer data);                                                                                         // Function intended to deallocate the memory reserved in each individual element of the linked list.
 
 typedef struct GENERICLINKEDLISTNODE {
