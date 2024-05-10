@@ -5,18 +5,22 @@
 #ifndef GENERICLINKEDLIST_H
 #define GENERICLINKEDLIST_H
 
-
-// TODO: Fully generalize the linked list implementation by attaching to the algorithm logic the abstract function responsible for appropriately discarding each element of the list.
-
-//TODO: Create a function to reverse the ordering of the linked list.
-
 #include "genLinkedList.h"
 
-typedef void (*impressFunctionGenLinkedList)(void* data);
-typedef int (*compareFunctionGenLinkedList)(void* data1, void* data2);
+/*  
+  If necessary, it is possible to specify 
+ the type of pointer used in the data 
+ structure by modifying the preprocessing 
+ directive parameter right below:
+*/
+typedef void* Pointer;
+
+typedef void (*impressFunctionGenLinkedList)(Pointer data);                                                                                        // Function responsible for displaying each element in the list with appropriate formatting;
+typedef int (*compareFunctionGenLinkedList)(Pointer data1, Pointer data2);                                                                         // Function whose purpose is to compare two elements in the list. Returns zero if the elements are equal, a negative value if the first parameter is less than the second, and a positive value if the first parameter is greater than the second;
+typedef void (*destroyFuntionGenLinkedList)(Pointer data);                                                                                         // Function intended to deallocate the memory reserved in each individual element of the linked list.
 
 typedef struct GENERICLINKEDLISTNODE {
-    void* data;
+    Pointer data;
     struct GENERICLINKEDLISTNODE* next;
 } gLinkedListNode;
 
@@ -26,21 +30,23 @@ typedef struct {
     size_t counter;
     impressFunctionGenLinkedList printF;
     compareFunctionGenLinkedList compareF;
+    destroyFuntionGenLinkedList destroyF;
 } gLinkedList;
 
 
-gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF);  // Initializes a generic linked list and returns a pointer to it. The function takes pointers to print and compare functions as parameters;
-void gLinkedListDestroy(gLinkedList** list);                                                               // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
-bool gLinkedListIsEmpty(gLinkedList* list);                                                                // Checks if the generic linked list is empty;
-void gLinkedListAppend(gLinkedList* list, void* data);                                                     // Appends a new node containing the provided data to the end of the linked list;
-void* gLinkedListRemove(gLinkedList* list, void* data);                                                    // Removes the first node containing the provided data from the linked list and returns it;
-bool gLinkedListSearch(gLinkedList* list, void* data);                                                     // Searches for a node containing the provided data in the linked list. Returns true if found, false otherwise;
-size_t gLinkedListCount(gLinkedList* list);                                                                // Counts the number of nodes in the linked list;
-void gLinkedListClear(gLinkedList* list);                                                                  // Clears the linked list, removing all nodes and freeing allocated memory;
-void* gLinkedListPop(gLinkedList* list, long int index);                                                   // Removes and returns the node at the specified index position in the linked list;
-void* gLinkedListGetBiggest(gLinkedList* list);                                                            // Returns a pointer containing the largest value in the linked list;
-void* gLinkedListGetSmallest(gLinkedList* list);                                                           // Returns a pointer containing the smallest value in the linked list;
-void gLinkedListImpress(gLinkedList* list);                                                                // Prints the data stored in each node of the linked list.
+gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF, destroyFuntionGenLinkedList destroyF);  // Initializes a generic linked list and returns a pointer to it. The function takes pointers to print and compare functions as parameters;
+void gLinkedListDestroy(gLinkedList** list);                                                                                                     // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
+void gLinkedListImpress(gLinkedList* list);                                                                                                      // Prints the data stored in each node of the linked list;
+void gLinkedListReverse(gLinkedList* list);                                                                                                      // Inverts the ordered sequential arrangement of the elements present in the list;
+void gLinkedListAppend(gLinkedList* list, Pointer data);                                                                                         // Appends a new node containing the provided data to the end of the linked list;
+void gLinkedListClear(gLinkedList* list);                                                                                                        // Clears the linked list, removing all nodes and freeing allocated memory;
+void gLinkedListRemove(gLinkedList* list, Pointer data);                                                                                         // Removes the first node containing the provided data from the linked list and returns it;
+bool gLinkedListIsEmpty(gLinkedList* list);                                                                                                      // Checks if the generic linked list is empty;
+bool gLinkedListSearch(gLinkedList* list, Pointer data);                                                                                         // Searches for a node containing the provided data in the linked list. Returns true if found, false otherwise;
+size_t gLinkedListCount(gLinkedList* list);                                                                                                      // Counts the number of nodes in the linked list;
+Pointer gLinkedListPop(gLinkedList* list, long int index);                                                                                       // Removes and returns the node at the specified index position in the linked list;
+Pointer gLinkedListGetBiggest(gLinkedList* list);                                                                                                // Returns a pointer containing the largest value in the linked list;
+Pointer gLinkedListGetSmallest(gLinkedList* list);                                                                                               // Returns a pointer containing the smallest value in the linked list.
 
 #endif
 
@@ -50,96 +56,108 @@ void gLinkedListImpress(gLinkedList* list);                                     
 /*
 
 #include "genLinkedList.h"
+#include <string.h>
+
+
+typedef struct PERSON {
+    char* name;
+    unsigned int id;
+} Person;
+
 
 void impressf(void* data);
 int comparef(void* data1, void* data2);
+void destroyf(void* data);
+Person* createPerson(char* name, unsigned int id); // Function determined to speed up the process of creating persons.
+
 
 int main(int argc, char** argv) {
-    puts("*Creating a Linked List of Integer Values.");
-    gLinkedList* linkedListOfIntegers = initgLinkedList(impressf, comparef);
-    printf("List Created: "); gLinkedListImpress(linkedListOfIntegers); printf("\n");
 
-    int val1 = 1, val2 = 2, val3 = 3, val4 = 4, val5 = 5;
-    int antiVal1 = (-1), antiVal2 = (-2), antiVal3 = (-3);
+    puts("*Creating a Linked List of Persons.");
+    gLinkedList* linkedListOfPersons = initgLinkedList(impressf, comparef, destroyf);
+    printf("List Created: "); gLinkedListImpress(linkedListOfPersons); printf("\n");
 
-    gLinkedListAppend(linkedListOfIntegers, &val1);
-    gLinkedListAppend(linkedListOfIntegers, &val2);
-    gLinkedListAppend(linkedListOfIntegers, &val3);
-    gLinkedListAppend(linkedListOfIntegers, &val4);
-    gLinkedListAppend(linkedListOfIntegers, &val5);
-    gLinkedListAppend(linkedListOfIntegers, &antiVal1);
-    gLinkedListAppend(linkedListOfIntegers, &antiVal2);
-    gLinkedListAppend(linkedListOfIntegers, &antiVal3);
+    Person *person1 = createPerson("Ayrton", 19), *person2 = createPerson("James", 20), *person3 = createPerson("NULL", 17);
+    Person *person4 = createPerson("Carlos", 21), *person5 = createPerson("Davi", 18);
+
+    gLinkedListAppend(linkedListOfPersons, person1);
+    gLinkedListAppend(linkedListOfPersons, person2);
+    gLinkedListAppend(linkedListOfPersons, person3);
+    gLinkedListAppend(linkedListOfPersons, person4);
+    gLinkedListAppend(linkedListOfPersons, person5);
 
     puts("\nInserted Elements:");
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
-    puts("\nRemoving 5 from the list:");
-    gLinkedListRemove(linkedListOfIntegers, &val5);
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
-
-    puts("\nRemoving 1 from the list:");
-    gLinkedListRemove(linkedListOfIntegers, &val1);
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
-
-    puts("\nRemoving -3 from the list:");
-    gLinkedListRemove(linkedListOfIntegers, &antiVal3);
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
-
+    puts("\nRemoving person5 from the list:");
+    gLinkedListRemove(linkedListOfPersons, person5);
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
     puts("\nPopping the value in index 2:");
-    int* poppingResult = (int *)gLinkedListPop(linkedListOfIntegers, 2);
+    Person* poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, 2);
     if (poppingResult) {
-        printf("Value Popped: %d\n", *poppingResult);
+        printf("Value Popped: ");
+        impressf(poppingResult); printf("\n");
     }
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
 
     puts("\nPopping the value in index -1 (last element):");
-    poppingResult = (int *)gLinkedListPop(linkedListOfIntegers, -1);
+    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, -1);
     if (poppingResult) {
-        printf("Value Popped: %d\n", *poppingResult);
+        printf("Value Popped: ");
+        impressf(poppingResult); printf("\n");
     }
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
 
     puts("\nPopping the value in index 29 (Exceeds the maximum list index):");
-    poppingResult = (int *)gLinkedListPop(linkedListOfIntegers, 29);
+    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, 29);
     if (poppingResult) {
-        printf("Value Popped: %d\n", *poppingResult);
-    } else { printf("No value obtained...\n"); }
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
+        printf("Value Popped: ");
+        impressf(poppingResult); printf("\n");
+    }
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
 
     puts("\nPopping the value in index -10 (Exceeds the minimum list index):");
-    poppingResult = (int *)gLinkedListPop(linkedListOfIntegers, -10);
+    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, -10);
     if (poppingResult) {
-        printf("Value Popped: %d\n", *poppingResult);
-    } else { printf("No value obtained...\n"); }
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
+        printf("Value Popped: ");
+        impressf(poppingResult); printf("\n");
+    }
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
+    puts("\nTesting the reversing function:");
+    printf("=> Before reversing: ");
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
+
+    gLinkedListReverse(linkedListOfPersons);
+
+    printf("=> After reversing: ");
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
     puts("\nTesting Search and Max/Min Functions: ");
-    printf("=> Is the value (-1) in the list?: %s\n", gLinkedListSearch(linkedListOfIntegers, &antiVal1) ? "Yes" : "No");
-    printf("=> Is the value 5 in the list?: %s\n", gLinkedListSearch(linkedListOfIntegers, &val5) ? "Yes" : "No");
+    printf("=> Is the person1 in the list?: %s\n", gLinkedListSearch(linkedListOfPersons, person1) ? "Yes" : "No");
+    printf("=> Is the person5 in the list?: %s\n", gLinkedListSearch(linkedListOfPersons, person5) ? "Yes" : "No");
 
-    int* returnValue = gLinkedListGetBiggest(linkedListOfIntegers);
+    Person* returnValue = gLinkedListGetBiggest(linkedListOfPersons);
     if (returnValue) {
-        printf("=> Current Biggest Value on the List: %d\n", *returnValue);
+        printf("=> Current Biggest Person ID on the List: %u\n", returnValue->id);
     }
 
-    returnValue = gLinkedListGetSmallest(linkedListOfIntegers);
+    returnValue = gLinkedListGetSmallest(linkedListOfPersons);
     if (returnValue) {
-        printf("=> Current Smallest Value on the List: %d\n", *returnValue);
+        printf("=> Current Smallest Person ID on the List: %u\n", returnValue->id);
     }
 
     puts("\nFinal State of the List:");
-    gLinkedListImpress(linkedListOfIntegers); printf("\n");
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
 
-    
+
     puts("\n*Destroying the Linked List!");
-    gLinkedListDestroy(&linkedListOfIntegers);
-    printf("Linked List Destroyed: "); gLinkedListImpress(linkedListOfIntegers); printf("\n");
+    gLinkedListDestroy(&linkedListOfPersons);
+    printf("Linked List Destroyed: "); gLinkedListImpress(linkedListOfPersons); printf("\n");
 
 
     puts("\nProgram Finished!");
@@ -149,18 +167,44 @@ int main(int argc, char** argv) {
 
 
 void impressf(void* data) {
-    printf("%d", *((int *)data));
+    printf("Person(%s, %u)", (((Person *)data)->name != NULL) ? ((Person *)data)->name : "NULL", ((Person *)data)->id);
     return;
 }
 
 
 int comparef(void* data1, void* data2) {
-    int aux1 = *((int *)data1);
-    int aux2 = *((int *)data2);
+    Person aux1 = *((Person *)data1);
+    Person aux2 = *((Person *)data2);
 
-    if (aux1 > aux2) return 1;
-    if (aux1 < aux2) return -1;
+    if (aux1.id > aux2.id) return 1;
+    if (aux1.id < aux2.id) return -1;
     return 0;
+}
+
+
+Person* createPerson(char* name, unsigned int id) {
+    Person* newPerson = (Person *)malloc(sizeof(Person));
+    if (newPerson == NULL) {
+        fprintf(stderr, "Error: Failed while trying to allocate memory for a new Person.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    newPerson->id = id;
+    if (name == NULL) { newPerson->name = NULL; return newPerson; }
+    // debbuging:
+    // printf("Name Size: %d\n", strlen(name) + 1);
+    newPerson->name = (char *)malloc(strlen(name) + 1);
+    strcpy(newPerson->name, name);
+
+    return newPerson;
+}
+
+void destroyf(void* data) {
+    if(!data) return;
+
+    // Deallocating the memory reserved for the name:
+    if(((Person *)data)->name) free(((Person *)data)->name);
+    return;
 }
 
 */

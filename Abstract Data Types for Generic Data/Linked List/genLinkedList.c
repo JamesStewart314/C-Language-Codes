@@ -1,16 +1,16 @@
 #include "genLinkedList.h"
 
 
-gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF) {
+gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF, destroyFuntionGenLinkedList destroyF) {
     
-    if (!printF || !compareF) {
-        fprintf(stderr, "Error: At least one of the provided functions is NULL when creating a new generic Linked List.\n");
+    if (!compareF) {
+        fprintf(stderr, "Error: Compare Function is NULL when creating a new generic Linked List.\n");
         return NULL;
     }
 
     gLinkedList* newlist = (gLinkedList *) malloc (sizeof(gLinkedList));
     if (newlist == NULL) {
-        fprintf(stderr, "Failed while trying to allocate memory for a new generic Linked List\n");
+        fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Linked List.\n");
         exit(EXIT_FAILURE);
         return NULL;
     }
@@ -18,6 +18,7 @@ gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctio
     newlist->front = newlist->rear = NULL;
     newlist->printF = printF;
     newlist->compareF = compareF;
+    newlist->destroyF = destroyF;
     newlist->counter = (size_t)0;
     
     return newlist;
@@ -42,7 +43,8 @@ void gLinkedListDestroy(gLinkedList** list) {
     gLinkedListNode* auxNode = (*list)->front;
     while (auxNode) {
         (*list)->front = (*list)->front->next;
-        free(auxNode);
+        if((*list)->destroyF) (*list)->destroyF(auxNode);
+        free(auxNode); auxNode = NULL;
         auxNode = (*list)->front;
     }
 
@@ -52,7 +54,7 @@ void gLinkedListDestroy(gLinkedList** list) {
 }
 
 
-void gLinkedListAppend(gLinkedList* list, void* data) {
+void gLinkedListAppend(gLinkedList* list, Pointer data) {
     if (!list) return;
 
     gLinkedListNode* newnode = (gLinkedListNode *) malloc (sizeof(gLinkedListNode));
@@ -78,9 +80,9 @@ void gLinkedListAppend(gLinkedList* list, void* data) {
 }
 
 
-void* gLinkedListRemove(gLinkedList* list, void* data) {
-    if (!list) return NULL;
-    if (gLinkedListIsEmpty(list)) return NULL;
+void gLinkedListRemove(gLinkedList* list, Pointer data) {
+    if (!list) return;
+    if (gLinkedListIsEmpty(list)) return;
 
     gLinkedListNode *auxNode = list->front, *previous = NULL;
     int result;
@@ -92,43 +94,41 @@ void* gLinkedListRemove(gLinkedList* list, void* data) {
     }
 
     // Element not found:
-    if (!auxNode) return NULL;
+    if (!auxNode) return;
 
     (list->counter)--;
 
     // Otherwise, element found. Removing:
 
     // Removing from start:
-    if (!previous) {
-        void* returnData = auxNode->data;
-        
+    if (!previous) {        
         list->front = list->front->next;
+        if (list->destroyF) list->destroyF(auxNode);
         free(auxNode); auxNode = NULL;
 
-        return returnData;
+        return;
     }
 
     // Removing from end:
     if (!auxNode->next) {
-        void* returnData = auxNode->data;
-        
         list->rear = previous;
         list->rear->next = NULL;
+        if (list->destroyF) list->destroyF(auxNode);
         free(auxNode); auxNode = NULL;
 
-        return returnData;
+        return;
     }
 
     // Removing element in the middle:
-    void* returnData = auxNode->data;
     previous->next = auxNode->next;
+    if (list->destroyF) list->destroyF(auxNode);
     free(auxNode); auxNode = NULL;
 
-    return returnData;
+    return;
 }
 
 
-bool gLinkedListSearch(gLinkedList* list, void* data) {
+bool gLinkedListSearch(gLinkedList* list, Pointer data) {
     if (!list) return 0;
     if (gLinkedListIsEmpty(list)) return 0;
 
@@ -158,6 +158,7 @@ void gLinkedListClear(gLinkedList* list) {
     while (list->front) {
         auxNode = list->front;
         list->front = list->front->next;
+        if(list->destroyF) list->destroyF(auxNode);
         free(auxNode); auxNode = NULL;
     }
 
@@ -168,7 +169,7 @@ void gLinkedListClear(gLinkedList* list) {
 }
 
 
-void* gLinkedListPop(gLinkedList* list, long int index) {
+Pointer gLinkedListPop(gLinkedList* list, long int index) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
@@ -176,7 +177,7 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
 
     if (index == 0) {
         (list->counter)--;
-        void* returnData = auxNode->data;
+        Pointer returnData = auxNode->data;
         list->front = list->front->next;
         free(auxNode) ; auxNode = NULL;
         
@@ -197,7 +198,7 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
 
     // Removing from end:
     if (!auxNode->next) {
-        void* returnData = auxNode->data;
+        Pointer returnData = auxNode->data;
         
         list->rear = previous;
         list->rear->next = NULL;
@@ -207,7 +208,7 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
     }
 
     // Removing element in the middle:
-    void* returnData = auxNode->data;
+    Pointer returnData = auxNode->data;
     previous->next = auxNode->next;
     free(auxNode); auxNode = NULL;
 
@@ -215,12 +216,12 @@ void* gLinkedListPop(gLinkedList* list, long int index) {
 }
 
 
-void* gLinkedListGetBiggest(gLinkedList* list) {
+Pointer gLinkedListGetBiggest(gLinkedList* list) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
     gLinkedListNode* auxNode = list->front;
-    void* returnData = auxNode->data;
+    Pointer returnData = auxNode->data;
     while (auxNode) {
         if (list->compareF(auxNode->data, returnData) > 0) returnData = auxNode->data;
         auxNode = auxNode->next;
@@ -230,12 +231,12 @@ void* gLinkedListGetBiggest(gLinkedList* list) {
 }
 
 
-void* gLinkedListGetSmallest(gLinkedList* list) {
+Pointer gLinkedListGetSmallest(gLinkedList* list) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
     gLinkedListNode* auxNode = list->front;
-    void* returnData = auxNode->data;
+    Pointer returnData = auxNode->data;
     while (auxNode) {
         if (list->compareF(auxNode->data, returnData) < 0) returnData = auxNode->data;
         auxNode = auxNode->next;
@@ -247,6 +248,7 @@ void* gLinkedListGetSmallest(gLinkedList* list) {
 
 void gLinkedListImpress(gLinkedList* list) {
     if (!list) return;
+    if (!list->printF) { printf("Unable to Display Linked List: Display Function Does Not Exist.\n"); return; };
     if (gLinkedListIsEmpty(list)) { printf("[]"); return; }
 
     printf("[");
@@ -259,5 +261,28 @@ void gLinkedListImpress(gLinkedList* list) {
 
     printf("\b\b]");
 
+    return;
+}
+
+void gLinkedListReverse(gLinkedList* list) {
+    if (!list) return;
+    if (gLinkedListIsEmpty(list) || gLinkedListCount(list) == 1) return;
+
+    // The list has at least two elements:
+
+    list->rear = list->front;
+    // Employing the use of three contiguous pointers to traverse the linked list, rearranging their 
+    // pointers in order to reverse the order of arrangement of the elements present in the list:
+    gLinkedListNode *auxNode = list->front, *auxNodePrevious = NULL, *auxNodeNext = auxNode->next;
+    while(auxNodeNext != NULL) {
+        auxNode->next = auxNodePrevious;
+        auxNodePrevious = auxNode;
+        auxNode = auxNodeNext;
+        auxNodeNext = auxNodeNext->next;
+    }
+
+    auxNode->next = auxNodePrevious;
+    list->front = auxNode;
+    
     return;
 }
