@@ -52,10 +52,10 @@ void gAVLBinTreeRemove(gAVLBinTree* tree, Pointer data);                        
 bool gAVLBinTreeIsEmpty(gAVLBinTree* tree);                                                                                                        // Checks whether an AVL Binary Tree is empty, returning 1 if it is and 0 otherwise;
 bool gAVLBinTreeSearch(gAVLBinTree* tree, Pointer data);                                                                                           // Determines whether an element is present in the AVL Binary Tree. If the element is present, the function returns the value 1; otherwise it will return 0;
 bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2);                                                                                  // This function determines whether two AVL Binary Trees are identical. If they are equal, the function will return the value 1, otherwise it will return 0;
-long long int gAVLBinTreeGetNodeHeight(gAVLBinTree* tree, Pointer data);                                                                           // Determines the height of a given node in the AVL Binary Tree. If the given element is not contained in the Tree, the function returns the value (-1).
+long long int gAVLBinTreeGetNodeHeight(gAVLBinTree* tree, Pointer data);                                                                           // Determines the height of a given node in the AVL Binary Tree. If the given element is not contained in the Tree, the function returns the value (-1);
 size_t gAVLBinTreeCount(gAVLBinTree* tree);                                                                                                        // This function calculates the number of elements present in the binary tree and returns the value resulting from this count;
 Pointer gAVLBinTreeGetBiggest(gAVLBinTree* tree);                                                                                                  // Returns a void pointer to the largest element contained in the AVL Binary Tree;
-Pointer gAVLBinTreeGetSmallest(gAVLBinTree* tree);                                                                                                 // Returns a void pointer to the smallest element contained in the AVL Binary Tree;
+Pointer gAVLBinTreeGetSmallest(gAVLBinTree* tree);                                                                                                 // Returns a void pointer to the smallest element contained in the AVL Binary Tree.
 
 
 #endif
