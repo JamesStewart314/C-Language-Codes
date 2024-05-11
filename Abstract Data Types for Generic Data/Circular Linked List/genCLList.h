@@ -64,7 +64,7 @@ void impressf(void* data);
 int comparef(void* data1, void* data2);
 
 int main(int argc, char** argv) {
-    
+
     gCLList *circularLinkedListOfIntegers = initgCLList(impressf, comparef, NULL); // Creating a circular list of integers.
                                                                                    //  It is worth mentioning that the choice
                                                                                    // of the integer type was completely arbitrary
@@ -111,7 +111,8 @@ int main(int argc, char** argv) {
 
 
 void impressf(void* data) {
-    printf("%d", *((int *)data));
+    int* aux = (int *)data;
+    if (aux != NULL) { printf("%d", *aux); } else { printf("NULL"); }
     return;
 }
 
@@ -119,6 +120,11 @@ void impressf(void* data) {
 int comparef(void* data1, void* data2) {
     int aux1 = *((int *)data1);
     int aux2 = *((int *)data2);
+
+    if (!aux1 || !aux2) {
+        if (!aux1 && !aux2) return 1;
+        return 0;
+    }
 
     if (aux1 > aux2) return 1;
     if (aux1 < aux2) return -1;

@@ -177,9 +177,23 @@ int comparef(void* data1, void* data2) {
     Person aux1 = *((Person *)data1);
     Person aux2 = *((Person *)data2);
 
+    if (!aux1 || !aux2) {
+        if (!aux1 && !aux2) return 1;
+        return 0;
+    }
+
     if (aux1.id > aux2.id) return 1;
     if (aux1.id < aux2.id) return -1;
     return 0;
+}
+
+
+void destroyf(void* data) {
+    if(!data) return;
+
+    // Deallocating the memory reserved for the name:
+    if(((Person *)data)->name) free(((Person *)data)->name);
+    return;
 }
 
 
@@ -198,15 +212,6 @@ Person* createPerson(char* name, unsigned int id) {
     strcpy(newPerson->name, name);
 
     return newPerson;
-}
-
-
-void destroyf(void* data) {
-    if(!data) return;
-
-    // Deallocating the memory reserved for the name:
-    if(((Person *)data)->name) free(((Person *)data)->name);
-    return;
 }
 
 */

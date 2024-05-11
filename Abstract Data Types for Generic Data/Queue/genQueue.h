@@ -78,8 +78,8 @@ int main(int argc, char** argv) {
     gQueueRemove(queueOfIntegers, &val2);                               // Removing Val2 from the Queue.
     gQueueImpress(queueOfIntegers); printf("\n");                       // Displays the queue in the terminal.
 
-    int* dedequeued_value = (int *)gQueueDequeue(queueOfIntegers);      // Getting an element from the queue. 
-                                                                        // If the queue is empty, a pointer to 
+    int* dedequeued_value = (int *)gQueueDequeue(queueOfIntegers);      // Getting an element from the queue.
+                                                                        // If the queue is empty, a pointer to
                                                                         // NULL will be returned.
     if (dedequeued_value) {
         printf("\nDequeued value: %i\n", *dedequeued_value);
@@ -87,7 +87,7 @@ int main(int argc, char** argv) {
 
     gQueueImpress(queueOfIntegers); printf("\n\n");                     // Displays the queue in the terminal.
     gQueueRemove(queueOfIntegers, &val2);                               // TRYING to remove Val2 - which is no longer present - from the queue.
-    
+
     puts("Replacing removed elements:");
     gQueueEnqueue(queueOfIntegers, &val2);
     gQueueEnqueue(queueOfIntegers, &val1);
@@ -110,6 +110,11 @@ int comparef(void* data1, void* data2) {
     int aux1 = *((int *)data1);
     int aux2 = *((int *)data2);
 
+    if (!aux1 || !aux2) {
+        if (!aux1 && !aux2) return 1;
+        return 0;
+    }
+
     if (aux1 > aux2) return 1;
     if (aux1 < aux2) return -1;
     return 0;
@@ -118,7 +123,7 @@ int comparef(void* data1, void* data2) {
 
 void impressf(void* data) {
     int* aux = (int *)data;
-    printf("%d", *aux);
+    if (aux != NULL) { printf("%d", *aux); } else { printf("NULL"); }
     return;
 }
 

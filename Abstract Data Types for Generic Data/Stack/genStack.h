@@ -92,7 +92,8 @@ int main(int argc, char** argv) {
 
 
 void impressf(void* data) {
-    printf("%i", *((int *)data));
+    int* aux = (int *)data;
+    if (aux != NULL) { printf("%d", *aux); } else { printf("NULL"); }
     return;
 }
 
@@ -100,6 +101,11 @@ void impressf(void* data) {
 int comparef(void* data1, void* data2) {
     int aux1 = *((int *)data1);
     int aux2 = *((int *)data2);
+
+    if (!aux1 || !aux2) {
+        if (!aux1 && !aux2) return 1;
+        return 0;
+    }
 
     if (aux1 > aux2) return 1;
     if (aux1 < aux2) return -1;
