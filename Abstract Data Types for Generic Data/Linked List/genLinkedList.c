@@ -31,24 +31,24 @@ bool gLinkedListIsEmpty(gLinkedList* list) {
 }
 
 
-void gLinkedListDestroy(gLinkedList** list) {
-    if (!list) return;
-    if (!(*list)) return;
+void gLinkedListDestroy(gLinkedList** listPointer) {
+    if (!listPointer) return;
+    if (!(*listPointer)) return;
 
-    if (gLinkedListIsEmpty((*list))) {
-        free((*list)); (*list) = NULL;
+    if (gLinkedListIsEmpty((*listPointer))) {
+        free((*listPointer)); (*listPointer) = NULL;
         return;
     }
 
-    gLinkedListNode* auxNode = (*list)->front;
+    gLinkedListNode* auxNode = (*listPointer)->front;
     while (auxNode) {
-        (*list)->front = (*list)->front->next;
-        if((*list)->destroyF) (*list)->destroyF(auxNode->data);
+        (*listPointer)->front = (*listPointer)->front->next;
+        if((*listPointer)->destroyF) (*listPointer)->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
-        auxNode = (*list)->front;
+        auxNode = (*listPointer)->front;
     }
 
-    free((*list)); (*list) = NULL;
+    free((*listPointer)); (*listPointer) = NULL;
 
     return;
 }

@@ -159,18 +159,18 @@ size_t gCLLCount(gCLList* cll) {
 }
 
 
-void gCLLDestroy(gCLList** cll) {
-    if (!cll) return;
-    if (!(*cll)) return;
+void gCLLDestroy(gCLList** cllPointer) {
+    if (!cllPointer) return;
+    if (!(*cllPointer)) return;
 
-    if (gCLLIsEmpty(*cll)) {
-        free(*cll); (*cll) = NULL;
+    if (gCLLIsEmpty(*cllPointer)) {
+        free(*cllPointer); (*cllPointer) = NULL;
         return;
     }
 
     // Erase the Current Element Until the List is Empty:
-    while (!gCLLIsEmpty(*cll)) { gCLLRemoveCurrent(*cll); }
-    free(*cll); (*cll) = NULL;
+    while (!gCLLIsEmpty(*cllPointer)) { gCLLRemoveCurrent(*cllPointer); }
+    free(*cllPointer); (*cllPointer) = NULL;
     return;
 }
 

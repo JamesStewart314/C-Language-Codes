@@ -30,23 +30,23 @@ bool gStackIsEmpty(gStack* st) {
 }
 
 
-void gStackDestroy(gStack** st) {
-    if (!st) return;
-    if (!(*st)) return;
+void gStackDestroy(gStack** stPointer) {
+    if (!stPointer) return;
+    if (!(*stPointer)) return;
 
-    if (gStackIsEmpty((*st))) {
-        free(*st); (*st) = NULL;
+    if (gStackIsEmpty((*stPointer))) {
+        free(*stPointer); (*stPointer) = NULL;
         return;
     }
 
-    gStackNode* auxNode = (*st)->top;
+    gStackNode* auxNode = (*stPointer)->top;
     while (auxNode != NULL) {
-        (*st)->top = (*st)->top->next;
-        if ((*st)->destroyF) (*st)->destroyF(auxNode->data);
-        free(auxNode); auxNode = (*st)->top;
+        (*stPointer)->top = (*stPointer)->top->next;
+        if ((*stPointer)->destroyF) (*stPointer)->destroyF(auxNode->data);
+        free(auxNode); auxNode = (*stPointer)->top;
     }
 
-    free(*st); (*st) = NULL;
+    free(*stPointer); (*stPointer) = NULL;
 
     return;
 }

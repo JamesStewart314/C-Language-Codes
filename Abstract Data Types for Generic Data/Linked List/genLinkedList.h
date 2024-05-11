@@ -36,7 +36,7 @@ typedef struct {
 
 
 gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF, destroyFuntionGenLinkedList destroyF);  // Initializes a generic linked list and returns a pointer to it. The function takes pointers to print and compare functions as parameters;
-void gLinkedListDestroy(gLinkedList** list);                                                                                                     // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
+void gLinkedListDestroy(gLinkedList** listPointer);                                                                                                     // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
 void gLinkedListImpress(gLinkedList* list);                                                                                                      // Prints the data stored in each node of the linked list;
 void gLinkedListReverse(gLinkedList* list);                                                                                                      // Inverts the ordered sequential arrangement of the elements present in the list;
 void gLinkedListAppend(gLinkedList* list, Pointer data);                                                                                         // Appends a new node containing the provided data to the end of the linked list;

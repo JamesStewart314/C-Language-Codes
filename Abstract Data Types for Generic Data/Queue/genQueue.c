@@ -74,24 +74,24 @@ void gQueueImpress(gQueue* q) {
 }
 
 
-void gQueueDestroy(gQueue** q) {
-    if (!q) return;
-    if (!(*q)) return;
+void gQueueDestroy(gQueue** qPointer) {
+    if (!qPointer) return;
+    if (!(*qPointer)) return;
 
-    if (gQueueIsEmpty(*q)) {
-        free(*q); (*q) = NULL;
+    if (gQueueIsEmpty(*qPointer)) {
+        free(*qPointer); (*qPointer) = NULL;
         return;
     };
 
-    gQueueNode* auxNode = (*q)->front;
+    gQueueNode* auxNode = (*qPointer)->front;
 
     do {
-        (*q)->front = (*q)->front->next;
-        if ((*q)->destroyF) (*q)->destroyF(auxNode->data);
-        free(auxNode); auxNode = (*q)->front;
+        (*qPointer)->front = (*qPointer)->front->next;
+        if ((*qPointer)->destroyF) (*qPointer)->destroyF(auxNode->data);
+        free(auxNode); auxNode = (*qPointer)->front;
     } while (auxNode);
 
-    free(*q); (*q) = NULL;
+    free(*qPointer); (*qPointer) = NULL;
 
     return;
 }

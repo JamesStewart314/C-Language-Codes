@@ -863,17 +863,17 @@ void gAVLBinTreeimpressByLevel(gAVLBinTree* tree) {
 
 //  Function whose purpose is to recursively free the 
 // allocated memory present in the AVL Binary Tree:
-void gAVLBinTreeDestroy(gAVLBinTree** tree) {
-    if (!tree) return;
-    if (!(*tree)) return;
+void gAVLBinTreeDestroy(gAVLBinTree** treePointer) {
+    if (!treePointer) return;
+    if (!(*treePointer)) return;
 
-    if (gAVLBinTreeIsEmpty(*tree)) {
-        free(*tree); (*tree) = NULL;
+    if (gAVLBinTreeIsEmpty(*treePointer)) {
+        free(*treePointer); (*treePointer) = NULL;
         return;
     }
 
-    avlBinTreeFreeRecursively((*tree)->root, (*tree)->destroyF);
-    free(*tree); (*tree) = NULL;
+    avlBinTreeFreeRecursively((*treePointer)->root, (*treePointer)->destroyF);
+    free(*treePointer); (*treePointer) = NULL;
 
     return;
 }

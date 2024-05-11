@@ -33,7 +33,7 @@ typedef struct GENERICSTACK {
 
 
 gStack* initgStack(impressFunctionGenStack printF, compareFunctionGenStack compareF, destroyFunctionGenStack destroyF); // Initializes the stack;
-void gStackDestroy(gStack** st);                                                                                        // Destroys the Stack;
+void gStackDestroy(gStack** stPointer);                                                                                 // Destroys the Stack;
 void gStackPush(gStack* st, Pointer data);                                                                              // Inserts Elements into the Stack;
 void gStackRemove(gStack* st, Pointer data);                                                                            // Removes and returns a given element from the stack. If it is not present, the function returns NULL;
 void gStackImpress(gStack* st);                                                                                         // Displays the Stack on the Terminal in List Format;

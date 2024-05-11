@@ -34,9 +34,9 @@ typedef struct {
 
 
 gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compareF, destroyFunctionGenQueue destroyF); // Initializes the Queue;
+void gQueueDestroy(gQueue** qPointer);                                                                                  // Destroys the Queue;
 void gQueueEnqueue(gQueue* q, Pointer data);                                                                            // Inserts Elements into the Queue;
 void gQueueImpress(gQueue* q);                                                                                          // Displays the Queue on the Terminal in List Format;
-void gQueueDestroy(gQueue** q);                                                                                         // Destroys the Queue;
 void gQueueRemove(gQueue* q, Pointer data);                                                                             // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
 void gQueueClear(gQueue* q);                                                                                            // Removes all elements contained in the queue;
 bool gQueueSearch(gQueue* q, Pointer data);                                                                             // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;

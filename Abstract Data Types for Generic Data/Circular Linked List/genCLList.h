@@ -39,7 +39,7 @@ void gCLLRemoveCurrent(gCLList* cll);                                           
                                                                                                                              // information present in the current node just removed;
 
 void gCLLRemove(gCLList* cll, Pointer data);                                                                                 // Remove a specific element, returning its value as a result;
-void gCLLDestroy(gCLList** cll);                                                                                             // Frees memory allocated to the circular linked list;
+void gCLLDestroy(gCLList** cllPointer);                                                                                      // Frees memory allocated to the circular linked list;
 void gCLLNext(gCLList* cll);                                                                                                 // Changes the current to the next element in the list;
 void gCLLPrevious(gCLList* cll);                                                                                             // Changes the current to the previous element in the list;
 void gCLLImpress(gCLList* cll);                                                                                              // Displays the circular list on the terminal;
