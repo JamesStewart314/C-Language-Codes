@@ -5,12 +5,21 @@
 #ifndef GENERICQUEUE_H
 #define GENERICQUEUE_H
 
-typedef void (*impressFunctionGenQueue)(void* data);
-typedef int (*compareFunctionGenQueue)(void* data1, void* data2);
+/*
+  If necessary, it is possible to specify
+ the type of pointer used in the data
+ structure by modifying the preprocessing
+ directive parameter right below:
+*/
+typedef void* Pointer;
+
+typedef void (*impressFunctionGenQueue)(Pointer data);
+typedef int (*compareFunctionGenQueue)(Pointer data1, Pointer data2);
+typedef void (*destroyFunctionGenQueue)(Pointer data);
 
 
 typedef struct GENERICQUEUENODE {
-    void* data;
+    Pointer data;
     struct GENERICQUEUENODE* next;
 } gQueueNode;
 
@@ -20,19 +29,20 @@ typedef struct {
     size_t counter;
     impressFunctionGenQueue printF;
     compareFunctionGenQueue compareF;
+    destroyFunctionGenQueue destroyF;
 } gQueue;
 
 
-gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compareF); // Initializes the Queue;
-bool gQueueIsEmpty(gQueue* q);                                                        // Checks if the Queue is Empty;
-void gQueueEnqueue(gQueue* q, void* data);                                            // Inserts Elements into the Queue;
-void gQueueImpress(gQueue* q);                                                        // Displays the Queue on the Terminal in List Format;
-void gQueueDestroy(gQueue** q);                                                       // Destroys the Queue;
-bool gQueueSearch(gQueue* q, void* data);                                             // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;
-void* gQueueRemove(gQueue* q, void* data);                                            // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
-void* gQueueDequeue(gQueue* q);                                                       // Returns Void Pointers to Elements Removed from the Queue;
-size_t gQueueCount(gQueue* q);                                                        // Returns the Number of Elements in the Queue;
-void gQueueClear(gQueue* q);                                                          // Removes all elements contained in the queue.
+gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compareF, destroyFunctionGenQueue destroyF); // Initializes the Queue;
+void gQueueEnqueue(gQueue* q, Pointer data);                                                                            // Inserts Elements into the Queue;
+void gQueueImpress(gQueue* q);                                                                                          // Displays the Queue on the Terminal in List Format;
+void gQueueDestroy(gQueue** q);                                                                                         // Destroys the Queue;
+void gQueueRemove(gQueue* q, Pointer data);                                                                             // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
+void gQueueClear(gQueue* q);                                                                                            // Removes all elements contained in the queue;
+bool gQueueSearch(gQueue* q, Pointer data);                                                                             // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;
+bool gQueueIsEmpty(gQueue* q);                                                                                          // Checks if the Queue is Empty;
+size_t gQueueCount(gQueue* q);                                                                                          // Returns the Number of Elements in the Queue;
+Pointer gQueueDequeue(gQueue* q);                                                                                       // Returns Void Pointers to Elements Removed from the Queue.
 
 #endif
 
@@ -48,7 +58,7 @@ void impressf(void* data);
 
 int main(int argc, char** argv) {
 
-    gQueue* queueOfIntegers = initgQueue(impressf, comparef);           // Creating the Queue.
+    gQueue* queueOfIntegers = initgQueue(impressf, comparef, NULL);     // Creating the Queue.
 
     int val1 = 1, val2 = 2, val3 = 3;                                   // Creating Elements of ANY TYPE to enqueue,
                                                                         // the choice of objects of type int was

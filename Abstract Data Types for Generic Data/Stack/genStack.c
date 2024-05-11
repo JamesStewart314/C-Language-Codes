@@ -1,9 +1,9 @@
 #include "genStack.h"
 
-gStack* initgStack(impressFunctionGenStack printF, compareFunctionGenStack compareF) {
+gStack* initgStack(impressFunctionGenStack printF, compareFunctionGenStack compareF, destroyFunctionGenStack destroyF) {
 
-    if (!printF || !compareF) {
-        fprintf(stderr, "Error: At least one of the provided functions is NULL when creating a new generic Stack.\n");
+    if (!compareF) {
+        fprintf(stderr, "Error: Compare Function is NULL when creating a new generic Stack.\n");
         return NULL;
     }
 
@@ -18,6 +18,7 @@ gStack* initgStack(impressFunctionGenStack printF, compareFunctionGenStack compa
     newstack->top = NULL;
     newstack->printF = printF;
     newstack->compareF = compareF;
+    newstack->destroyF = destroyF;
 
     return newstack;
 }
@@ -41,6 +42,7 @@ void gStackDestroy(gStack** st) {
     gStackNode* auxNode = (*st)->top;
     while (auxNode != NULL) {
         (*st)->top = (*st)->top->next;
+        if ((*st)->destroyF) (*st)->destroyF(auxNode->data);
         free(auxNode); auxNode = (*st)->top;
     }
 
@@ -50,7 +52,7 @@ void gStackDestroy(gStack** st) {
 }
 
 
-void gStackPush(gStack* st, void* data) {
+void gStackPush(gStack* st, Pointer data) {
     if (!st) return;
 
     gStackNode* newnode = (gStackNode *) malloc (sizeof(gStackNode));
@@ -68,7 +70,7 @@ void gStackPush(gStack* st, void* data) {
 }
 
 
-void* gStackPop(gStack* st) {
+Pointer gStackPop(gStack* st) {
     if (!st) return NULL;
     if (gStackIsEmpty(st)) return NULL;
 
@@ -76,7 +78,7 @@ void* gStackPop(gStack* st) {
     gStackNode* auxNode = st->top;
     st->top = st->top->next;
 
-    void* returnData = auxNode->data;
+    Pointer returnData = auxNode->data;
     free(auxNode) ; auxNode = NULL;
 
     return returnData;
@@ -91,6 +93,8 @@ size_t gStackCount(gStack* st) {
 
 void gStackImpress(gStack* st) {
     if (!st) return;
+    if (!st->printF) { printf("Unable to Display Stack: PrintF Function Does Not Exist.\n"); return; }
+
     if (gStackIsEmpty(st)) { printf("[]"); return; }
 
     gStackNode* auxNode = st->top;
@@ -106,56 +110,53 @@ void gStackImpress(gStack* st) {
 }
 
 
-void* gStackRemove(gStack* st, void* data) {
-    if (!st) return NULL;
-    if (gStackIsEmpty(st)) return NULL;
+void gStackRemove(gStack* st, Pointer data) {
+    if (!st) return;
+    if (gStackIsEmpty(st)) return;
 
     gStackNode* auxNode = st->top, *previousNode = NULL;
     while (auxNode) {
-        if (st->compareF(auxNode->data, data) != 0) {
-            // Not the desired element:
-            previousNode = auxNode;
-            auxNode = auxNode->next;
-            continue;
-        }
-
-        // Node contains the desired 
-        // information. Proceeding 
-        // to remove:
-        (st->counter)--;
-        
-        // Removing the Top of Stack:
-        if (!previousNode) {
-            st->top = st->top->next;
-            void* returnData = auxNode->data;
-            free(auxNode); auxNode = NULL;
-
-            return returnData;
-        }
-
-        // Removing the Bottom of Stack:
-        if (!auxNode->next) {
-            previousNode->next = NULL;
-            void* returnData = auxNode->data;
-            free(auxNode); auxNode = NULL;
-
-            return returnData;
-        }
-
-        // Removing Element in Middle:
-        previousNode->next = auxNode->next;
-        void* returnData = auxNode->data;
-        free(auxNode); auxNode = NULL;
-        
-        return returnData;
-        
+        if (st->compareF(auxNode->data, data) == 0) break;
+        // Not the desired element:
+        previousNode = auxNode;
+        auxNode = auxNode->next;
     }
 
     // Element not Found:
-    return NULL;
+    if (!auxNode) return;
+
+    // Node contains the desired 
+    // information. Proceeding 
+    // to remove:
+    (st->counter)--;
+    
+    // Removing the Top of Stack:
+    if (!previousNode) {
+        st->top = st->top->next;
+        if (st->destroyF) st->destroyF(auxNode->data);
+        free(auxNode); auxNode = NULL;
+
+        return;
+    }
+
+    // Removing the Bottom of Stack:
+    if (!auxNode->next) {
+        previousNode->next = NULL;
+        if (st->destroyF) st->destroyF(auxNode->data);
+        free(auxNode); auxNode = NULL;
+
+        return;
+    }
+
+    // Removing Element in Middle:
+    previousNode->next = auxNode->next;
+    if (st->destroyF) st->destroyF(auxNode->data);
+    free(auxNode); auxNode = NULL;
+    
+    return;
 }
 
-bool gStackSearch(gStack* st, void* data) {
+bool gStackSearch(gStack* st, Pointer data) {
     if (!st) return 0;
     if (gStackIsEmpty(st)) return 0;
 

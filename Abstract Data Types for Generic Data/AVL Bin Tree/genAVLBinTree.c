@@ -201,15 +201,16 @@ gAVLBinTreeNode* balanceGenAVLBinTree(gAVLBinTreeNode* subtree) {
 
 // Auxiliary function to insert a new node 
 // recursively into the binary tree:
-gAVLBinTreeNode* avlBinTreeInsertNode(gAVLBinTreeNode* subtree, gAVLBinTreeNode* newleaf, compareFunctionGenAVLBinTree comparef) {
+gAVLBinTreeNode* avlBinTreeInsertNode(gAVLBinTreeNode* subtree, gAVLBinTreeNode* newleaf, gAVLBinTree* originalTree) {
     if (!subtree) return NULL;
 
-    int result = comparef(newleaf->data, subtree->data);
+    int result = originalTree->compareF(newleaf->data, subtree->data);
 
     // The new node to be inserted is already present in the 
     // tree, we deallocate its memory and do not insert it:
     if (result == 0) {
-        free(newleaf);
+        if (originalTree->destroyF) originalTree->destroyF(newleaf->data);
+        free(newleaf); newleaf = NULL;
         return NULL;
     }
 
@@ -236,7 +237,7 @@ gAVLBinTreeNode* avlBinTreeInsertNode(gAVLBinTreeNode* subtree, gAVLBinTreeNode*
         //  Inserting recursively into the right side of the tree. If the 
         // element already exists, the function returns NULL and no changes 
         // to the tree structure are performed:
-        gAVLBinTreeNode* insertionResult = avlBinTreeInsertNode(subtree->right, newleaf, comparef);
+        gAVLBinTreeNode* insertionResult = avlBinTreeInsertNode(subtree->right, newleaf, originalTree);
         if (insertionResult == NULL) return NULL;
 
         //  Assigning the result of the recursive 
@@ -272,7 +273,7 @@ gAVLBinTreeNode* avlBinTreeInsertNode(gAVLBinTreeNode* subtree, gAVLBinTreeNode*
         //  Inserting recursively into the left side of the tree. If the 
         // element already exists, the function returns NULL and no changes 
         // to the tree structure are performed:
-        gAVLBinTreeNode* insertionResult = avlBinTreeInsertNode(subtree->left, newleaf, comparef);
+        gAVLBinTreeNode* insertionResult = avlBinTreeInsertNode(subtree->left, newleaf, originalTree);
         if (insertionResult == NULL) return NULL;
 
         //  Assigning the result of the recursive
@@ -289,13 +290,19 @@ gAVLBinTreeNode* avlBinTreeInsertNode(gAVLBinTreeNode* subtree, gAVLBinTreeNode*
 
 // Auxiliary function used for the purpose of recursively 
 // deallocating the memory used in the binary tree:
-void avlBinTreeFreeRecursively(gAVLBinTreeNode* subtree) {
+void avlBinTreeFreeRecursively(gAVLBinTreeNode* subtree, destroyFunctionGenAVLBinTree destroyF) {
     if (!subtree) return;
 
-    if (subtree->left && !subtree->right) { free(subtree); subtree = NULL; return; }
+    if (subtree->left && !subtree->right) {
+        if (destroyF) destroyF(subtree->data);
+        free(subtree); subtree = NULL;
+        return;
+    }
 
-    avlBinTreeFreeRecursively(subtree->left);
-    avlBinTreeFreeRecursively(subtree->right);
+    avlBinTreeFreeRecursively(subtree->left, destroyF);
+    avlBinTreeFreeRecursively(subtree->right, destroyF);
+    
+    if (destroyF) destroyF(subtree->data);
     free(subtree); subtree = NULL;
 
     return;
@@ -305,12 +312,12 @@ void avlBinTreeFreeRecursively(gAVLBinTreeNode* subtree) {
 //  Auxiliary function used for the purpose of removing a 
 // certain element from the binary tree. The return value 
 // corresponds to the pointer to  the tree with the element removed:
-gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, void* data, compareFunctionGenAVLBinTree compareF) {
+gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, Pointer data, gAVLBinTree* originalTree) {
     if (!subtree) return NULL;
 
     // Result of the comparison between the node's information 
     // fields and the information to be removed:
-    int result = compareF(data, subtree->data);
+    int result = originalTree->compareF(data, subtree->data);
 
     // The element to be removed is on the right side of the tree:
     if (result > 0) {
@@ -324,7 +331,7 @@ gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, void* data, com
          the remove function to preserve the modifications of 
          the original tree:
         */
-        subtree->right = gAVLBinTreeRemoveNode(subtree->right, data, compareF);
+        subtree->right = gAVLBinTreeRemoveNode(subtree->right, data, originalTree);
 
         // Recalculating the height of the tree 
         // to correct any changes to its value:
@@ -347,7 +354,7 @@ gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, void* data, com
          the remove function to preserve the modifications of
          the original tree:
         */
-        subtree->left = gAVLBinTreeRemoveNode(subtree->left, data, compareF);
+        subtree->left = gAVLBinTreeRemoveNode(subtree->left, data, originalTree);
 
         // Recalculating the height of the tree
         // to correct any changes to its value:
@@ -366,7 +373,10 @@ gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, void* data, com
         // If there are no branches to the left of the root, the 
         // new root will be the Child node to the right of the root:
         gAVLBinTreeNode* returnNode = auxNode->right;
+        
+        if (originalTree->destroyF) originalTree->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
+        
         if (returnNode != NULL) { returnNode->height = recalculateGenAVLSubTreeHeight(returnNode); }
 
         return balanceGenAVLBinTree(returnNode);
@@ -378,7 +388,10 @@ gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, void* data, com
         // node to the left of the root:
         auxNode->left->right = auxNode->right;
         gAVLBinTreeNode* returnNode = auxNode->left;
+        
+        if (originalTree->destroyF) originalTree->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
+
         if (returnNode != NULL) { returnNode->height = recalculateGenAVLSubTreeHeight(returnNode); }
         
         return balanceGenAVLBinTree(returnNode);
@@ -401,7 +414,7 @@ gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, void* data, com
     // Overwriting the content of the root node:
     subtree->data = substitute->data;
     // Removing the replacement node recursively:
-    subsParent->right = gAVLBinTreeRemoveNode(substitute, substitute->data, compareF);
+    subsParent->right = gAVLBinTreeRemoveNode(substitute, substitute->data, originalTree);
     // Recalculating the height of the tree to 
     // correct for any possible changes in its 
     // value after removal:
@@ -432,6 +445,7 @@ gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, void* data, com
                           tree representation.
 */
 void gAVLBinTreeTextReprRecursively(gAVLBinTreeNode* subtree, impressFunctionGenAVLBinTree printF) {
+    if (!printF) return;
     if (!subtree) { printf("<>"); return; }
 
     /*
@@ -466,10 +480,10 @@ void gAVLBinTreeTextReprRecursively(gAVLBinTreeNode* subtree, impressFunctionGen
 
 // Function responsible for properly initializing an AVL 
 // binary tree structure and returning a pointer to it:
-gAVLBinTree* initgAVLBinTree(impressFunctionGenAVLBinTree printF, compareFunctionGenAVLBinTree compareF) {
+gAVLBinTree* initgAVLBinTree(impressFunctionGenAVLBinTree printF, compareFunctionGenAVLBinTree compareF, destroyFunctionGenAVLBinTree destroyF) {
 
-    if (!printF || !compareF) {
-        fprintf(stderr, "Error: At least one of the provided functions is NULL when creating a new generic AVL Binary Tree.\n");
+    if (!compareF) {
+        fprintf(stderr, "Error: Compare Function is NULL when creating a new generic AVL Bin Tree.\n");
         return NULL;
     }
     
@@ -486,11 +500,12 @@ gAVLBinTree* initgAVLBinTree(impressFunctionGenAVLBinTree printF, compareFunctio
     }
 
     // Assigning the values and pointers to their respective fields:
-    newtree->printF = printF;
-    newtree->compareF = compareF;
     newtree->counter = (size_t)0;
     newtree->root = NULL;
-    
+    newtree->printF = printF;
+    newtree->compareF = compareF;
+    newtree->destroyF = destroyF;
+
     return newtree;
 }
 
@@ -499,7 +514,7 @@ gAVLBinTree* initgAVLBinTree(impressFunctionGenAVLBinTree printF, compareFunctio
 // whether a binary tree is empty:
 bool gAVLBinTreeIsEmpty(gAVLBinTree* tree) {
     if (!tree) return 1;
-    return (tree->counter <= 0);
+    return (tree->counter <= (size_t)0);
 }
 
 
@@ -507,6 +522,8 @@ bool gAVLBinTreeIsEmpty(gAVLBinTree* tree) {
 // binary tree through a symmetric traversal:
 void gAVLBinTreeImpress(gAVLBinTree* tree) {
     if (!tree) return;
+    if (!tree->printF) { printf("Unable to Display AVL Bin Tree: PrintF Function Does Not Exist.\n"); return; }
+
     if (gAVLBinTreeIsEmpty(tree)) {
         printf("<>");
         return;
@@ -515,13 +532,14 @@ void gAVLBinTreeImpress(gAVLBinTree* tree) {
     printf("< ");
     impressGenAVLBinTreeSymetric(tree->root, tree->printF);
     printf("\b\b >");
+
     return;
 }
 
 
 //  Boolean function whose purpose is to inform whether 
 // a certain element is present in the binary tree:
-bool gAVLBinTreeSearch(gAVLBinTree* tree, void* data) {
+bool gAVLBinTreeSearch(gAVLBinTree* tree, Pointer data) {
     if (!tree) return 0;
     if (gAVLBinTreeIsEmpty(tree)) return 0;
 
@@ -535,18 +553,10 @@ bool gAVLBinTreeSearch(gAVLBinTree* tree, void* data) {
         if (result < 0) { auxNode = auxNode->left; continue; }
 
         // result == 0 => Element Found:
-        break;
+        return 1;
     }
 
-    /*
-     At the end of operations, there are two possibilities that the
-     content stored by the auxNode pointer can assume: NULL or a
-     specific memory address. If auxNode is NULL, the returned value
-     will be 0, indicating the absence of the element sought in the tree;
-     otherwise the value 1 will be returned, signaling the finding of 
-     the desired value in the tree:
-    */
-    return ((auxNode != NULL) ? 1 : 0);
+    return 0;
 }
 
 
@@ -556,7 +566,7 @@ bool gAVLBinTreeSearch(gAVLBinTree* tree, void* data) {
  that mutually share the same type of data, otherwise the behavior of 
  the binary tree will be unpredictable or cause a collapse in the program:
 */
-void gAVLBinTreeInsert(gAVLBinTree* tree, void* data) {
+void gAVLBinTreeInsert(gAVLBinTree* tree, Pointer data) {
     if (!tree) return;
 
     // Allocating the amount of memory necessary to 
@@ -575,7 +585,7 @@ void gAVLBinTreeInsert(gAVLBinTree* tree, void* data) {
     // Appropriately initializing the fields of the 
     // new leaf with their respective corresponding values:
     newleaf->data = data;
-    newleaf->height = 1;
+    newleaf->height = (size_t)1;
     newleaf->left = NULL;
     newleaf->right = NULL;
 
@@ -587,7 +597,7 @@ void gAVLBinTreeInsert(gAVLBinTree* tree, void* data) {
     }
 
     // Inserting the New Node on the Tree:
-    gAVLBinTreeNode* insertionResult = avlBinTreeInsertNode(tree->root, newleaf, tree->compareF);
+    gAVLBinTreeNode* insertionResult = avlBinTreeInsertNode(tree->root, newleaf, tree);
 
     // Newnode is already in the tree:
     if (insertionResult == NULL) return;
@@ -610,7 +620,7 @@ gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree) {
     if (!tree) return NULL;
 
     // Initializing the new copy of the original tree:
-    gAVLBinTree* newtree = initgAVLBinTree(tree->printF, tree->compareF);
+    gAVLBinTree* newtree = initgAVLBinTree(tree->printF, tree->compareF, tree->destroyF);
     
     // If the tree is empty, simply return a new, freshly initialized binary tree:
     if (gAVLBinTreeIsEmpty(tree)) return newtree;
@@ -623,7 +633,10 @@ gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree) {
      with the aim of storing the elements and inserting them in their 
      corresponding order.
     */
-    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF);
+
+    // We do not provide a function to destroy elements during stack 
+    // creation in order to preserve the information contained in each element:
+    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF, NULL);
     
     // We first start by enqueuing the root node of the tree.
     gQueueEnqueue(treeQueue, tree->root);
@@ -658,7 +671,7 @@ gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree) {
 //  Function whose purpose is to return a pointer to the 
 // largest element contained in the binary tree. If the 
 // tree is empty, a pointer to NULL is returned:
-void* gAVLBinTreeGetBiggest(gAVLBinTree* tree) {
+Pointer gAVLBinTreeGetBiggest(gAVLBinTree* tree) {
     if (!tree) return NULL;
     if (gAVLBinTreeIsEmpty(tree)) return NULL;
 
@@ -674,7 +687,7 @@ void* gAVLBinTreeGetBiggest(gAVLBinTree* tree) {
 //  Function whose purpose is to return a pointer to the 
 // smallest element contained in the binary tree. If the 
 // tree is empty, a pointer to NULL is returned:
-void* gAVLBinTreeGetSmallest(gAVLBinTree* tree) {
+Pointer gAVLBinTreeGetSmallest(gAVLBinTree* tree) {
     if (!tree) return NULL;
     if (gAVLBinTreeIsEmpty(tree)) return NULL;
 
@@ -741,8 +754,8 @@ bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2) {
     compareFunctionGenAVLBinTree compFunction = tree1->compareF;
 
     // Initializing two distinct Stacks to allocate the Binary Trees:
-    gStack* treeStack1 = initgStack(impFunction, compFunction);
-    gStack* treeStack2 = initgStack(impFunction, compFunction);
+    gStack* treeStack1 = initgStack(impFunction, compFunction, NULL);
+    gStack* treeStack2 = initgStack(impFunction, compFunction, NULL);
 
     // initially inserting the roots of the Binary Trees:
     gStackPush(treeStack1, tree1->root);
@@ -804,6 +817,8 @@ bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2) {
 // traversal of the elements contained therein:
 void gAVLBinTreeimpressByLevel(gAVLBinTree* tree) {
     if (!tree) return;
+    if (!tree->printF) { printf("Unable to Display AVL Bin Tree: PrintF Function Does Not Exist.\n"); return; }
+
     if (gAVLBinTreeIsEmpty(tree)) { printf("<>"); return; }
 
     /*
@@ -815,7 +830,7 @@ void gAVLBinTreeimpressByLevel(gAVLBinTree* tree) {
      data queue will be created to perform this function and assist 
      in the execution of this task:
     */
-    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF);
+    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF, NULL);
     // initially enqueuing the root of the tree:
     gQueueEnqueue(treeQueue, tree->root);
 
@@ -857,7 +872,7 @@ void gAVLBinTreeDestroy(gAVLBinTree** tree) {
         return;
     }
 
-    avlBinTreeFreeRecursively((*tree)->root);
+    avlBinTreeFreeRecursively((*tree)->root, (*tree)->destroyF);
     free(*tree); (*tree) = NULL;
 
     return;
@@ -866,7 +881,7 @@ void gAVLBinTreeDestroy(gAVLBinTree** tree) {
 
 // Function responsible for removing any element from the 
 // AVL Binary Tree if it is contained therein:
-void gAVLBinTreeRemove(gAVLBinTree* tree, void* data) {
+void gAVLBinTreeRemove(gAVLBinTree* tree, Pointer data) {
     if (!tree) return;
     if (gAVLBinTreeIsEmpty(tree)) return;
 
@@ -874,7 +889,7 @@ void gAVLBinTreeRemove(gAVLBinTree* tree, void* data) {
     if (!gAVLBinTreeSearch(tree, data)) return;
 
     // Removing the element from the Tree:
-    gAVLBinTreeNode* result = gAVLBinTreeRemoveNode(tree->root, data, tree->compareF);
+    gAVLBinTreeNode* result = gAVLBinTreeRemoveNode(tree->root, data, tree);
 
     //  Performing a check to determine that the removed element was not the 
     // last one in the tree. If this condition is true, the height of the tree 
@@ -895,7 +910,7 @@ void gAVLBinTreeRemove(gAVLBinTree* tree, void* data) {
 //  Function used to inform the number of 
 // elements present in an AVL binary tree:
 size_t gAVLBinTreeCount(gAVLBinTree* tree) {
-    if (!tree) return 0;
+    if (!tree) return (size_t)0;
     return tree->counter;
 }
 
@@ -904,6 +919,8 @@ size_t gAVLBinTreeCount(gAVLBinTree* tree) {
 // representation of the provided AVL Binary Tree on the terminal:
 void gAVLBinTreeTextRepr(gAVLBinTree* tree) {
     if (!tree) return;
+    if (!tree->printF) { printf("Unable to Display AVL Bin Tree: PrintF Function Does Not Exist.\n"); return; }
+
     if (gAVLBinTreeIsEmpty(tree)) { printf("< <> <>>"); return; }
 
     srand((unsigned)time(NULL));
@@ -914,7 +931,7 @@ void gAVLBinTreeTextRepr(gAVLBinTree* tree) {
 
 
 // Function used to obtain the height of a node in the binary tree:
-long long int gAVLBinTreeGetNodeHeight(gAVLBinTree* tree, void* data) {
+long long int gAVLBinTreeGetNodeHeight(gAVLBinTree* tree, Pointer data) {
     if (!tree || gAVLBinTreeIsEmpty(tree)) return (-1);
     
     gAVLBinTreeNode* auxNode = tree->root;

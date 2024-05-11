@@ -1,9 +1,9 @@
 #include "genQueue.h"
 
-gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compareF) {
+gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compareF, destroyFunctionGenQueue destroyF) {
 
-    if (!printF || !compareF) {
-        fprintf(stderr, "Error: At least one of the provided functions is NULL when creating a new generic Queue.\n");
+    if (!compareF) {
+        fprintf(stderr, "Error: Compare Function is NULL when creating a new generic Queue.\n");
         return NULL;
     }
 
@@ -18,6 +18,7 @@ gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compa
     newqueue->front = newqueue->rear = NULL;
     newqueue->printF = printF;
     newqueue->compareF = compareF;
+    newqueue->destroyF = destroyF;
 
     return newqueue;
 }
@@ -29,7 +30,9 @@ bool gQueueIsEmpty(gQueue* q) {
 }
 
 
-void gQueueEnqueue(gQueue* q, void* data) {
+void gQueueEnqueue(gQueue* q, Pointer data) {
+    if (!q) return;
+
     gQueueNode* newnode = (gQueueNode *) malloc (sizeof(gQueueNode));
     if (newnode == NULL) {
         fprintf(stderr, "Error: Unable to allocate memory to a new generic Queue node.\n");
@@ -55,6 +58,7 @@ void gQueueEnqueue(gQueue* q, void* data) {
 
 void gQueueImpress(gQueue* q) {
     if (!q) return;
+    if (!q->printF) { printf("Unable to Display Queue: PrintF Function Does Not Exist.\n"); return; }
     if (gQueueIsEmpty(q)) { printf("[]"); return; }
     
     printf("[");
@@ -73,6 +77,7 @@ void gQueueImpress(gQueue* q) {
 void gQueueDestroy(gQueue** q) {
     if (!q) return;
     if (!(*q)) return;
+
     if (gQueueIsEmpty(*q)) {
         free(*q); (*q) = NULL;
         return;
@@ -82,18 +87,17 @@ void gQueueDestroy(gQueue** q) {
 
     do {
         (*q)->front = (*q)->front->next;
-        free(auxNode);
-        auxNode = (*q)->front;
+        if ((*q)->destroyF) (*q)->destroyF(auxNode->data);
+        free(auxNode); auxNode = (*q)->front;
     } while (auxNode);
 
-    free(*q);
-    (*q) = NULL;
+    free(*q); (*q) = NULL;
 
     return;
 }
 
 
-bool gQueueSearch(gQueue* q, void* data) {
+bool gQueueSearch(gQueue* q, Pointer data) {
     if (!q) return 0;
     if (gQueueIsEmpty(q)) return 0;
 
@@ -107,9 +111,9 @@ bool gQueueSearch(gQueue* q, void* data) {
 }
 
 
-void* gQueueRemove(gQueue* q, void* data) {
-    if (!q) return NULL;
-    if (gQueueIsEmpty(q)) return NULL;
+void gQueueRemove(gQueue* q, Pointer data) {
+    if (!q) return;
+    if (gQueueIsEmpty(q)) return;
 
     gQueueNode* auxNode = q->front, *previous = NULL;
     while(auxNode) {
@@ -124,39 +128,39 @@ void* gQueueRemove(gQueue* q, void* data) {
     }
 
     // Element not Found:
-    if (!auxNode) return NULL;
+    if (!auxNode) return;
     // Otherwise, element Found:
     (q->counter)--;
 
     // Removing First Element:
     if (!previous) {
         q->front = q->front->next;
-        void* returnData = auxNode->data;
+        if (q->destroyF) q->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
         
-        return returnData;
+        return;
     }
 
     // Removing Last Element:
     if (!auxNode->next) {
         q->rear = previous;
         q->rear->next = NULL;
-        void* returnData = auxNode->data;
+        if (q->destroyF) q->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
         
-        return returnData;
+        return;
     }
 
     // Removing Element in Middle:
     previous->next = auxNode->next;
-    void* returnData = auxNode->data;
+    if (q->destroyF) q->destroyF(auxNode->data);
     free(auxNode); auxNode = NULL;
     
-    return returnData;
+    return;
 }
 
 
-void* gQueueDequeue(gQueue* q) {
+Pointer gQueueDequeue(gQueue* q) {
     if (!q) return NULL;
     if (gQueueIsEmpty(q)) return NULL;
 
@@ -164,7 +168,7 @@ void* gQueueDequeue(gQueue* q) {
     gQueueNode* auxNode = q->front;
     q->front = q->front->next;
 
-    void* returnData = auxNode->data;
+    Pointer returnData = auxNode->data;
     free(auxNode) ; auxNode = NULL;
 
     return returnData;
@@ -185,6 +189,7 @@ void gQueueClear(gQueue* q) {
     gQueueNode* auxNode = q->front;
     while (auxNode) {
         q->front = q->front->next;
+        if (q->destroyF) q->destroyF(auxNode->data);
         free(auxNode); auxNode = q->front;
     }
 

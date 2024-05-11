@@ -5,8 +5,6 @@
 #ifndef GENERICLINKEDLIST_H
 #define GENERICLINKEDLIST_H
 
-#include "genLinkedList.h"
-
 /*  
   If necessary, it is possible to specify 
  the type of pointer used in the data 
@@ -80,7 +78,7 @@ int main(int argc, char** argv) {
     gLinkedList* linkedListOfPersons = initgLinkedList(impressf, comparef, destroyf);
     printf("List Created: "); gLinkedListImpress(linkedListOfPersons); printf("\n");
 
-    Person *person1 = createPerson("Ayrton", 19), *person2 = createPerson("James", 20), *person3 = createPerson("NULL", 17);
+    Person *person1 = createPerson("Ayrton", 19), *person2 = createPerson("James", 20), *person3 = createPerson(NULL, 17);
     Person *person4 = createPerson("Carlos", 21), *person5 = createPerson("Davi", 18);
 
     gLinkedListAppend(linkedListOfPersons, person1);
@@ -201,6 +199,7 @@ Person* createPerson(char* name, unsigned int id) {
 
     return newPerson;
 }
+
 
 void destroyf(void* data) {
     if(!data) return;

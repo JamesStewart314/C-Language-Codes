@@ -43,7 +43,7 @@ void gLinkedListDestroy(gLinkedList** list) {
     gLinkedListNode* auxNode = (*list)->front;
     while (auxNode) {
         (*list)->front = (*list)->front->next;
-        if((*list)->destroyF) (*list)->destroyF(auxNode);
+        if((*list)->destroyF) (*list)->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
         auxNode = (*list)->front;
     }
@@ -103,7 +103,7 @@ void gLinkedListRemove(gLinkedList* list, Pointer data) {
     // Removing from start:
     if (!previous) {        
         list->front = list->front->next;
-        if (list->destroyF) list->destroyF(auxNode);
+        if (list->destroyF) list->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
 
         return;
@@ -113,7 +113,7 @@ void gLinkedListRemove(gLinkedList* list, Pointer data) {
     if (!auxNode->next) {
         list->rear = previous;
         list->rear->next = NULL;
-        if (list->destroyF) list->destroyF(auxNode);
+        if (list->destroyF) list->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
 
         return;
@@ -121,7 +121,7 @@ void gLinkedListRemove(gLinkedList* list, Pointer data) {
 
     // Removing element in the middle:
     previous->next = auxNode->next;
-    if (list->destroyF) list->destroyF(auxNode);
+    if (list->destroyF) list->destroyF(auxNode->data);
     free(auxNode); auxNode = NULL;
 
     return;
@@ -158,7 +158,7 @@ void gLinkedListClear(gLinkedList* list) {
     while (list->front) {
         auxNode = list->front;
         list->front = list->front->next;
-        if(list->destroyF) list->destroyF(auxNode);
+        if(list->destroyF) list->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
     }
 
@@ -248,7 +248,7 @@ Pointer gLinkedListGetSmallest(gLinkedList* list) {
 
 void gLinkedListImpress(gLinkedList* list) {
     if (!list) return;
-    if (!list->printF) { printf("Unable to Display Linked List: Display Function Does Not Exist.\n"); return; };
+    if (!list->printF) { printf("Unable to Display Linked List: PrintF Function Does Not Exist.\n"); return; };
     if (gLinkedListIsEmpty(list)) { printf("[]"); return; }
 
     printf("[");
