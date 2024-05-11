@@ -62,8 +62,6 @@ bool gMixedGraphSearchEdge(gMixedGraph* graph, Pointer vertex1, Pointer vertex2)
 
 */
 
-// 
-
 //
 // Example of Using the Graph in a Program:
 /*
