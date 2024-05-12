@@ -15,12 +15,12 @@
 */
 typedef void* gLkLsPointerData;
 
-typedef void (*impressFunctionGenLinkedList)(gLkLsPointerData data);                                                                                        // Function responsible for displaying each element in the list with appropriate formatting;
+typedef void (*impressFunctionGenLinkedList)(gLkLsPointerData data);                                                                             // Function responsible for displaying each element in the list with appropriate formatting;
 
-typedef int (*compareFunctionGenLinkedList)(gLkLsPointerData data1, gLkLsPointerData data2);                                                                         //  Function whose purpose is to compare two elements in the list. Returns zero if the elements are equal, a negative value if  
-                                                                                                                                                   // the first parameter is less than the second, and a positive value if the first parameter is greater than the second;
+typedef int (*compareFunctionGenLinkedList)(gLkLsPointerData data1, gLkLsPointerData data2);                                                     //  Function whose purpose is to compare two elements in the list. Returns zero if the elements are equal, a negative value if  
+                                                                                                                                                 // the first parameter is less than the second, and a positive value if the first parameter is greater than the second;
 
-typedef void (*destroyFuntionGenLinkedList)(gLkLsPointerData data);                                                                                         // Function intended to deallocate the memory reserved in each individual element of the linked list.
+typedef void (*destroyFuntionGenLinkedList)(gLkLsPointerData data);                                                                              // Function intended to deallocate the memory reserved in each individual element of the linked list.
 
 typedef struct GENERICLINKEDLISTNODE {
     gLkLsPointerData data;
@@ -50,7 +50,7 @@ bool gLinkedListSearch(gLinkedList* list, gLkLsPointerData data);               
 bool gLinkedListIsEquals(gLinkedList* list1, gLinkedList* list2);                                                                                // Determines whether two linked lists are identical. The judging criterion rests on determining the quantitative, qualitative and structural equivalence regarding the arrangement of the elements in the list;
 bool gLinkedListHasSameElements(gLinkedList* list1, gLinkedList* list2);                                                                         // Check whether two linked lists mutually share the same content
 size_t gLinkedListSize(gLinkedList* list);                                                                                                       // Return the number of elements in the linked list;
-size_t gLinkedListCount(gLinkedList* list, gLkLsPointerData data);
+size_t gLinkedListCount(gLinkedList* list, gLkLsPointerData data);                                                                               // Counts and returns the number of occurrences of a given element in the linked list;
 gLkLsPointerData gLinkedListPop(gLinkedList* list, long int index);                                                                              // Removes and returns the node at the specified index position in the linked list;
 gLkLsPointerData gLinkedListGetBiggest(gLinkedList* list);                                                                                       // Returns a pointer containing the largest value in the linked list;
 gLkLsPointerData gLinkedListGetSmallest(gLinkedList* list);                                                                                      // Returns a pointer containing the smallest value in the linked list.
