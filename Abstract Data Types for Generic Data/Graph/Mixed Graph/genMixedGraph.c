@@ -305,7 +305,7 @@ bool gMixedGraphSearchEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixG
 }
 
 
-size_t gMixedGraphCount(gMixedGraph* graph) {
+size_t gMixedGraphSize(gMixedGraph* graph) {
     if (!graph) return (size_t)0;
     return graph->counter;
 }

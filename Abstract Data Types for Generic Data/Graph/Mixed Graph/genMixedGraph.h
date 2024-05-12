@@ -49,7 +49,7 @@ bool gMixedGraphSearchVertex(gMixedGraph* graph, mixGraphPointerData data);
 bool gMixedGraphSearchUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData sourceVertex, mixGraphPointerData destinationVertex);
 bool gMixedGraphSearchEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixGraphPointerData vertex2);
 bool gMixedGraphIsEquals(gMixedGraph* graph1, gMixedGraph* graph2);
-size_t gMixedGraphCount(gMixedGraph* graph);
+size_t gMixedGraphSize(gMixedGraph* graph);
 size_t gMixedGraphGetVertexDegree(gMixedGraph* graph, mixGraphPointerData vertex);
 
 #endif
