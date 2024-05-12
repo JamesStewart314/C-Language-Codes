@@ -11,6 +11,7 @@
 
 
 /* TODO: CREATE THE DEEP COPY FUNCTIONALITY FOR EVERY DATA STRUCTURE. */
+/* TODO: Correct the syntax of the comparison and alignment functions for comments in All data structures */
 
 
 /*
