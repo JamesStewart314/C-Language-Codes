@@ -44,6 +44,9 @@ bool gMixedGraphIsEmpty(gMixedGraph* graph);
 bool gMixedGraphSearchVertex(gMixedGraph* graph, Pointer data);
 bool gMixedGraphSearchUnidirectionalEdge(gMixedGraph* graph, Pointer sourceVertex, Pointer destinationVertex);
 bool gMixedGraphSearchEdge(gMixedGraph* graph, Pointer vertex1, Pointer vertex2);
+bool gMixedGraphIsEquals(gMixedGraph* graph1, gMixedGraph* graph2);
+size_t gMixedGraphCount(gMixedGraph* graph);
+size_t gMixedGraphGetVertexDegree(gMixedGraph* graph, Pointer vertex);
 
 #endif
 
@@ -85,10 +88,12 @@ int main(int argc, char** argv) {
     gMixedGraphInsertVertex(graphOfIntegers, &val5);
 
     gMixedGraphImpress(graphOfIntegers);
+    printf("\nVertex Degree of 4: %zu\n\n", gMixedGraphGetVertexDegree(graphOfIntegers, &val4));
 
     gMixedGraphCreateUnidirectionalEdge(graphOfIntegers, &val1, &val5);
     gMixedGraphCreateUnidirectionalEdge(graphOfIntegers, &val1, &val2);
     gMixedGraphCreateUnidirectionalEdge(graphOfIntegers, &val1, &val3);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegers, &val2, &val2);
     gMixedGraphCreateUnidirectionalEdge(graphOfIntegers, &val2, &val4);
     gMixedGraphCreateUnidirectionalEdge(graphOfIntegers, &val2, &val3);
     gMixedGraphCreateUnidirectionalEdge(graphOfIntegers, &val2, &val3);
@@ -99,6 +104,9 @@ int main(int argc, char** argv) {
     gMixedGraphCreateEdge(graphOfIntegers, &val4, &val5);
 
     gMixedGraphImpress(graphOfIntegers);
+    printf("\n=> Vertex Degree of 4: %zu\n", gMixedGraphGetVertexDegree(graphOfIntegers, &val4));
+    printf("=> Vertex Degree of 2: %zu\n", gMixedGraphGetVertexDegree(graphOfIntegers, &val2));
+    printf("=> Vertex Degree of 3: %zu\n\n", gMixedGraphGetVertexDegree(graphOfIntegers, &val3));
 
     gMixedGraphRemoveEdge(graphOfIntegers, &val3, &val4);
 
@@ -107,7 +115,37 @@ int main(int argc, char** argv) {
     printf("\nThere is a unidirectional edge starting from val5 and pointing to val3: %s\n", gMixedGraphSearchUnidirectionalEdge(graphOfIntegers, &val5, &val3) ? "Yes" : "No");
     printf("\nThere is an edge between val5 and val3: %s\n", gMixedGraphSearchEdge(graphOfIntegers, &val5, &val3) ? "Yes" : "No");
 
+    puts("\n*Creating a manual copy of the graph of integers.");
+    gMixedGraph* graphOfIntegersMCopy = initgMixedGraph(impressf, comparef, NULL);
+
+    gMixedGraphInsertVertex(graphOfIntegersMCopy, &val1);
+    gMixedGraphInsertVertex(graphOfIntegersMCopy, &val2);
+    gMixedGraphInsertVertex(graphOfIntegersMCopy, &val3);
+    gMixedGraphInsertVertex(graphOfIntegersMCopy, &val4);
+    gMixedGraphInsertVertex(graphOfIntegersMCopy, &val5);
+
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val5, &val3);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val5, &val4);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val4, &val5);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val2, &val2);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val2, &val4);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val2, &val3);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val1, &val5);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val1, &val2);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val1, &val3);
+
+    puts("\nCopy Graph:");
+    gMixedGraphImpress(graphOfIntegersMCopy);
+
+    printf("Original Graph and Manual Copy Graph are Equal? %s\n", gMixedGraphIsEquals(graphOfIntegers, graphOfIntegersMCopy) ? "Yes" : "No");
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val1, &val4);
+
+    puts("\nCopy Graph:");
+    gMixedGraphImpress(graphOfIntegersMCopy);
+    printf("Original Graph and Manual Copy Graph are Equal? %s\n", gMixedGraphIsEquals(graphOfIntegers, graphOfIntegersMCopy) ? "Yes" : "No");
+
     gMixedGraphDestroy(&graphOfIntegers);
+    gMixedGraphDestroy(&graphOfIntegersMCopy);
 
     return 0;
 }

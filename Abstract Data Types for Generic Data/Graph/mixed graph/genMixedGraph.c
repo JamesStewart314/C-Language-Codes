@@ -12,6 +12,21 @@
                  of the individual structure of each graph.
 */
 
+
+gMixedGraphVertex* getGraphVertex(gMixedGraph* graph, Pointer vertex) {
+    if (!graph) return NULL;
+    if (gMixedGraphIsEmpty(graph)) return NULL;
+
+    gMixedGraphVertex* auxVertex = graph->currentVertex;
+    while (auxVertex) {
+        if (graph->compareF(auxVertex->data, vertex) == 0) break;
+        auxVertex = auxVertex->nextVertex;
+    }
+
+    return auxVertex;
+}
+
+
 gMixedGraph* initgMixedGraph(impressFunctionGenMixedGraph printF, compareFunctionGenMixedGraph compareF, destroyFunctionGenMixedGraph destroyF) {
 
     if (!compareF) {
@@ -63,7 +78,7 @@ void gMixedGraphDestroy(gMixedGraph** graphPointer) {
 
 
 void gMixedGraphInsertVertex(gMixedGraph* graph, Pointer data) {
-    if(!graph) return;
+    if (!graph) return;
 
     // Checking whether the new vertex is already present in the graph:
     if (gMixedGraphSearchVertex(graph, data)) return;
@@ -199,22 +214,29 @@ void gMixedGraphCreateUnidirectionalEdge(gMixedGraph* graph, Pointer sourceVerte
     if (!graph) return;
     if (gMixedGraphIsEmpty(graph)) return;
 
-    bool foundDestinationVertexFlag = 0;
-
-    gMixedGraphVertex* auxVertex = graph->currentVertex;
+    gMixedGraphVertex *auxVertex = graph->currentVertex, *auxDestinationVertex = NULL;
     while (auxVertex) {
         if (graph->compareF(auxVertex->data, sourceVertex) == 0) break;
-        if (graph->compareF(auxVertex->data, destinationVertex) == 0) foundDestinationVertexFlag = 1;
+        if (graph->compareF(auxVertex->data, destinationVertex) == 0) auxDestinationVertex = auxVertex;
         auxVertex = auxVertex->nextVertex;
     }
 
     if (!auxVertex) return;
 
-    if (!foundDestinationVertexFlag) {
-        if (!gMixedGraphSearchVertex(graph, destinationVertex)) return;
+    if (!auxDestinationVertex) {
+        auxDestinationVertex = auxVertex;
+
+        while (auxDestinationVertex) {
+            if (graph->compareF(auxDestinationVertex->data, destinationVertex) == 0) break;
+            auxDestinationVertex = auxDestinationVertex->nextVertex;
+        }
+
+        if (!auxDestinationVertex) return;
     }
 
+    // Edge Alreary Exists:
     if (gLinkedListSearch(auxVertex->neighboringVertices, destinationVertex)) return;
+
     gLinkedListAppend(auxVertex->neighboringVertices, destinationVertex);
 
     return;
@@ -280,4 +302,74 @@ bool gMixedGraphSearchEdge(gMixedGraph* graph, Pointer vertex1, Pointer vertex2)
     if (gMixedGraphIsEmpty(graph)) return 0;
 
     return (gMixedGraphSearchUnidirectionalEdge(graph, vertex1, vertex2) && gMixedGraphSearchUnidirectionalEdge(graph, vertex2, vertex1));
+}
+
+
+size_t gMixedGraphCount(gMixedGraph* graph) {
+    if (!graph) return (size_t)0;
+    return graph->counter;
+}
+
+
+size_t gMixedGraphGetVertexDegree(gMixedGraph* graph, Pointer vertex) {
+    if (!graph) return (size_t)0;
+    if (gMixedGraphIsEmpty(graph)) return (size_t)0;
+
+    size_t vertexDegree = (size_t)0;
+
+    gMixedGraphVertex* auxVertex = graph->currentVertex;
+    while (auxVertex) {
+        if (graph->compareF(auxVertex->data, vertex) != 0) {
+            if (gLinkedListSearch(auxVertex->neighboringVertices, vertex)) vertexDegree++;
+            
+            auxVertex = auxVertex->nextVertex;
+            continue;
+        }
+        
+        // Vertex Found:
+        gLinkedListNode* auxNode = auxVertex->neighboringVertices->front;
+        while (auxNode) {
+            if (graph->compareF((Pointer)auxNode->data, auxVertex->data) != 0) {
+                // If it corresponds to a one-sided edge, increment one unit:
+                if (!gMixedGraphSearchEdge(graph, (Pointer)auxNode->data, auxVertex->data)) vertexDegree++;
+                auxNode = auxNode->next;
+                continue;
+            }
+
+            // Pointing to himself:
+            vertexDegree += (size_t)2;
+            
+            auxNode = auxNode->next;
+            continue;
+        }
+
+        auxVertex = auxVertex->nextVertex;
+        continue;
+    }
+
+    return vertexDegree;
+}
+
+
+bool gMixedGraphIsEquals(gMixedGraph* graph1, gMixedGraph* graph2) {
+    if (!graph1 || !graph2) return (!graph1 && !graph2);
+    
+    if (graph1->compareF != graph2->compareF) {
+        fprintf(stderr, "Error: It is not possible to compare two graphs whose comparison functions differ from each other.\n");
+        return 0;
+    }
+
+    if (gMixedGraphIsEmpty(graph1) || gMixedGraphIsEmpty(graph2)) return (gMixedGraphIsEmpty(graph1) && gMixedGraphIsEmpty(graph2));
+    
+    if (graph1->counter != graph2->counter) return 0;
+
+    gMixedGraphVertex *auxVertex1 = graph1->currentVertex, *auxVertex2 = NULL;
+    while (auxVertex1) {
+        auxVertex2 = getGraphVertex(graph2, auxVertex1->data);
+        if (!auxVertex2) return 0;
+        if (!gLinkedListHasSameElements(auxVertex1->neighboringVertices, auxVertex2->neighboringVertices)) return 0;
+        auxVertex1 = auxVertex1->nextVertex;
+    }
+
+    return 1;
 }

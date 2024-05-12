@@ -11,14 +11,14 @@
  structure by modifying the preprocessing
  directive parameter right below:
 */
-typedef void* Pointer;
+typedef void* gStPointerData;
 
-typedef void (*impressFunctionGenStack)(Pointer data);
-typedef int (*compareFunctionGenStack)(Pointer data1, Pointer data2);
-typedef void (*destroyFunctionGenStack)(Pointer data);
+typedef void (*impressFunctionGenStack)(gStPointerData data);
+typedef int (*compareFunctionGenStack)(gStPointerData data1, gStPointerData data2);
+typedef void (*destroyFunctionGenStack)(gStPointerData data);
 
 typedef struct GENERICSTACKNODE {
-    Pointer data;
+    gStPointerData data;
     struct GENERICSTACKNODE* next;
 } gStackNode;
 
@@ -34,13 +34,13 @@ typedef struct GENERICSTACK {
 
 gStack* initgStack(impressFunctionGenStack printF, compareFunctionGenStack compareF, destroyFunctionGenStack destroyF); // Initializes the stack;
 void gStackDestroy(gStack** stPointer);                                                                                 // Destroys the Stack;
-void gStackPush(gStack* st, Pointer data);                                                                              // Inserts Elements into the Stack;
-void gStackRemove(gStack* st, Pointer data);                                                                            // Removes and returns a given element from the stack. If it is not present, the function returns NULL;
+void gStackPush(gStack* st, gStPointerData data);                                                                              // Inserts Elements into the Stack;
+void gStackRemove(gStack* st, gStPointerData data);                                                                            // Removes and returns a given element from the stack. If it is not present, the function returns NULL;
 void gStackImpress(gStack* st);                                                                                         // Displays the Stack on the Terminal in List Format;
 bool gStackIsEmpty(gStack* st);                                                                                         // Checks if the Stack is Empty;
-bool gStackSearch(gStack* st, Pointer data);                                                                            // Checks whether an element is present in the Stack, returning 1 if it is and 0 otherwise;
-size_t gStackCount(gStack* st);                                                                                         // Returns the Number of Elements in the Stack;
-Pointer gStackPop(gStack* st);                                                                                          // Returns Void Pointers to Elements Removed from the Stack.
+bool gStackSearch(gStack* st, gStPointerData data);                                                                            // Checks whether an element is present in the Stack, returning 1 if it is and 0 otherwise;
+size_t gStackSize(gStack* st);                                                                                          // Returns the Number of Elements in the Stack;
+gStPointerData gStackPop(gStack* st);                                                                                          // Returns Void Pointers to Elements Removed from the Stack.
 
 #endif
 

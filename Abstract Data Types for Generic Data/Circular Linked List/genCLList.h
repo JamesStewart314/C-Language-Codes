@@ -11,14 +11,14 @@
  structure by modifying the preprocessing
  directive parameter right below:
 */
-typedef void* Pointer;
+typedef void* gCLLPointerData;
 
-typedef void (*impressFunctionGenCLList)(Pointer data);
-typedef int (*compareFunctionGenCLList)(Pointer data1, Pointer data2);
-typedef void (*destroyFunctionGenCLList)(Pointer data);
+typedef void (*impressFunctionGenCLList)(gCLLPointerData data);
+typedef int (*compareFunctionGenCLList)(gCLLPointerData data1, gCLLPointerData data2);
+typedef void (*destroyFunctionGenCLList)(gCLLPointerData data);
 
 typedef struct GENERICCLLISTNODE {
-    Pointer data;
+    gCLLPointerData data;
     struct GENERICCLLISTNODE *previous, *next;
 } gCLListNode;
 
@@ -32,24 +32,24 @@ typedef struct {
 
 
 gCLList* initgCLList(impressFunctionGenCLList printF, compareFunctionGenCLList compareF, destroyFunctionGenCLList destroyF); // Initialize the Circular Linked List;
-void gCLLInsert(gCLList* cll, Pointer data);                                                                                 // Inserts a new element after the current node;
+void gCLLInsert(gCLList* cll, gCLLPointerData data);                                                                         // Inserts a new element after the current node;
 
 void gCLLRemoveCurrent(gCLList* cll);                                                                                        //  Remove the current element, the new current becomes the next 
                                                                                                                              // element after the current one and the function returns the 
                                                                                                                              // information present in the current node just removed;
 
-void gCLLRemove(gCLList* cll, Pointer data);                                                                                 // Remove a specific element, returning its value as a result;
+void gCLLRemove(gCLList* cll, gCLLPointerData data);                                                                         // Remove a specific element, returning its value as a result;
 void gCLLDestroy(gCLList** cllPointer);                                                                                      // Frees memory allocated to the circular linked list;
 void gCLLNext(gCLList* cll);                                                                                                 // Changes the current to the next element in the list;
 void gCLLPrevious(gCLList* cll);                                                                                             // Changes the current to the previous element in the list;
 void gCLLImpress(gCLList* cll);                                                                                              // Displays the circular list on the terminal;
-void gCLLClear(gCLList* cll);                                                                                                // Erase all elements in the Circular List;
-bool gCLLSearch(gCLList* cll, Pointer data);                                                                                 // Checks whether an element is present in the Circular List, returning 1 if it is and 0 otherwise;
+void gCLLClear(gCLList* cll);                                                                                                // Erase all elements in the circular list;
+bool gCLLSearch(gCLList* cll, gCLLPointerData data);                                                                         // Checks whether an element is present in the circular list, returning 1 if it is and 0 otherwise;
 bool gCLLIsEmpty(gCLList* cll);                                                                                              // Informs whether the circular list is empty;
-size_t gCLLCount(gCLList* cll);                                                                                              // Returns the total number of elements in the circular list;
-Pointer gCLLGetCurrent(gCLList* cll);                                                                                        // Returns the data of current element of the circular list;
-Pointer gCLLGetBiggest(gCLList* cll);                                                                                        // Return a pointer to the biggest element in the Circular List;
-Pointer gCLLGetSmallest(gCLList* cll);                                                                                       // Return a pointer to the smallest element in the Circular List.
+size_t gCLLSize(gCLList* cll);                                                                                               // Returns the number of elements in the circular list;
+gCLLPointerData gCLLGetCurrent(gCLList* cll);                                                                                // Returns the data of current element of the circular list;
+gCLLPointerData gCLLGetBiggest(gCLList* cll);                                                                                // Return a pointer to the biggest element in the circular list;
+gCLLPointerData gCLLGetSmallest(gCLList* cll);                                                                               // Return a pointer to the smallest element in the circular list.
 
 #endif
 

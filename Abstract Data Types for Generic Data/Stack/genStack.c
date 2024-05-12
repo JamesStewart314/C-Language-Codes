@@ -52,7 +52,7 @@ void gStackDestroy(gStack** stPointer) {
 }
 
 
-void gStackPush(gStack* st, Pointer data) {
+void gStackPush(gStack* st, gStPointerData data) {
     if (!st) return;
 
     gStackNode* newnode = (gStackNode *) malloc (sizeof(gStackNode));
@@ -70,7 +70,7 @@ void gStackPush(gStack* st, Pointer data) {
 }
 
 
-Pointer gStackPop(gStack* st) {
+gStPointerData gStackPop(gStack* st) {
     if (!st) return NULL;
     if (gStackIsEmpty(st)) return NULL;
 
@@ -78,14 +78,14 @@ Pointer gStackPop(gStack* st) {
     gStackNode* auxNode = st->top;
     st->top = st->top->next;
 
-    Pointer returnData = auxNode->data;
+    gStPointerData returnData = auxNode->data;
     free(auxNode) ; auxNode = NULL;
 
     return returnData;
 }
 
 
-size_t gStackCount(gStack* st) {
+size_t gStackSize(gStack* st) {
     if (!st) return (size_t)0;
     return st->counter;
 }
@@ -110,7 +110,7 @@ void gStackImpress(gStack* st) {
 }
 
 
-void gStackRemove(gStack* st, Pointer data) {
+void gStackRemove(gStack* st, gStPointerData data) {
     if (!st) return;
     if (gStackIsEmpty(st)) return;
 
@@ -156,7 +156,7 @@ void gStackRemove(gStack* st, Pointer data) {
     return;
 }
 
-bool gStackSearch(gStack* st, Pointer data) {
+bool gStackSearch(gStack* st, gStPointerData data) {
     if (!st) return 0;
     if (gStackIsEmpty(st)) return 0;
 

@@ -30,7 +30,7 @@ bool gCLLIsEmpty(gCLList* cll) {
 }
 
 
-Pointer gCLLGetCurrent(gCLList* cll) {
+gCLLPointerData gCLLGetCurrent(gCLList* cll) {
     if (!cll) return NULL;
     if (gCLLIsEmpty(cll)) return NULL;
 
@@ -38,7 +38,7 @@ Pointer gCLLGetCurrent(gCLList* cll) {
 }
 
 
-void gCLLInsert(gCLList* cll, Pointer data) {
+void gCLLInsert(gCLList* cll, gCLLPointerData data) {
     if (!cll) return;
 
     gCLListNode* newnode = (gCLListNode *) malloc (sizeof(gCLListNode));
@@ -114,7 +114,7 @@ void gCLLRemoveCurrent(gCLList* cll) {
 }
 
 
-void gCLLRemove(gCLList* cll, Pointer data) {
+void gCLLRemove(gCLList* cll, gCLLPointerData data) {
     if (!cll) return;
     if (gCLLIsEmpty(cll)) return;
 
@@ -215,7 +215,7 @@ void gCLLImpress(gCLList* cll) {
 }
 
 
-bool gCLLSearch(gCLList* cll, Pointer data) {
+bool gCLLSearch(gCLList* cll, gCLLPointerData data) {
     if (!cll) return 0;
     if (gCLLIsEmpty(cll)) return 0;
 
@@ -240,12 +240,12 @@ void gCLLClear(gCLList* cll) {
 }
 
 
-Pointer gCLLGetBiggest(gCLList* cll) {
+gCLLPointerData gCLLGetBiggest(gCLList* cll) {
     if (!cll) return NULL;
     if (gCLLIsEmpty(cll)) return NULL;
 
     // Going through the list until we find the biggest element:
-    Pointer returnData = cll->currentNode->data;
+    gCLLPointerData returnData = cll->currentNode->data;
     gCLListNode* auxNode = cll->currentNode->next;
     while (auxNode != cll->currentNode) {
         if (cll->compareF(auxNode->data, returnData) > 0) {
@@ -258,12 +258,12 @@ Pointer gCLLGetBiggest(gCLList* cll) {
 }
 
 
-Pointer gCLLGetSmallest(gCLList* cll) {
+gCLLPointerData gCLLGetSmallest(gCLList* cll) {
     if (!cll) return NULL;
     if (gCLLIsEmpty(cll)) return NULL;
 
     // Going through the list until we find the smallest element:
-    Pointer returnData = cll->currentNode->data;
+    gCLLPointerData returnData = cll->currentNode->data;
     gCLListNode* auxNode = cll->currentNode->next;
     while (auxNode != cll->currentNode) {
         if (cll->compareF(auxNode->data, returnData) < 0) {

@@ -5,23 +5,25 @@
 #ifndef GENERICLINKEDLIST_H
 #define GENERICLINKEDLIST_H
 
+/* TODO: CREATE THE DEEP COPY FUNCTIONALITY FOR EVERY DATA STRUCTURE. */
+
 /*  
   If necessary, it is possible to specify 
  the type of pointer used in the data 
  structure by modifying the preprocessing 
  directive parameter right below:
 */
-typedef void* Pointer;
+typedef void* gLkLsPointerData;
 
-typedef void (*impressFunctionGenLinkedList)(Pointer data);                                                                                        // Function responsible for displaying each element in the list with appropriate formatting;
+typedef void (*impressFunctionGenLinkedList)(gLkLsPointerData data);                                                                                        // Function responsible for displaying each element in the list with appropriate formatting;
 
-typedef int (*compareFunctionGenLinkedList)(Pointer data1, Pointer data2);                                                                         //  Function whose purpose is to compare two elements in the list. Returns zero if the elements are equal, a negative value if  
+typedef int (*compareFunctionGenLinkedList)(gLkLsPointerData data1, gLkLsPointerData data2);                                                                         //  Function whose purpose is to compare two elements in the list. Returns zero if the elements are equal, a negative value if  
                                                                                                                                                    // the first parameter is less than the second, and a positive value if the first parameter is greater than the second;
 
-typedef void (*destroyFuntionGenLinkedList)(Pointer data);                                                                                         // Function intended to deallocate the memory reserved in each individual element of the linked list.
+typedef void (*destroyFuntionGenLinkedList)(gLkLsPointerData data);                                                                                         // Function intended to deallocate the memory reserved in each individual element of the linked list.
 
 typedef struct GENERICLINKEDLISTNODE {
-    Pointer data;
+    gLkLsPointerData data;
     struct GENERICLINKEDLISTNODE* next;
 } gLinkedListNode;
 
@@ -36,18 +38,22 @@ typedef struct {
 
 
 gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF, destroyFuntionGenLinkedList destroyF);  // Initializes a generic linked list and returns a pointer to it. The function takes pointers to print and compare functions as parameters;
-void gLinkedListDestroy(gLinkedList** listPointer);                                                                                                     // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
+gLinkedList* gLinkedListCopy(gLinkedList* list);
+void gLinkedListDestroy(gLinkedList** listPointer);                                                                                              // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
 void gLinkedListImpress(gLinkedList* list);                                                                                                      // Prints the data stored in each node of the linked list;
 void gLinkedListReverse(gLinkedList* list);                                                                                                      // Inverts the ordered sequential arrangement of the elements present in the list;
-void gLinkedListAppend(gLinkedList* list, Pointer data);                                                                                         // Appends a new node containing the provided data to the end of the linked list;
+void gLinkedListAppend(gLinkedList* list, gLkLsPointerData data);                                                                                // Appends a new node containing the provided data to the end of the linked list;
 void gLinkedListClear(gLinkedList* list);                                                                                                        // Clears the linked list, removing all nodes and freeing allocated memory;
-void gLinkedListRemove(gLinkedList* list, Pointer data);                                                                                         // Removes the first node containing the provided data from the linked list and returns it;
+void gLinkedListRemove(gLinkedList* list, gLkLsPointerData data);                                                                                // Removes the first node containing the provided data from the linked list and returns it;
 bool gLinkedListIsEmpty(gLinkedList* list);                                                                                                      // Checks if the generic linked list is empty;
-bool gLinkedListSearch(gLinkedList* list, Pointer data);                                                                                         // Searches for a node containing the provided data in the linked list. Returns true if found, false otherwise;
-size_t gLinkedListCount(gLinkedList* list);                                                                                                      // Counts the number of nodes in the linked list;
-Pointer gLinkedListPop(gLinkedList* list, long int index);                                                                                       // Removes and returns the node at the specified index position in the linked list;
-Pointer gLinkedListGetBiggest(gLinkedList* list);                                                                                                // Returns a pointer containing the largest value in the linked list;
-Pointer gLinkedListGetSmallest(gLinkedList* list);                                                                                               // Returns a pointer containing the smallest value in the linked list.
+bool gLinkedListSearch(gLinkedList* list, gLkLsPointerData data);                                                                                // Searches for a node containing the provided data in the linked list. Returns true if found, false otherwise;
+bool gLinkedListIsEquals(gLinkedList* list1, gLinkedList* list2);                                                                                // Determines whether two linked lists are identical. The judging criterion rests on determining the quantitative, qualitative and structural equivalence regarding the arrangement of the elements in the list;
+bool gLinkedListHasSameElements(gLinkedList* list1, gLinkedList* list2);                                                                         // Check whether two linked lists mutually share the same content
+size_t gLinkedListSize(gLinkedList* list);                                                                                                       // Return the number of elements in the linked list;
+size_t gLinkedListCount(gLinkedList* list, gLkLsPointerData data);
+gLkLsPointerData gLinkedListPop(gLinkedList* list, long int index);                                                                              // Removes and returns the node at the specified index position in the linked list;
+gLkLsPointerData gLinkedListGetBiggest(gLinkedList* list);                                                                                       // Returns a pointer containing the largest value in the linked list;
+gLkLsPointerData gLinkedListGetSmallest(gLinkedList* list);                                                                                      // Returns a pointer containing the smallest value in the linked list.
 
 #endif
 

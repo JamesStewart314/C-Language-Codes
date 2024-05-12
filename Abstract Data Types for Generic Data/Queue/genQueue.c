@@ -30,7 +30,7 @@ bool gQueueIsEmpty(gQueue* q) {
 }
 
 
-void gQueueEnqueue(gQueue* q, Pointer data) {
+void gQueueEnqueue(gQueue* q, gQueuePointerData data) {
     if (!q) return;
 
     gQueueNode* newnode = (gQueueNode *) malloc (sizeof(gQueueNode));
@@ -97,7 +97,7 @@ void gQueueDestroy(gQueue** qPointer) {
 }
 
 
-bool gQueueSearch(gQueue* q, Pointer data) {
+bool gQueueSearch(gQueue* q, gQueuePointerData data) {
     if (!q) return 0;
     if (gQueueIsEmpty(q)) return 0;
 
@@ -111,7 +111,7 @@ bool gQueueSearch(gQueue* q, Pointer data) {
 }
 
 
-void gQueueRemove(gQueue* q, Pointer data) {
+void gQueueRemove(gQueue* q, gQueuePointerData data) {
     if (!q) return;
     if (gQueueIsEmpty(q)) return;
 
@@ -160,7 +160,7 @@ void gQueueRemove(gQueue* q, Pointer data) {
 }
 
 
-Pointer gQueueDequeue(gQueue* q) {
+gQueuePointerData gQueueDequeue(gQueue* q) {
     if (!q) return NULL;
     if (gQueueIsEmpty(q)) return NULL;
 
@@ -168,14 +168,14 @@ Pointer gQueueDequeue(gQueue* q) {
     gQueueNode* auxNode = q->front;
     q->front = q->front->next;
 
-    Pointer returnData = auxNode->data;
+    gQueuePointerData returnData = auxNode->data;
     free(auxNode) ; auxNode = NULL;
 
     return returnData;
 }
 
 
-size_t gQueueCount(gQueue* q) {
+size_t gQueueSize(gQueue* q) {
     if (!q) return 0;
     return q->counter;
 }

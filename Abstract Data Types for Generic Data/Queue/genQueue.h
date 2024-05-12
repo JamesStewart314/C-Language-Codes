@@ -11,15 +11,15 @@
  structure by modifying the preprocessing
  directive parameter right below:
 */
-typedef void* Pointer;
+typedef void* gQueuePointerData;
 
-typedef void (*impressFunctionGenQueue)(Pointer data);
-typedef int (*compareFunctionGenQueue)(Pointer data1, Pointer data2);
-typedef void (*destroyFunctionGenQueue)(Pointer data);
+typedef void (*impressFunctionGenQueue)(gQueuePointerData data);
+typedef int (*compareFunctionGenQueue)(gQueuePointerData data1, gQueuePointerData data2);
+typedef void (*destroyFunctionGenQueue)(gQueuePointerData data);
 
 
 typedef struct GENERICQUEUENODE {
-    Pointer data;
+    gQueuePointerData data;
     struct GENERICQUEUENODE* next;
 } gQueueNode;
 
@@ -35,14 +35,14 @@ typedef struct {
 
 gQueue* initgQueue(impressFunctionGenQueue printF, compareFunctionGenQueue compareF, destroyFunctionGenQueue destroyF); // Initializes the Queue;
 void gQueueDestroy(gQueue** qPointer);                                                                                  // Destroys the Queue;
-void gQueueEnqueue(gQueue* q, Pointer data);                                                                            // Inserts Elements into the Queue;
+void gQueueEnqueue(gQueue* q, gQueuePointerData data);                                                                  // Inserts Elements into the Queue;
 void gQueueImpress(gQueue* q);                                                                                          // Displays the Queue on the Terminal in List Format;
-void gQueueRemove(gQueue* q, Pointer data);                                                                             // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
+void gQueueRemove(gQueue* q, gQueuePointerData data);                                                                   // Removes and returns a given element from the Queue. If it is not present, the function returns NULL;
 void gQueueClear(gQueue* q);                                                                                            // Removes all elements contained in the queue;
-bool gQueueSearch(gQueue* q, Pointer data);                                                                             // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;
+bool gQueueSearch(gQueue* q, gQueuePointerData data);                                                                   // Checks whether an element is present in the Queue, returning 1 if it is and 0 otherwise;
 bool gQueueIsEmpty(gQueue* q);                                                                                          // Checks if the Queue is Empty;
-size_t gQueueCount(gQueue* q);                                                                                          // Returns the Number of Elements in the Queue;
-Pointer gQueueDequeue(gQueue* q);                                                                                       // Returns Void Pointers to Elements Removed from the Queue.
+size_t gQueueSize(gQueue* q);                                                                                           // Returns the Number of Elements in the Queue;
+gQueuePointerData gQueueDequeue(gQueue* q);                                                                             // Returns Void Pointers to Elements Removed from the Queue.
 
 #endif
 

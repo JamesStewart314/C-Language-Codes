@@ -312,7 +312,7 @@ void avlBinTreeFreeRecursively(gAVLBinTreeNode* subtree, destroyFunctionGenAVLBi
 //  Auxiliary function used for the purpose of removing a 
 // certain element from the binary tree. The return value 
 // corresponds to the pointer to  the tree with the element removed:
-gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, Pointer data, gAVLBinTree* originalTree) {
+gAVLBinTreeNode* gAVLBinTreeRemoveNode(gAVLBinTreeNode* subtree, gAVLBinTrPointerData data, gAVLBinTree* originalTree) {
     if (!subtree) return NULL;
 
     // Result of the comparison between the node's information 
@@ -520,7 +520,7 @@ bool gAVLBinTreeIsEmpty(gAVLBinTree* tree) {
 
 // Function responsible for displaying the 
 // binary tree through a symmetric traversal:
-void gAVLBinTreeImpress(gAVLBinTree* tree) {
+void gAVLBinTreeImpressSymmetric(gAVLBinTree* tree) {
     if (!tree) return;
     if (!tree->printF) { printf("Unable to Display AVL Bin Tree: PrintF Function Does Not Exist.\n"); return; }
 
@@ -539,7 +539,7 @@ void gAVLBinTreeImpress(gAVLBinTree* tree) {
 
 //  Boolean function whose purpose is to inform whether 
 // a certain element is present in the binary tree:
-bool gAVLBinTreeSearch(gAVLBinTree* tree, Pointer data) {
+bool gAVLBinTreeSearch(gAVLBinTree* tree, gAVLBinTrPointerData data) {
     if (!tree) return 0;
     if (gAVLBinTreeIsEmpty(tree)) return 0;
 
@@ -566,7 +566,7 @@ bool gAVLBinTreeSearch(gAVLBinTree* tree, Pointer data) {
  that mutually share the same type of data, otherwise the behavior of 
  the binary tree will be unpredictable or cause a collapse in the program:
 */
-void gAVLBinTreeInsert(gAVLBinTree* tree, Pointer data) {
+void gAVLBinTreeInsert(gAVLBinTree* tree, gAVLBinTrPointerData data) {
     if (!tree) return;
 
     // Allocating the amount of memory necessary to 
@@ -671,7 +671,7 @@ gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree) {
 //  Function whose purpose is to return a pointer to the 
 // largest element contained in the binary tree. If the 
 // tree is empty, a pointer to NULL is returned:
-Pointer gAVLBinTreeGetBiggest(gAVLBinTree* tree) {
+gAVLBinTrPointerData gAVLBinTreeGetBiggest(gAVLBinTree* tree) {
     if (!tree) return NULL;
     if (gAVLBinTreeIsEmpty(tree)) return NULL;
 
@@ -687,7 +687,7 @@ Pointer gAVLBinTreeGetBiggest(gAVLBinTree* tree) {
 //  Function whose purpose is to return a pointer to the 
 // smallest element contained in the binary tree. If the 
 // tree is empty, a pointer to NULL is returned:
-Pointer gAVLBinTreeGetSmallest(gAVLBinTree* tree) {
+gAVLBinTrPointerData gAVLBinTreeGetSmallest(gAVLBinTree* tree) {
     if (!tree) return NULL;
     if (gAVLBinTreeIsEmpty(tree)) return NULL;
 
@@ -711,17 +711,7 @@ bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2) {
 
     // If at least one of the function parameters is NULL, 
     // then the trees will only be identical if both are NULL:
-    if (!tree1 || !tree2) { return (!tree1 && !tree2) ? 1 : 0; }
-
-    // If at least one of the binary trees is empty, 
-    // then both trees must be empty for equality to occur:
-    if (gAVLBinTreeIsEmpty(tree1) || gAVLBinTreeIsEmpty(tree2)) {
-        return (gAVLBinTreeIsEmpty(tree1) && gAVLBinTreeIsEmpty(tree2)) ? 1 : 0;
-    }
-
-    // If the number of elements present in both trees 
-    // differs, consequently they will not be equal:
-    if (tree1->counter != tree2->counter) return 0;
+    if (!tree1 || !tree2) return (!tree1 && !tree2);
 
     /* 
       If the functions responsible for comparing the elements associated 
@@ -733,6 +723,17 @@ bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2) {
         fprintf(stderr, "Error: It is not possible to compare two binary trees whose comparison functions differ from each other.\n");
         return 0;
     }
+
+
+    // If at least one of the binary trees is empty, 
+    // then both trees must be empty for equality to occur:
+    if (gAVLBinTreeIsEmpty(tree1) || gAVLBinTreeIsEmpty(tree2)) {
+        return (gAVLBinTreeIsEmpty(tree1) && gAVLBinTreeIsEmpty(tree2));
+    }
+
+    // If the number of elements present in both trees 
+    // differs, consequently they will not be equal:
+    if (tree1->counter != tree2->counter) return 0;
 
     /*
       In order to check equality between two Binary Trees, we must 
@@ -815,7 +816,7 @@ bool gAVLBinTreeIsEquals(gAVLBinTree* tree1, gAVLBinTree* tree2) {
 // Function responsible for displaying in the terminal 
 // a view of the AVL Binary Tree provided through a level 
 // traversal of the elements contained therein:
-void gAVLBinTreeimpressByLevel(gAVLBinTree* tree) {
+void gAVLBinTreeImpressByLevel(gAVLBinTree* tree) {
     if (!tree) return;
     if (!tree->printF) { printf("Unable to Display AVL Bin Tree: PrintF Function Does Not Exist.\n"); return; }
 
@@ -881,7 +882,7 @@ void gAVLBinTreeDestroy(gAVLBinTree** treePointer) {
 
 // Function responsible for removing any element from the 
 // AVL Binary Tree if it is contained therein:
-void gAVLBinTreeRemove(gAVLBinTree* tree, Pointer data) {
+void gAVLBinTreeRemove(gAVLBinTree* tree, gAVLBinTrPointerData data) {
     if (!tree) return;
     if (gAVLBinTreeIsEmpty(tree)) return;
 
@@ -909,7 +910,7 @@ void gAVLBinTreeRemove(gAVLBinTree* tree, Pointer data) {
 
 //  Function used to inform the number of 
 // elements present in an AVL binary tree:
-size_t gAVLBinTreeCount(gAVLBinTree* tree) {
+size_t gAVLBinTreeSize(gAVLBinTree* tree) {
     if (!tree) return (size_t)0;
     return tree->counter;
 }
@@ -931,7 +932,7 @@ void gAVLBinTreeTextRepr(gAVLBinTree* tree) {
 
 
 // Function used to obtain the height of a node in the binary tree:
-long long int gAVLBinTreeGetNodeHeight(gAVLBinTree* tree, Pointer data) {
+long long int gAVLBinTreeGetNodeHeight(gAVLBinTree* tree, gAVLBinTrPointerData data) {
     if (!tree || gAVLBinTreeIsEmpty(tree)) return (-1);
     
     gAVLBinTreeNode* auxNode = tree->root;
