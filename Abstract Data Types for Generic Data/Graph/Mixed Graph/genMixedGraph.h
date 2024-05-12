@@ -7,6 +7,7 @@
 
 
 /* TODO: CREATE THE DEEP COPY FUNCTIONALITY FOR EVERY DATA STRUCTURE. */
+/* TODO: implicitly implement the vertex insertion function when creating unidirectional edges. */
 
 
 #include "../../Linked List/genLinkedList.h"
