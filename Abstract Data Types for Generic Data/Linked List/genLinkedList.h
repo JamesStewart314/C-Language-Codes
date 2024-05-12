@@ -5,7 +5,9 @@
 #ifndef GENERICLINKEDLIST_H
 #define GENERICLINKEDLIST_H
 
+
 /* TODO: CREATE THE DEEP COPY FUNCTIONALITY FOR EVERY DATA STRUCTURE. */
+
 
 /*  
   If necessary, it is possible to specify 
