@@ -58,7 +58,7 @@ bool gMixedGraphSearchEdge(gMixedGraph* graph, Pointer vertex1, Pointer vertex2)
                Here is a practical example of compilation using the GCC compiler of
                                 the program commented right below:
 
-• gcc -o executable main.c genMixedGraph.c "../../Linked List/genLinkedList.c" -I "../../Linked List"
+• gcc main.c genMixedGraph.c "../../Linked List/genLinkedList.c" -o executableProgram -I "../../Linked List"
 
 */
 
