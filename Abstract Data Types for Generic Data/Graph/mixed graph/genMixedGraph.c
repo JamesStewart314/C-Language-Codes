@@ -152,7 +152,7 @@ void gMixedGraphClear(gMixedGraph* graph) {
 
 void gMixedGraphImpress(gMixedGraph* graph) {
     if (!graph) return;
-    if (!graph->printF) { printf("Unable to Display Circular Linked List: PrintF Function Does Not Exist.\n"); return; }
+    if (!graph->printF) { printf("Unable to Display Graph: PrintF Function Does Not Exist.\n"); return; }
 
     if (gMixedGraphIsEmpty(graph)) { printf("Graph Empty!\n"); return; }
 
