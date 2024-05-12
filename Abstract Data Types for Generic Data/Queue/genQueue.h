@@ -5,6 +5,10 @@
 #ifndef GENERICQUEUE_H
 #define GENERICQUEUE_H
 
+
+/* TODO: CREATE THE DEEP COPY FUNCTIONALITY FOR EVERY DATA STRUCTURE. */
+
+
 /*
   If necessary, it is possible to specify
  the type of pointer used in the data
