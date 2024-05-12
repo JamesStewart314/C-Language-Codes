@@ -73,7 +73,7 @@ gAVLBinTrPointerData gAVLBinTreeGetSmallest(gAVLBinTree* tree);                 
                               of the dependencies mentioned above.
 
                Here is an example of compilation using the GCC compiler of 
-                                 the program commented right below:
+                          the program commented right below:
 
 • gcc main.c genAVLBinTree.c ../Queue/genQueue.c ../Stack/genStack.c -o executableProgram -I ../Stack -I ../Queue
 
