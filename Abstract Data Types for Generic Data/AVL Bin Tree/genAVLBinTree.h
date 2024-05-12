@@ -72,7 +72,7 @@ gAVLBinTrPointerData gAVLBinTreeGetSmallest(gAVLBinTree* tree);                 
            Tree code must include the path of the directories that contain the header files 
                               of the dependencies mentioned above.
 
-               Here is a practical example of compilation using the GCC compiler of 
+               Here is an example of compilation using the GCC compiler of 
                                  the program commented right below:
 
 • gcc main.c genAVLBinTree.c ../Queue/genQueue.c ../Stack/genStack.c -o executableProgram -I ../Stack -I ../Queue
