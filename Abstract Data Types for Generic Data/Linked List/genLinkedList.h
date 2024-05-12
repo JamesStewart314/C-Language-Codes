@@ -7,6 +7,7 @@
 
 
 /* TODO: CREATE THE DEEP COPY FUNCTIONALITY FOR EVERY DATA STRUCTURE. */
+/* TODO: Refine the comparison function to individualize comparisons between each element in the list. */
 
 
 /*  
