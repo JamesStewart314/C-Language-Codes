@@ -292,7 +292,7 @@ bool gLinkedListIsEquals(gLinkedList* list1, gLinkedList* list2) {
         return 0;
     }
 
-    if (gLinkedListIsEmpty(list1) || gLinkedListIsEmpty(list2)) { return (gLinkedListIsEmpty(list1) && gLinkedListIsEmpty(list2)); }
+    if (gLinkedListIsEmpty(list1) || gLinkedListIsEmpty(list2)) return (gLinkedListIsEmpty(list1) && gLinkedListIsEmpty(list2));
 
     if (list1->counter != list2->counter) return 0;
 
