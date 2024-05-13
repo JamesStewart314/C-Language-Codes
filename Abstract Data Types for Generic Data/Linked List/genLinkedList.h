@@ -70,7 +70,7 @@ gLkLsPointerData gLinkedListGetSmallest(gLinkedList* list);                     
 #include <string.h>
 
 
-typedef struct PERSON {
+typedef struct {
     char* name;
     unsigned int id;
 } Person;
