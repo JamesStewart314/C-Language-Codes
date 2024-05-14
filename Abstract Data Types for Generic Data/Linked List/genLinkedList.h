@@ -9,6 +9,7 @@
 /* TODO: CREATE THE DEEP COPY FUNCTIONALITY FOR EVERY DATA STRUCTURE. */
 /* TODO: Refine the comparison function to individualize comparisons between each element in the list. */
 /* TODO: FIX FUNCTION “HAS SAME ELEMENTS” FROM LINKED LIST. */
+/* TODO: Create a set of functions to redefine the functions responsible for performing operations on each data structure individually. */
 
 
 /*  
