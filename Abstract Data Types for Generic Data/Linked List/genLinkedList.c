@@ -1,14 +1,15 @@
 #include "genLinkedList.h"
 
 
-gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF, destroyFuntionGenLinkedList destroyF) {
+gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF,
+                             destroyFuntionGenLinkedList destroyF, deepcopyFunctionGenLinkedList deepcopyF) {
     
     if (!compareF) {
         fprintf(stderr, "Error: Compare Function is NULL when creating a new generic Linked List.\n");
         return NULL;
     }
 
-    gLinkedList* newlist = (gLinkedList *) malloc (sizeof(gLinkedList));
+    gLinkedList* newlist = (gLinkedList *) malloc(sizeof(gLinkedList));
     if (newlist == NULL) {
         fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Linked List.\n");
         exit(EXIT_FAILURE);
@@ -16,10 +17,11 @@ gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctio
     }
 
     newlist->front = newlist->rear = NULL;
+    newlist->counter = (size_t)0;
     newlist->printF = printF;
     newlist->compareF = compareF;
     newlist->destroyF = destroyF;
-    newlist->counter = (size_t)0;
+    newlist->deepcopyF = deepcopyF;
     
     return newlist;
 }
@@ -54,10 +56,10 @@ void gLinkedListDestroy(gLinkedList** listPointer) {
 }
 
 
-void gLinkedListAppend(gLinkedList* list, gLkLsPointerData data) {
+void gLinkedListAppend(gLinkedList* list, gLinkedListDataPtr data) {
     if (!list) return;
 
-    gLinkedListNode* newnode = (gLinkedListNode *) malloc (sizeof(gLinkedListNode));
+    gLinkedListNode* newnode = (gLinkedListNode *) malloc(sizeof(gLinkedListNode));
     if (newnode == NULL) {
         fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Linked List node.\n");
         exit(EXIT_FAILURE);
@@ -80,7 +82,7 @@ void gLinkedListAppend(gLinkedList* list, gLkLsPointerData data) {
 }
 
 
-void gLinkedListRemove(gLinkedList* list, gLkLsPointerData data) {
+void gLinkedListRemove(gLinkedList* list, gLinkedListDataPtr data) {
     if (!list) return;
     if (gLinkedListIsEmpty(list)) return;
 
@@ -126,7 +128,7 @@ void gLinkedListRemove(gLinkedList* list, gLkLsPointerData data) {
 }
 
 
-bool gLinkedListSearch(gLinkedList* list, gLkLsPointerData data) {
+bool gLinkedListSearch(gLinkedList* list, gLinkedListDataPtr data) {
     if (!list) return 0;
     if (gLinkedListIsEmpty(list)) return 0;
 
@@ -165,7 +167,7 @@ void gLinkedListClear(gLinkedList* list) {
 }
 
 
-gLkLsPointerData gLinkedListPop(gLinkedList* list, long int index) {
+gLinkedListDataPtr gLinkedListPop(gLinkedList* list, long int index) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
@@ -173,7 +175,7 @@ gLkLsPointerData gLinkedListPop(gLinkedList* list, long int index) {
 
     if (index == 0) {
         (list->counter)--;
-        gLkLsPointerData returnData = auxNode->data;
+        gLinkedListDataPtr returnData = auxNode->data;
         list->front = list->front->next;
         free(auxNode) ; auxNode = NULL;
         
@@ -194,7 +196,7 @@ gLkLsPointerData gLinkedListPop(gLinkedList* list, long int index) {
 
     // Removing from end:
     if (!auxNode->next) {
-        gLkLsPointerData returnData = auxNode->data;
+        gLinkedListDataPtr returnData = auxNode->data;
         
         list->rear = previous;
         list->rear->next = NULL;
@@ -204,7 +206,7 @@ gLkLsPointerData gLinkedListPop(gLinkedList* list, long int index) {
     }
 
     // Removing element in the middle:
-    gLkLsPointerData returnData = auxNode->data;
+    gLinkedListDataPtr returnData = auxNode->data;
     previous->next = auxNode->next;
     free(auxNode); auxNode = NULL;
 
@@ -212,12 +214,12 @@ gLkLsPointerData gLinkedListPop(gLinkedList* list, long int index) {
 }
 
 
-gLkLsPointerData gLinkedListGetBiggest(gLinkedList* list) {
+gLinkedListDataPtr gLinkedListGetBiggest(gLinkedList* list) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
     gLinkedListNode* auxNode = list->front;
-    gLkLsPointerData returnData = auxNode->data;
+    gLinkedListDataPtr returnData = auxNode->data;
     while (auxNode) {
         if (list->compareF(auxNode->data, returnData) > 0) returnData = auxNode->data;
         auxNode = auxNode->next;
@@ -227,12 +229,12 @@ gLkLsPointerData gLinkedListGetBiggest(gLinkedList* list) {
 }
 
 
-gLkLsPointerData gLinkedListGetSmallest(gLinkedList* list) {
+gLinkedListDataPtr gLinkedListGetSmallest(gLinkedList* list) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
     gLinkedListNode* auxNode = list->front;
-    gLkLsPointerData returnData = auxNode->data;
+    gLinkedListDataPtr returnData = auxNode->data;
     while (auxNode) {
         if (list->compareF(auxNode->data, returnData) < 0) returnData = auxNode->data;
         auxNode = auxNode->next;
@@ -321,7 +323,7 @@ bool gLinkedListHasSameElements(gLinkedList* list1, gLinkedList* list2) {
 
     gLinkedListNode* auxNode = list1->front;
     while (auxNode) {
-        if (!gLinkedListSearch(list2, auxNode->data)) return 0;
+        if (gLinkedListCount(list1, auxNode->data) != gLinkedListCount(list2, auxNode->data)) return 0;
         auxNode = auxNode->next;
     }
 
@@ -329,7 +331,28 @@ bool gLinkedListHasSameElements(gLinkedList* list1, gLinkedList* list2) {
 }
 
 
-size_t gLinkedListCount(gLinkedList* list, gLkLsPointerData data) {
+bool gLinkedListShareSameElements(gLinkedList* list1, gLinkedList* list2) {
+    if (!list1 || !list2) return (!list1 && !list2);
+
+    if (list1->compareF != list2->compareF) {
+        fprintf(stderr, "Error: It is not possible to compare two linked lists whose comparison functions differ from each other.\n");
+        return 0;
+    }
+
+    if (gLinkedListIsEmpty(list1) || gLinkedListIsEmpty(list2)) return (gLinkedListIsEmpty(list1) && gLinkedListIsEmpty(list2));
+
+    gLinkedListNode* auxNode = list1->front;
+    while (auxNode) {
+        if (!gLinkedListSearch(list2, auxNode->data)) return 0;
+        auxNode = auxNode->next;
+    }
+
+    return 1;
+
+}
+
+
+size_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data) {
     if (!list) return (size_t)0;
     if (gLinkedListIsEmpty(list)) return (size_t)0;
 
@@ -345,26 +368,16 @@ size_t gLinkedListCount(gLinkedList* list, gLkLsPointerData data) {
 
 
 gLinkedList* gLinkedListCopy(gLinkedList* list) {
-
-    // NOT IMPLEMENTED YET...
-    return NULL;
-
-    /*
-
     if (!list) return NULL;
 
-    gLinkedList* newlist = initgLinkedList(list->printF, list->compareF, list->destroyF);
-
+    gLinkedList* newlist = initgLinkedList(list->printF, list->compareF, list->destroyF, list->deepcopyF);
     if (gLinkedListIsEmpty(list)) return newlist;
 
-    gLinkedListNode* auxNode = list->front;
-    
-    gLinkedListNode* newnode = (gLinkedListNode *)malloc(sizeof(gLinkedListNode));
-    if (newnode == NULL) {
-        fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Linked List node.\n");
-        exit(EXIT_FAILURE);
-        return;
+    gLinkedListNode *auxNode = list->front;
+    while (auxNode) {
+        gLinkedListAppend(newlist, (list->deepcopyF ? (list->deepcopyF(auxNode->data)) : auxNode->data));
+        auxNode = auxNode->next;
     }
 
-    */
+    return newlist;
 }
