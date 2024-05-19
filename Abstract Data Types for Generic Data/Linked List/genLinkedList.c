@@ -186,7 +186,7 @@ void gLinkedListReverse(gLinkedList* list) {
     // Employing the use of three contiguous pointers to traverse the linked list, rearranging their 
     // pointers in order to reverse the order of arrangement of the elements present in the list:
     gLinkedListNode *auxNode = list->front, *auxNodePrevious = NULL, *auxNodeNext = auxNode->next;
-    while(auxNodeNext != NULL) {
+    while (auxNodeNext != NULL) {
         auxNode->next = auxNodePrevious;
         auxNodePrevious = auxNode;
         auxNode = auxNodeNext;
