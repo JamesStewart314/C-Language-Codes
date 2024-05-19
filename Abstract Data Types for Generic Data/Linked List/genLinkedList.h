@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifndef GENERICLINKEDLIST_H
 #define GENERICLINKEDLIST_H
@@ -31,7 +32,7 @@ typedef struct GENERICLINKEDLISTNODE {
 
 typedef struct {
     gLinkedListNode *front, *rear;
-    size_t counter;
+    uint32_t counter;
     impressFunctionGenLinkedList printF;
     compareFunctionGenLinkedList compareF;
     destroyFuntionGenLinkedList destroyF;
@@ -43,22 +44,22 @@ gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctio
                              destroyFuntionGenLinkedList destroyF, deepcopyFunctionGenLinkedList deepcopyF);                                     // Initializes a generic linked list and returns a pointer to it. The function takes pointers to print and compare functions as parameters;
 
 gLinkedList* gLinkedListCopy(gLinkedList* list);                                                                                                 // Creates an identical copy of the given linked list and returns a pointer to it. The replicated copy is completely independent of the original linked list;
-void gLinkedListDestroy(gLinkedList** listPointer);                                                                                              // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
-void gLinkedListImpress(gLinkedList* list);                                                                                                      // Prints the data stored in each node of the linked list;
-void gLinkedListReverse(gLinkedList* list);                                                                                                      // Inverts the ordered sequential arrangement of the elements present in the list;
 void gLinkedListAppend(gLinkedList* list, gLinkedListDataPtr data);                                                                              // Appends a new node containing the provided data to the end of the linked list;
 void gLinkedListClear(gLinkedList* list);                                                                                                        // Clears the linked list, removing all nodes and freeing allocated memory;
+void gLinkedListDestroy(gLinkedList** listPointer);                                                                                              // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
+void gLinkedListImpress(gLinkedList* list);                                                                                                      // Prints the data stored in each node of the linked list;
 void gLinkedListRemove(gLinkedList* list, gLinkedListDataPtr data);                                                                              // Removes the first node containing the provided data from the linked list and returns it;
+void gLinkedListReverse(gLinkedList* list);                                                                                                      // Inverts the ordered sequential arrangement of the elements present in the list;
 bool gLinkedListIsEmpty(gLinkedList* list);                                                                                                      // Checks if the generic linked list is empty. Returns 1 if the list is empty and 0 otherwise;
-bool gLinkedListSearch(gLinkedList* list, gLinkedListDataPtr data);                                                                              // Searches for a node containing the provided data in the linked list. Returns 1 if found and 0 otherwise;
 bool gLinkedListIsEquals(gLinkedList* list1, gLinkedList* list2);                                                                                // Determines whether two linked lists are identical, returning 1 if they're identical and 0 otherwise. The judging criterion rests on determining the quantitative, qualitative and structural equivalence regarding the arrangement of the elements in the list;
+bool gLinkedListSearch(gLinkedList* list, gLinkedListDataPtr data);                                                                              // Searches for a node containing the provided data in the linked list. Returns 1 if found and 0 otherwise;
 bool gLinkedListHasSameElements(gLinkedList* list1, gLinkedList* list2);                                                                         // Checks whether two linked lists contain the same elements qualitatively and quantitatively, regardless of the order in which they appear. Returns 1 if the lists share the same content and 0 otherwise;
 bool gLinkedListShareSameElements(gLinkedList* list1, gLinkedList* list2);                                                                       // Check whether two linked lists mutually share the same content, disregarding ordering and quantity criteria;
-size_t gLinkedListSize(gLinkedList* list);                                                                                                       // Return the number of elements in the linked list;
-size_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data);                                                                             // Counts and returns the number of occurrences of a given element in the linked list;
-gLinkedListDataPtr gLinkedListPop(gLinkedList* list, long int index);                                                                            // Removes and returns the node at the specified index position in the linked list;
+uint64_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data);                                                                           // Counts and returns the number of occurrences of a given element in the linked list;
+uint64_t gLinkedListSize(gLinkedList* list);                                                                                                     // Return the number of elements in the linked list;
 gLinkedListDataPtr gLinkedListGetBiggest(gLinkedList* list);                                                                                     // Returns a pointer containing the largest value in the linked list;
-gLinkedListDataPtr gLinkedListGetSmallest(gLinkedList* list);                                                                                    // Returns a pointer containing the smallest value in the linked list.
+gLinkedListDataPtr gLinkedListGetSmallest(gLinkedList* list);                                                                                    // Returns a pointer containing the smallest value in the linked list;
+gLinkedListDataPtr gLinkedListPop(gLinkedList* list, long int index);                                                                            // Removes and returns the node at the specified index position in the linked list.
 
 #endif
 
@@ -160,12 +161,12 @@ int main(int argc, char** argv) {
 
     Person* returnValue = gLinkedListGetBiggest(linkedListOfPersons);
     if (returnValue) {
-        printf("=> Current Biggest Person ID on the List: %u\n", returnValue->id);
+        printf("=> ID from the biggest Person on the List: %u\n", returnValue->id);
     }
 
     returnValue = gLinkedListGetSmallest(linkedListOfPersons);
     if (returnValue) {
-        printf("=> Current Smallest Person ID on the List: %u\n", returnValue->id);
+        printf("=> ID from the smallest Person on the List: %u\n", returnValue->id);
     }
 
     printf("\nFinal State of the List: "); gLinkedListImpress(linkedListOfPersons); printf("\n\n");
