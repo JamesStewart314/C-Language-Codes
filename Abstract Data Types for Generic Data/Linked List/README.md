@@ -3,9 +3,9 @@
 [Linked List](https://www.tutorialspoint.com/data_structures_algorithms/linked_list_algorithms.htm) consists of an abstract and linear data structure whose main objective is to store elements of the same type in a list arranged discontinuously in memory. The most elementary concept used in all linked lists corresponds to the "node", a substructure responsible for containing two attributes: The information that will be placed in each element of the list and a pointer informing the memory address for the next node in the list.
 
 In the specific implementation of this module, another structure will conventionally be created to encompass all the information necessary to perform the specific operations associated with each single linked list instance. Each structure will include:
-* A <span style="color:green;">pointer</span> to the first element of the linked list, called "<span style="color:blue;">front</span>";
+* A <span style="color:green;">pointer</span> to the first element of the linked list, denoted by "<span style="color:blue;">front</span>";
 
-* A <span style="color:green;">pointer</span> to the last element of the linked list, called "<span style="color:red;">rear</span>";
+* A <span style="color:green;">pointer</span> to the last element of the linked list, denoted by "<span style="color:red;">rear</span>";
 
 * A 32-bit unsigned integer counter, which can represent values contained in the interval **0** to **4,294,967,295**, where the limits of this interval are included;
 * A <span style="color:green;">pointer</span> to an external function whose purpose is to determine the display method of the list's elements. This parameter is optional, that is, its non-existence does not prevent the basic functioning of the data structure, but it makes it impossible to display its elements;
