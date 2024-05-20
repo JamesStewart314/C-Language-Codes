@@ -17,7 +17,7 @@ In the specific implementation of this module, another structure will convention
 * A <span style="color:green;">pointer</span> to an external function whose purpose is to produce completely independent replicas of each element contained in the list, that is, the function will perform a [deep copy](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy). The function's only parameter is a <span style="color:green;">pointer</span> to the element to be copied, and it will return a <span style="color:green;">pointer</span> to the new copied element. This function is only necessary if the structure of the elements stored in the list involves dynamic memory allocation, if there is no memory allocated; otherwise, the copy function parameter may be replaced with a <span style="color:red;">null pointer</span> (<span style="color:red;">NULL</span>).
 
 #
-### Visualization of the code used to create linked lists:
+### Visualization of the structures used in the linked lists:
 ```c
 typedef struct GENERICLINKEDLISTNODE {
     gLinkedListDataPtr data;
