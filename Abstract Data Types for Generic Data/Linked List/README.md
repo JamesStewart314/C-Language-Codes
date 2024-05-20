@@ -24,7 +24,6 @@ typedef struct GENERICLINKEDLISTNODE {
     struct GENERICLINKEDLISTNODE* next;
 } gLinkedListNode;
 
-
 typedef struct {
     gLinkedListNode *front, *rear;
     uint32_t counter;
