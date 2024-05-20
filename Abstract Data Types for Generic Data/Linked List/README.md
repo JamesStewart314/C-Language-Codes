@@ -57,7 +57,6 @@ For demonstration and exemplification purposes, there will be comments adjacent 
 * *gLinkedListGetBiggest*: Returns the largest element present in the linked list.
 * *gLinkedListGetSmallest*: Returns the smallest element present in the linked list.
 * *gLinkedListPop*: Removes and returns the element located at the specified index within the linked list.
-#
 
 <div align="center">
 
