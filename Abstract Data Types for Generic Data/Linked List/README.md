@@ -58,8 +58,6 @@ The pre-existing basic operations contained in this module include:
 * *gLinkedListGetSmallest*: Returns the smallest element present in the linked list.
 * *gLinkedListPop*: Removes and returns the element located at the specified index within the linked list.
 
-<span style="color:blue">some *blue* text</span>
-
 <div align="center">
 
 ## Algorithmic Complexity in Big O Notation for Linked List Operations:
