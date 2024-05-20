@@ -7,7 +7,7 @@ In the specific implementation of this module, another structure will convention
 
 * A <span style="color:green;">pointer</span> to the last element of the linked list, denoted by "<span style="color:red;">rear</span>";
 
-* A 32-bit unsigned integer counter, which can represent values contained in the interval **0** to **4,294,967,295**, where the limits of this interval are included;
+* A 32-bit unsigned integer counter, which can represent values contained in the interval **0** to **4,294,967,295**, where the limits of this interval are inclusive;
 * A <span style="color:green;">pointer</span> to an external function whose purpose is to determine the display method of the list's elements. This parameter is optional, that is, its non-existence does not prevent the basic functioning of the data structure, but it makes it impossible to display its elements;
 
 * A **mandatory**, non-null <span style="color:green;">pointer</span> to an external comparison function. This function receives as parameters two <span style="color:green;">pointers</span> to list elements and is designed to perform two-by-two comparisons between elements. The function must return: A **negative** value (less than zero) if the first parameter is considered inferior to the second; **zero** if both given parameters are equal; a **positive** value (greater than zero) if the first parameter is considered superior to the second;
