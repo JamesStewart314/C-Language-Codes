@@ -60,7 +60,7 @@ For demonstration and exemplification purposes, there will be comments adjacent 
 
 <div align="center">
 
-## Algorithmic Complexity in Big O Notation for Linked List Operations:
+## Algorithmic Complexity in Big O Notation for the Linked List Operations:
 
 | Operation               | Big O   |
 |:-----------------------:|:-------:|
