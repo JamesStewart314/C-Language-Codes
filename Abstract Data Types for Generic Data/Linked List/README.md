@@ -39,7 +39,7 @@ typedef struct {
 For demonstration and exemplification purposes, there will be comments adjacent to each function signature, briefly describing its behavior and purpose, all contained in the header file (*genLinkedList.h*). Furthermore, there is also a commented program that uses the data structure created in this module, in order to resolve any remaining doubts regarding its use, demonstrating its use in practice.
 
 ## The pre-existing basic operations contained in this module include:
-* *initgLinkedList*: Initializes and returns a pointer to the newly initialized linked list.
+* ***initgLinkedList***: Initializes and returns a pointer to the newly initialized linked list.
 * *gLinkedListCopy*: Creates copies and returns a pointer to the copy of a given linked list.
 * *gLinkedListAppend*: Appends a new element to the end of the linked list.
 * *gLinkedListClear*: Removes all elements contained in the linked list.
