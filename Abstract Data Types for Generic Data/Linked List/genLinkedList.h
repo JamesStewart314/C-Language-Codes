@@ -6,6 +6,8 @@
 #ifndef GENERICLINKEDLIST_H
 #define GENERICLINKEDLIST_H
 
+/* TODO: REVIEW THE CODE COMPLETELY AND DESIGN THE INSERT FUNCTION. */
+
 /*  
   If necessary, it is possible to specify 
  the type of pointer used in the data 
