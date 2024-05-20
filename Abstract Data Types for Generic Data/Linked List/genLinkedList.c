@@ -17,7 +17,7 @@ gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctio
     }
 
     newlist->front = newlist->rear = NULL;
-    newlist->counter = (uint64_t)0;
+    newlist->counter = (uint32_t)0;
     newlist->printF = printF;
     newlist->compareF = compareF;
     newlist->destroyF = destroyF;
@@ -81,7 +81,7 @@ void gLinkedListClear(gLinkedList* list) {
         free(auxNode); auxNode = NULL;
     }
 
-    list->counter = (uint64_t)0;
+    list->counter = (uint32_t)0;
     list->front = list->rear = NULL;
 
     return;
@@ -202,7 +202,7 @@ void gLinkedListReverse(gLinkedList* list) {
 
 bool gLinkedListIsEmpty(gLinkedList* list) {
     if (!list) return 1;
-    return (list->counter <= (uint64_t)0);
+    return (list->counter <= (uint32_t)0);
 }
 
 
@@ -285,11 +285,11 @@ bool gLinkedListShareSameElements(gLinkedList* list1, gLinkedList* list2) {
 }
 
 
-uint64_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data) {
-    if (!list) return (uint64_t)0;
-    if (gLinkedListIsEmpty(list)) return (uint64_t)0;
+uint32_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data) {
+    if (!list) return (uint32_t)0;
+    if (gLinkedListIsEmpty(list)) return (uint32_t)0;
 
-    uint64_t auxCounter = (uint64_t)0;
+    uint32_t auxCounter = (uint32_t)0;
     gLinkedListNode* auxNode = list->front;
     while (auxNode) {
         if (list->compareF(auxNode->data, data) == 0) auxCounter++;
@@ -300,7 +300,7 @@ uint64_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data) {
 }
 
 
-uint64_t gLinkedListSize(gLinkedList* list) {
+uint32_t gLinkedListSize(gLinkedList* list) {
     if (!list) return 0;
     return list->counter;
 }
@@ -336,7 +336,7 @@ gLinkedListDataPtr gLinkedListGetSmallest(gLinkedList* list) {
 }
 
 
-gLinkedListDataPtr gLinkedListPop(gLinkedList* list, long int index) {
+gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int32_t index) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
@@ -351,10 +351,10 @@ gLinkedListDataPtr gLinkedListPop(gLinkedList* list, long int index) {
         return returnData;
     }
     
-    index = (index < 0) ? (index + gLinkedListSize(list)) : index;
-    if (index >= gLinkedListSize(list) || index < 0) return NULL;
+    index = (index < (int32_t)0) ? (index + (int32_t)gLinkedListSize(list)) : index;
+    if (index >= (int32_t)gLinkedListSize(list) || index < (int32_t)0) return NULL;
 
-    long int auxCounter = 0;
+    uint32_t auxCounter = 0;
     while (auxCounter < index) {
         previous = auxNode;
         auxNode = auxNode->next;

@@ -55,11 +55,11 @@ bool gLinkedListIsEquals(gLinkedList* list1, gLinkedList* list2);               
 bool gLinkedListSearch(gLinkedList* list, gLinkedListDataPtr data);                                                                              // Searches for a node containing the provided data in the linked list. Returns 1 if found and 0 otherwise;
 bool gLinkedListHasSameElements(gLinkedList* list1, gLinkedList* list2);                                                                         // Checks whether two linked lists contain the same elements qualitatively and quantitatively, regardless of the order in which they appear. Returns 1 if the lists share the same content and 0 otherwise;
 bool gLinkedListShareSameElements(gLinkedList* list1, gLinkedList* list2);                                                                       // Check whether two linked lists mutually share the same content, disregarding ordering and quantity criteria;
-uint64_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data);                                                                           // Counts and returns the number of occurrences of a given element in the linked list;
-uint64_t gLinkedListSize(gLinkedList* list);                                                                                                     // Return the number of elements in the linked list;
+uint32_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data);                                                                           // Counts and returns the number of occurrences of a given element in the linked list;
+uint32_t gLinkedListSize(gLinkedList* list);                                                                                                     // Return the number of elements in the linked list;
 gLinkedListDataPtr gLinkedListGetBiggest(gLinkedList* list);                                                                                     // Returns a pointer containing the largest value in the linked list;
 gLinkedListDataPtr gLinkedListGetSmallest(gLinkedList* list);                                                                                    // Returns a pointer containing the smallest value in the linked list;
-gLinkedListDataPtr gLinkedListPop(gLinkedList* list, long int index);                                                                            // Removes and returns the node at the specified index position in the linked list.
+gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int32_t index);                                                                             // Removes and returns the node at the specified index position in the linked list.
 
 #endif
 
