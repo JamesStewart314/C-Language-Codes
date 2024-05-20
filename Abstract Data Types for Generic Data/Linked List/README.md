@@ -38,7 +38,8 @@ typedef struct {
 
 For demonstration and exemplification purposes, there will be comments adjacent to each function signature, briefly describing its behavior and purpose, all contained in the header file (*genLinkedList.h*). Furthermore, there is also a commented program that uses the data structure created in this module, in order to resolve any remaining doubts regarding its use, demonstrating its use in practice.
 
-The pre-existing basic operations contained in this module include:
+## The pre-existing basic operations contained in this module include:
+#
 * *initgLinkedList*: Initializes and returns a pointer to the newly initialized linked list.
 * *gLinkedListCopy*: Creates copies and returns a pointer to the copy of a given linked list.
 * *gLinkedListAppend*: Appends a new element to the end of the linked list.
@@ -57,6 +58,7 @@ The pre-existing basic operations contained in this module include:
 * *gLinkedListGetBiggest*: Returns the largest element present in the linked list.
 * *gLinkedListGetSmallest*: Returns the smallest element present in the linked list.
 * *gLinkedListPop*: Removes and returns the element located at the specified index within the linked list.
+#
 
 <div align="center">
 
