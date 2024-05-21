@@ -47,6 +47,13 @@ git clone https://github.com/JamesStewart314/C-Language-Codes.git
 
 Now, if everything went as expected, this repository should be present locally on your computer. In other words, the file structure contained in the repository will be in the desired location. In this context, the hierarchical arrangement of directories contained in your project should resemble something as illustrated in the following image:
 
+<div align="center">
+
+![2024-05-20 22 51 01](https://github.com/JamesStewart314/C-Language-Codes/assets/133912146/4525f2f7-b3d1-495c-8105-a1c75424837b)
+
+</div>
+
+
 ## The pre-existing basic operations contained in this module include:
 * ***initgLinkedList*** : Initializes and returns a pointer to the newly initialized linked list.
 * ***gLinkedListCopy*** : Creates copies and returns a pointer to the copy of a given linked list.
