@@ -81,6 +81,28 @@ Finally, to include the linked list functionalities in your project, open your c
 #include "./Abstract Data Types for Generic Data/Linked List/genLinkedList.h"
 ```
 
+Thus, after including the header file in your code with the #include preprocessor directive, the IDE will recognize the functions, which will be available for your respective use.
+
+It is worth mentioning that your project's compilation process must include not only the codes already planned, but also the file containing the implementations of the functions declared in the header file. All these implementations are present in the *genLinkedList.c* file, so it will be the new file attached to the compilation stage.
+
+Here is an example, in the same context mentioned above, of how to compile the code "MainCode.c" using the GCC compiler, assuming that the Linked List module was included and used in the code:
+
+```c
+gcc MainCode.c "./Abstract Data Types for Generic Data/Linked List/genLinkedList.c" -o ExecutableProgram -I "./Abstract Data Types for Generic Data/Linked List/"
+```
+
+<div>
+In the above command, we specified the following in the compilation process:
+
+1. Main file: <code>MainCode.c</code> (there may be more than one C file in addition to this, depending on the project context).
+
+2. Relative path to the module: <code>"./Abstract Data Types for Generic Data/Linked List/genLinkedList.c"</code>, which implements the linked list functionalities.
+
+3. Flag for executable name: <code>-o ExecutableProgram</code>, which defines the name of the resulting file after compilation.
+
+4. Flag for the header file directory: <code>-I "./Abstract Data Types for Generic Data/Linked List/"</code>, which indicates the directory containing the header file used.
+
+</div>
 <br></br>
 For demonstration and clarification purposes, there will be comments adjacent to each function signature, briefly describing its behavior and purpose, contained in the header file (*genLinkedList.h*). Furthermore, there is also a **commented program** that uses the data structure created in this module, in order to resolve any remaining doubts regarding its use, showing it in practice.
 <br></br>
