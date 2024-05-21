@@ -42,11 +42,7 @@ To include this repository locally in your project directory, follow these steps
 1. Open your project folder in the terminal.
 2. Type the following command and press enter:
 
-<div align="center">
-```code
-git clone https://github.com/JamesStewart314/C-Language-Codes.git
-```
-</div>
+<div align="center"><code>git clone https://github.com/JamesStewart314/C-Language-Codes.git</code></div>
 
 Now, if everything went as expected, this repository should be present locally on your computer. In other words, the file structure contained in the repository will be in the desired location. In this context, the hierarchical arrangement of directories contained in your project should resemble something as illustrated in the following image:
 
