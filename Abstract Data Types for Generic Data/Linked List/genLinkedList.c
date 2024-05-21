@@ -77,7 +77,7 @@ void gLinkedListClear(gLinkedList* list) {
     while (list->front) {
         auxNode = list->front;
         list->front = list->front->next;
-        if(list->destroyF) list->destroyF(auxNode->data);
+        if (list->destroyF) list->destroyF(auxNode->data);
         free(auxNode); auxNode = NULL;
     }
 
@@ -125,6 +125,63 @@ void gLinkedListImpress(gLinkedList* list) {
     }
 
     printf("\b\b]");
+
+    return;
+}
+
+
+void gLinkedListInsert(gLinkedList* list, int32_t index, gLinkedListDataPtr data) {
+    if (!list) return;
+
+    gLinkedListNode* newnode = (gLinkedListNode *) malloc(sizeof(gLinkedListNode));
+    if (newnode == NULL) {
+        fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Linked List node.\n");
+        exit(EXIT_FAILURE);
+        return;
+    }
+
+    newnode->data = data;
+
+    if (gLinkedListIsEmpty(list)) {
+        newnode->next = NULL;
+        list->front = list->rear = newnode;
+        (list->counter)++;
+
+        return;
+    }
+
+    index = (index < (int32_t)0) ? ((int32_t)gLinkedListSize(list) + index) : index;
+
+    // Inserting the element at the beginning of the list:
+    if (index <= (int32_t)0) {
+        newnode->next = list->front;
+        list->front = newnode;
+        (list->counter)++;
+
+        return;
+    }
+
+    // Inserting the new element at the end of the list:
+    if (index >= (int32_t)gLinkedListSize(list)) {
+        newnode->next = NULL;
+        list->rear->next = newnode;
+        list->rear = newnode;
+        (list->counter)++;
+
+        return;
+    }
+
+    // inserting the new element at some intermediate index of the list:
+    gLinkedListNode *auxNode = list->front, *previous = NULL;
+    while (index > 0) {
+        previous = auxNode;
+        auxNode = auxNode->next;
+        index--;
+    }
+
+    previous->next = newnode;
+    newnode->next = auxNode;
+    (list->counter)++;
 
     return;
 }
@@ -354,11 +411,10 @@ gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int32_t index) {
     index = (index < (int32_t)0) ? (index + (int32_t)gLinkedListSize(list)) : index;
     if (index >= (int32_t)gLinkedListSize(list) || index < (int32_t)0) return NULL;
 
-    uint32_t auxCounter = 0;
-    while (auxCounter < index) {
+    while (index > 0) {
         previous = auxNode;
         auxNode = auxNode->next;
-        auxCounter++;
+        index--;
     }
 
     (list->counter)--;

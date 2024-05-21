@@ -1,6 +1,5 @@
 # Generic Linked List
 
-<div>
 [Linked List](https://www.tutorialspoint.com/data_structures_algorithms/linked_list_algorithms.htm) consists of an abstract and linear data structure whose main objective is to store elements of the same type in a list arranged discontinuously in memory. The most elementary concept used in all linked lists corresponds to the "node", a substructure responsible for containing two attributes: The information that will be placed in each element of the list and a pointer informing the memory address for the next node in the list.
 
 In the specific implementation of this module, another structure will conventionally be created to encompass all the information necessary to perform the specific operations associated with each single linked list instance. Each structure will include:
@@ -58,8 +57,6 @@ The pre-existing basic operations contained in this module include:
 * *gLinkedListGetBiggest*: Returns the largest element present in the linked list.
 * *gLinkedListGetSmallest*: Returns the smallest element present in the linked list.
 * *gLinkedListPop*: Removes and returns the element located at the specified index within the linked list.
-
-</div>
 
 <div align="center">
 
