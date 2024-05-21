@@ -56,7 +56,7 @@ Now, if everything went as expected, this repository should be present locally o
 
 Finally, to include the linked list functionalities in your project, open your code in an IDE and add the relative path to the header file that contains the prototypes of this module's functions. In the example given above, the specific path to include the header file would be:
 
-```code
+```c
 #include "./Abstract Data Types for Generic Data/Linked List/genLinkedList.h"
 ```
 
