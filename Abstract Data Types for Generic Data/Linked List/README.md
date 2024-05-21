@@ -42,13 +42,15 @@ To include this repository locally in your project directory, follow these steps
 1. Open your project folder in the terminal.
 2. Type the following command and press enter:
 
-<div align="center"><code>git clone https://github.com/JamesStewart314/C-Language-Codes.git</code></div>
+<div><code>git clone https://github.com/JamesStewart314/C-Language-Codes.git</code></div>
 
  
 Now, if everything went as expected, this repository should be present locally on your computer. In other words, the file structure contained in the repository will be in the desired location. In this context, the hierarchical arrangement of directories contained in your project should resemble something as illustrated in the following image:
 
 <div align="center">
+    
 ![2024-05-20 22 51 01](https://github.com/JamesStewart314/C-Language-Codes/assets/133912146/4525f2f7-b3d1-495c-8105-a1c75424837b)
+
 </div>
 
 Finally, to include the linked list functionalities in your project, open your code in an IDE and add the relative path to the header file that contains the prototypes of this module's functions. In the example given above, the specific path to include the header file would be:
