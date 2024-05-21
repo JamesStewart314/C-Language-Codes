@@ -42,6 +42,7 @@ typedef struct {
 * ***gLinkedListClear*** : Removes all elements contained in the linked list.
 * ***gLinkedListDestroy*** : Completely destroys the linked list, freeing all dynamically allocated memory present in it.
 * ***gLinkedListImpress*** : Displays on the terminal a visual representation of the elements contained in the linked list.
+* ***gLinkedListInsert*** : Inserts a new element into the linked list, positioning it arbitrarily.
 * ***gLinkedListRemove*** : Removes a specific element from the linked list.
 * ***gLinkedListReverse*** : Reverses the ordering of the elements present in the linked list.
 * ***gLinkedListIsEmpty*** : Informs whether the linked list is empty.
@@ -95,6 +96,7 @@ For demonstration and exemplification purposes, there will be comments adjacent 
 | Clear                   | O(n)    |
 | Destroy                 | O(n)    |
 | Impress                 | O(n)    |
+| Insert                  | O(n)    |
 | Remove                  | O(n)    |
 | Reverse                 | O(n)    |
 | Is Empty                | O(1)    |
