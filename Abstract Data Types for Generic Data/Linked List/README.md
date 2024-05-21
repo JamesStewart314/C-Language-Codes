@@ -47,6 +47,7 @@ To include this repository locally in your project directory, follow these steps
 
 </br>
 Now, if everything went as expected, this repository should be present locally on your computer. In other words, the file structure contained in the repository will be in the desired location. In this context, the hierarchical arrangement of directories contained in your project should resemble something as illustrated in the following image:
+</br>
 
 <div align="center">
     
