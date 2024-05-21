@@ -81,6 +81,7 @@ Finally, to include the linked list functionalities in your project, open your c
 #include "./Abstract Data Types for Generic Data/Linked List/genLinkedList.h"
 ```
 
+<br></br>
 For demonstration and exemplification purposes, there will be comments adjacent to each function signature, briefly describing its behavior and purpose, all contained in the header file (*genLinkedList.h*). Furthermore, there is also a **commented program** that uses the data structure created in this module, in order to resolve any remaining doubts regarding its use, demonstrating its use in practice.
 <br></br>
 
