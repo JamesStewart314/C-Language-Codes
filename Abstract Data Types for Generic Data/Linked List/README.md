@@ -103,7 +103,7 @@ In the above command, we specified the following in the compilation process:
 4. Flag for the header file directory: <code>-I "./Abstract Data Types for Generic Data/Linked List/"</code>, which indicates the directory containing the header file used.
 
 </div>
-<br></br>
+
 For demonstration and clarification purposes, there will be comments adjacent to each function signature, briefly describing its behavior and purpose, contained in the header file (*genLinkedList.h*). Furthermore, there is also a **commented program** that uses the data structure created in this module, in order to resolve any remaining doubts regarding its use, showing it in practice.
 <br></br>
 
