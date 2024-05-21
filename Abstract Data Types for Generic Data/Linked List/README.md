@@ -35,7 +35,26 @@ typedef struct {
 ```
 #
 
-For demonstration and exemplification purposes, there will be comments adjacent to each function signature, briefly describing its behavior and purpose, all contained in the header file (*genLinkedList.h*). Furthermore, there is also a commented program that uses the data structure created in this module, in order to resolve any remaining doubts regarding its use, demonstrating its use in practice.
+## The pre-existing basic operations contained in this module include:
+* ***initgLinkedList*** : Initializes and returns a pointer to the newly initialized linked list.
+* ***gLinkedListCopy*** : Creates copies and returns a pointer to the copy of a given linked list.
+* ***gLinkedListAppend*** : Appends a new element to the end of the linked list.
+* ***gLinkedListClear*** : Removes all elements contained in the linked list.
+* ***gLinkedListDestroy*** : Completely destroys the linked list, freeing all dynamically allocated memory present in it.
+* ***gLinkedListImpress*** : Displays on the terminal a visual representation of the elements contained in the linked list.
+* ***gLinkedListRemove*** : Removes a specific element from the linked list.
+* ***gLinkedListReverse*** : Reverses the ordering of the elements present in the linked list.
+* ***gLinkedListIsEmpty*** : Informs whether the linked list is empty.
+* ***gLinkedListIsEquals*** : Determine whether two linked lists are equal.
+* ***gLinkedListSearch*** : Informs whether a given element is contained in the linked list.
+* ***gLinkedListHasSameElements*** : Checks whether two linked lists have the same elements.
+* ***gLinkedListShareSameElements*** : Checks whether two linked lists share the same elements.
+* ***gLinkedListCount*** : Counts the number of occurrences of an element in the linked list.
+* ***gLinkedListSize*** : Enumerates and informs the number of elements present in the linked list.
+* ***gLinkedListGetBiggest*** : Returns the largest element present in the linked list.
+* ***gLinkedListGetSmallest*** : Returns the smallest element present in the linked list.
+* ***gLinkedListPop*** : Removes and returns the element located at the specified index within the linked list.
+
 
 ## Usage Instructions
 To include this repository locally in your project directory, follow these steps:
@@ -61,27 +80,9 @@ Finally, to include the linked list functionalities in your project, open your c
 ```c
 #include "./Abstract Data Types for Generic Data/Linked List/genLinkedList.h"
 ```
-<br></br>
 
-## The pre-existing basic operations contained in this module include:
-* ***initgLinkedList*** : Initializes and returns a pointer to the newly initialized linked list.
-* ***gLinkedListCopy*** : Creates copies and returns a pointer to the copy of a given linked list.
-* ***gLinkedListAppend*** : Appends a new element to the end of the linked list.
-* ***gLinkedListClear*** : Removes all elements contained in the linked list.
-* ***gLinkedListDestroy*** : Completely destroys the linked list, freeing all dynamically allocated memory present in it.
-* ***gLinkedListImpress*** : Displays on the terminal a visual representation of the elements contained in the linked list.
-* ***gLinkedListRemove*** : Removes a specific element from the linked list.
-* ***gLinkedListReverse*** : Reverses the ordering of the elements present in the linked list.
-* ***gLinkedListIsEmpty*** : Informs whether the linked list is empty.
-* ***gLinkedListIsEquals*** : Determine whether two linked lists are equal.
-* ***gLinkedListSearch*** : Informs whether a given element is contained in the linked list.
-* ***gLinkedListHasSameElements*** : Checks whether two linked lists have the same elements.
-* ***gLinkedListShareSameElements*** : Checks whether two linked lists share the same elements.
-* ***gLinkedListCount*** : Counts the number of occurrences of an element in the linked list.
-* ***gLinkedListSize*** : Enumerates and informs the number of elements present in the linked list.
-* ***gLinkedListGetBiggest*** : Returns the largest element present in the linked list.
-* ***gLinkedListGetSmallest*** : Returns the smallest element present in the linked list.
-* ***gLinkedListPop*** : Removes and returns the element located at the specified index within the linked list.
+For demonstration and exemplification purposes, there will be comments adjacent to each function signature, briefly describing its behavior and purpose, all contained in the header file (*genLinkedList.h*). Furthermore, there is also a **commented program** that uses the data structure created in this module, in order to resolve any remaining doubts regarding its use, demonstrating its use in practice.
+<br></br>
 
 <div align="center">
 
