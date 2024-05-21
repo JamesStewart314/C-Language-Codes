@@ -51,7 +51,8 @@ Now, if everything went as expected, this repository should be present locally o
 
 <div align="center">
     
-![2024-05-20 22 51 01](https://github.com/JamesStewart314/C-Language-Codes/assets/133912146/4525f2f7-b3d1-495c-8105-a1c75424837b)
+![2024-05-20_22 51 01-removebg-preview](https://github.com/JamesStewart314/C-Language-Codes/assets/133912146/a3d8d5a3-c597-499e-a189-ce19b4dbddb4)
+
 
 </div>
 
