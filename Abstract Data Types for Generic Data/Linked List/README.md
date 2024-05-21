@@ -72,11 +72,10 @@ Now, if everything went as expected, this repository should be present locally o
     
 ![2024-05-20_22 51 01-removebg-preview](https://github.com/JamesStewart314/C-Language-Codes/assets/133912146/a3d8d5a3-c597-499e-a189-ce19b4dbddb4)
 
-
 </div>
 
 Finally, to include the linked list functionalities in your project, open your code in an IDE and add the relative path to the header file that contains the prototypes of this module's functions. In the example given above, the specific path to include the header file would be:
-<br></br>
+
 ```c
 #include "./Abstract Data Types for Generic Data/Linked List/genLinkedList.h"
 ```
