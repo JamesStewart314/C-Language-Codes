@@ -267,7 +267,7 @@ bool gLinkedListIsEquals(gLinkedList* list1, gLinkedList* list2) {
     if (!list1 || !list2) return (!list1 && !list2);
 
     if (list1->compareF != list2->compareF) {
-        fprintf(stderr, "Error: It is not possible to compare two linked lists whose comparison functions differ from each other.\n");
+        fprintf(stderr, "Error: It is not possible to compare two generic linked lists whose comparison functions differ from each other.\n");
         return 0;
     }
 

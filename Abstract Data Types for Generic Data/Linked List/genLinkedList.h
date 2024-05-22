@@ -114,21 +114,23 @@ int main(int argc, char** argv) {
 
     Person *poppingResult = NULL;
 
-    
+
     //puts("\nPopping the value in index 2:");
     //poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, 2);
     //if (poppingResult) {
     //    printf("Value Popped: ");
     //    impressFPerson(poppingResult); printf("\n");
+    //    destroyFPerson(poppingResult); poppingResult = NULL;
     //}
     //gLinkedListImpress(linkedListOfPersons); printf("\n");
-    
+
 
     puts("\nPopping the value in index -1 (last element):");
     poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, -1);
     if (poppingResult) {
         printf("Value Popped: ");
         impressFPerson(poppingResult); printf("\n");
+        destroyFPerson(poppingResult); poppingResult = NULL;
     }
     gLinkedListImpress(linkedListOfPersons); printf("\n");
 
@@ -138,6 +140,7 @@ int main(int argc, char** argv) {
     if (poppingResult) {
         printf("Value Popped: ");
         impressFPerson(poppingResult); printf("\n");
+        destroyFPerson(poppingResult); poppingResult = NULL;
     }
     gLinkedListImpress(linkedListOfPersons); printf("\n");
 
@@ -147,7 +150,9 @@ int main(int argc, char** argv) {
     if (poppingResult) {
         printf("Value Popped: ");
         impressFPerson(poppingResult); printf("\n");
+        destroyFPerson(poppingResult); poppingResult = NULL;
     }
+    
     gLinkedListImpress(linkedListOfPersons); printf("\n");
 
     puts("\nTesting the reversing function:");
@@ -180,10 +185,10 @@ int main(int argc, char** argv) {
 
     puts("\n*Destroying the Original Linked List!");
     gLinkedListDestroy(&linkedListOfPersons);
-    printf("*Original Linked List Destroyed."); 
+    printf("*Original Linked List Destroyed.");
     gLinkedListImpress(linkedListOfPersons); printf("\n");
 
-    printf("\nThe copy remains independent and immutable: "); 
+    printf("\nThe copy remains independent and immutable: ");
     gLinkedListImpress(copyLinkedListOfPersons); printf("\n");
 
     gLinkedListDestroy(&copyLinkedListOfPersons);
@@ -215,7 +220,7 @@ int main(int argc, char** argv) {
     puts("*Destroying the Original Linked List of Integers.");
     gLinkedListDestroy(&linkedListOfIntegers);
 
-    printf("\nThe copy remains independent and immutable: "); 
+    printf("\nThe copy remains independent and immutable: ");
     gLinkedListImpress(copyLinkedListOfIntegers); printf("\n");
 
     gLinkedListDestroy(&copyLinkedListOfIntegers);
@@ -233,6 +238,7 @@ void impressFPerson(void* data) {
     Person* originalPerson = (Person *)data;
 
     printf("Person(%s, %u)", (originalPerson->name != NULL) ? originalPerson->name : "NULL", originalPerson->id);
+
     return;
 }
 
@@ -260,6 +266,7 @@ int compareFPerson(void* data1, void* data2) {
 
     if (aux1->id > aux2->id) return 1;
     if (aux1->id < aux2->id) return -1;
+
     return 0;
 }
 
@@ -306,6 +313,7 @@ void* deepcopyFPerson(void* data) {
 void impressFIntegers(void* data) {
     if (!data) return;
     printf("%d", *(int *)data);
+
     return;
 }
 
@@ -321,6 +329,7 @@ int compareFIntegers(void* data1, void* data2) {
 
     if (aux1 > aux2) return 1;
     if (aux1 < aux2) return -1;
+
     return 0;
 }
 
