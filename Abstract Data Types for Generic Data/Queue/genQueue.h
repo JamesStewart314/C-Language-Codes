@@ -45,7 +45,7 @@ void gQueueDestroy(gQueue** qPointer);                                          
 void gQueueEnqueue(gQueue* q, gQueueDataPtr data);                                           // Inserts Elements into the Queue;
 void gQueueImpress(gQueue* q);                                                               // Displays the Queue on the Terminal in List Format;
 void gQueueRemove(gQueue* q, gQueueDataPtr data);                                            // Removes a given element from the Queue;
-bool gQueueIsEmpty(gQueue *q);                                                               // Checks if the queue is empty. Returns 1 if empty and 0 otherwise;
+bool gQueueIsEmpty(gQueue* q);                                                               // Checks if the queue is empty. Returns 1 if empty and 0 otherwise;
 bool gQueueIsEquals(gQueue* q1, gQueue* q2);                                                 // Determines whether two queues are identical. The judging criteria consists of a quantitative, qualitative and structural correspondence of the elements in both queues;
 bool gQueueHasSameElements(gQueue* q1, gQueue* q2);                                          // Determines whether two queues have the same elements, disregarding ordering criteria in this analysis;
 bool gQueueShareSameElements(gQueue* q1, gQueue* q2);                                        // Determines whether two queues share the same elements, disregarding ordering and multiplicity criteria of elements;
