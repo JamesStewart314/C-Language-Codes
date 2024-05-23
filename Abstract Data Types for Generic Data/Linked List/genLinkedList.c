@@ -6,7 +6,6 @@ gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctio
     
     if (!compareF) {
         fprintf(stderr, "Error: Compare Function is NULL when creating a new generic Linked List.\n");
-
         return NULL;
     }
 
@@ -14,7 +13,6 @@ gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctio
     if (newlist == NULL) {
         fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Linked List.\n");
         exit(EXIT_FAILURE);
-
         return NULL;
     }
 
