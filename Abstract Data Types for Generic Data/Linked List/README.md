@@ -3,18 +3,20 @@
 [Linked List](https://www.tutorialspoint.com/data_structures_algorithms/linked_list_algorithms.htm) consists of an abstract and linear data structure whose main objective is to store elements of the same type in a list arranged discontinuously in memory. The most elementary concept used in all linked lists corresponds to the "node", a substructure responsible for containing two attributes: The information that will be placed in each element of the list and a pointer informing the memory address for the next node in the list.
 
 In the specific implementation of this module, another structure will conventionally be created to encompass all the information necessary to perform the specific operations associated with each single linked list instance. Each structure will include:
+
 * A <span style="color:green;">pointer</span> to the first element of the linked list, denoted by "<span style="color:blue;">front</span>";
 
 * A <span style="color:green;">pointer</span> to the last element of the linked list, denoted by "<span style="color:red;">rear</span>";
 
 * A 32-bit unsigned integer counter, which can represent values contained in the interval **0** to **4,294,967,295**, where the limits of this interval are inclusive;
-* A <span style="color:green;">pointer</span> to an external function whose purpose is to determine the display method of the list's elements. This parameter is optional, that is, its non-existence does not prevent the basic functioning of the data structure, but it makes it impossible to display its elements;
+
+* A <span style="color:green;">pointer</span> to an external function whose purpose is to determine the display method of list elements. This parameter is optional; its absence does not prevent the basic functioning of the data structure, but it makes it impossible to display its elements. To do so, simply replace this parameter with a <span style="color:red;">null pointer</span> (<span style="color:red;">NULL</span>) during the instantiation of each linked list;
 
 * A **mandatory**, non-null <span style="color:green;">pointer</span> to an external comparison function. This function receives as parameters two <span style="color:green;">pointers</span> to list elements and is designed to perform two-by-two comparisons between elements. The function must return: A **negative** value (less than zero) if the first parameter is considered inferior to the second; **zero** if both given parameters are equal; a **positive** value (greater than zero) if the first parameter is considered superior to the second;
 
 * A <span style="color:green;">pointer</span> to an external function whose purpose is to implement a specific disposal method for each element in the list. This function receives as its only parameter a <span style="color:green;">pointer</span> to the data type stored in the list and performs the release of dynamically allocated memory for the element. If it is not necessary to deallocate memory, this parameter can be replaced with a <span style="color:red;">null pointer</span> (<span style="color:red;">NULL</span>) during the instantiation of each linked list;
 
-* A <span style="color:green;">pointer</span> to an external function whose purpose is to produce completely independent replicas of each element contained in the list, that is, the function will perform a [deep copy](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy). The function's only parameter is a <span style="color:green;">pointer</span> to the element to be copied, and it will return a <span style="color:green;">pointer</span> to the new copied element. This function is only necessary if the structure of the elements stored in the list involves dynamic memory allocation, if there is no memory allocated; otherwise, the copy function parameter may be replaced with a <span style="color:red;">null pointer</span> (<span style="color:red;">NULL</span>).
+* A <span style="color:green;">pointer</span> to an external function whose purpose is to produce completely independent replicas of each element contained in the list, that is, the function will perform a [deep copy](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy). The function's only parameter is a <span style="color:green;">pointer</span> to the element to be copied, and it will return a <span style="color:green;">pointer</span> to the new copied element. It's only necessary if the structure of the elements stored in the list involves dynamic memory allocation, otherwise, the copy function parameter may be replaced with a <span style="color:red;">null pointer</span> (<span style="color:red;">NULL</span>).
 
 
 ## Visualization of the structures used in the linked lists:
@@ -65,7 +67,7 @@ To include this repository locally in your project directory, follow these steps
     <li><code>git clone https://github.com/JamesStewart314/C-Language-Codes.git</code></li>
 </ul>
 
-Now, if everything went as expected, this repository should be present locally on your computer. In other words, the file structure contained in the repository will be in the desired location. In this context, the hierarchical arrangement of directories contained in your project should resemble something as illustrated in the following image:
+Now, if everything went as expected, this repository should be present locally on your computer. In this context, the hierarchical arrangement of directories present in your project should resemble something as illustrated in the following image:
 <br></br>
 
 <div align="center">
