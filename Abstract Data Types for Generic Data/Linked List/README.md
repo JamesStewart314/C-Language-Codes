@@ -114,24 +114,24 @@ For demonstration and clarification purposes, there will be comments adjacent to
 
 | Operation               | Big O   |
 |:-----------------------:|:-------:|
-| Space                   | O(n)    |
-| Copy                    | O(n)    |
 | Append                  | O(1)    |
 | Clear                   | O(n)    |
-| Destroy                 | O(n)    |
-| Impress                 | O(n)    |
-| Insert                  | O(n)    |
-| Remove                  | O(n)    |
-| Reverse                 | O(n)    |
-| Is Empty                | O(1)    |
-| Equals                  | O(n)    |
-| Search                  | O(n)    |
-| Has Same Elements       | O(n²)   |
-| Share Same Elements     | O(n²)   |
+| Copy                    | O(n)    |
 | Count                   | O(n)    |
-| Size                    | O(1)    |
+| Destroy                 | O(n)    |
+| Equals                  | O(n)    |
 | Get Biggest             | O(n)    |
 | Get Smallest            | O(n)    |
+| Has Same Elements       | O(n²)   |
+| Impress                 | O(n)    |
+| Insert                  | O(n)    |
+| Is Empty                | O(1)    |
 | Pop                     | O(n)    |
+| Remove                  | O(n)    |
+| Reverse                 | O(n)    |
+| Search                  | O(n)    |
+| Share Same Elements     | O(n²)   |
+| Size                    | O(1)    |
+| Space                   | O(n)    |
 
 </div>
