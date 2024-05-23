@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
 
 
     //puts("\nPopping the value in index 2:");
-    //poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, 2);
+    //poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, (int32_t)2);
     //if (poppingResult) {
     //    printf("Value Popped: ");
     //    impressFPerson(poppingResult); printf("\n");
@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
 
 
     puts("\nPopping the value in index -1 (last element):");
-    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, -1);
+    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, (int32_t)(-1));
     if (poppingResult) {
         printf("Value Popped: ");
         impressFPerson(poppingResult); printf("\n");
