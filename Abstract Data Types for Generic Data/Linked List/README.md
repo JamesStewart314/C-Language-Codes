@@ -93,7 +93,7 @@ gcc MainCode.c "./Abstract Data Types for Generic Data/Linked List/genLinkedList
 ```
 
 <div>
-In the above command, we specified the following in the compilation process:
+In the above command, we specified the following during the compilation process:
 
 1. Main file: <code>MainCode.c</code> (there may be more than one C file in addition to this, depending on the project context).
 
