@@ -135,8 +135,8 @@ int main(int argc, char** argv) {
     gLinkedListImpress(linkedListOfPersons); printf("\n");
 
 
-    puts("\nPopping the value in index 29 (Exceeds the maximum list index):");
-    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, 29);
+    puts("\nPopping the value in index 29 (Value exceeds the maximum list index):");
+    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, (int32_t)29);
     if (poppingResult) {
         printf("Value Popped: ");
         impressFPerson(poppingResult); printf("\n");
@@ -145,8 +145,8 @@ int main(int argc, char** argv) {
     gLinkedListImpress(linkedListOfPersons); printf("\n");
 
 
-    puts("\nPopping the value in index -10 (Exceeds the minimum list index):");
-    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, -10);
+    puts("\nPopping the value in index -10 (Value exceeds the minimum list index):");
+    poppingResult = (Person *)gLinkedListPop(linkedListOfPersons, (int32_t)(-10));
     if (poppingResult) {
         printf("Value Popped: ");
         impressFPerson(poppingResult); printf("\n");
