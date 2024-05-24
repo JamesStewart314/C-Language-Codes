@@ -112,26 +112,27 @@ For demonstration and clarification purposes, there will be comments adjacent to
 
 ## Algorithmic Complexity in Big O Notation for the Linked List Operations:
 
-| Operation               | Big O   |
-|:-----------------------:|:-------:|
-| Append                  | O(1)    |
-| Clear                   | O(n)    |
-| Copy                    | O(n)    |
-| Count                   | O(n)    |
-| Destroy                 | O(n)    |
-| Equals                  | O(n)    |
-| Get Biggest             | O(n)    |
-| Get Smallest            | O(n)    |
-| Has Same Elements       | O(n²)   |
-| Impress                 | O(n)    |
-| Insert                  | O(n)    |
-| Is Empty                | O(1)    |
-| Pop                     | O(n)    |
-| Remove                  | O(n)    |
-| Reverse                 | O(n)    |
-| Search                  | O(n)    |
-| Share Same Elements     | O(n²)   |
-| Size                    | O(1)    |
-| Space                   | O(n)    |
+| Operation               | Big O     |
+|:-----------------------:|:---------:|
+| Append                  | O(1)      |
+| Clear                   | O(n)      |
+| Copy                    | O(n)      |
+| Count                   | O(n)      |
+| Destroy                 | O(n)      |
+| Equals                  | O(n)      |
+| Get Biggest             | O(n)      |
+| Get Smallest            | O(n)      |
+| Has Same Elements       | O(n²)     |
+| Impress                 | O(n)      |
+| Insert                  | O(n)      |
+| Is Empty                | O(1)      |
+| Pop                     | O(n)      |
+| Remove                  | O(n)      |
+| Reverse                 | O(n)      |
+| Search                  | O(n)      |
+| Sort                    | O(n log n)|
+| Share Same Elements     | O(n²)     |
+| Size                    | O(1)      |
+| Space                   | O(n)      |
 
 </div>

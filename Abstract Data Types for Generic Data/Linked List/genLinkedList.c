@@ -1,6 +1,174 @@
 #include "genLinkedList.h"
 
 
+gLinkedListNode* mergeGenericLinkedList(gLinkedListNode* node1, uint32_t size1, gLinkedListNode* node2, uint32_t size2, gLinkedList* list) {
+    // if (!node1 || !node2) return ((node1 != NULL) ? node1 : node2);
+
+    gLinkedListNode *auxNode1 = node1, *auxNode2 = node2;
+
+    // Variables to get the new start and end of the 
+    // linked list during the merge process:
+    gLinkedListNode *tempFront = NULL, *tempRear = NULL;
+
+    // Auxiliary counters to track the progress of 
+    // each half of the linked list during the merge process:
+    uint32_t auxCounter1 = (uint32_t)0, auxCounter2 = (uint32_t)0;
+
+    int comparisonResult;
+
+    /* We perform the first step of the merge outside the loop to avoid 
+    redundant checks for the case where the tempFront pointer is NULL. 
+    In this way, we obtain a small performance gain in the algorithm 
+    as a whole. */
+    comparisonResult = list->compareF(auxNode1->data, auxNode2->data);
+
+    if (comparisonResult < 0) {
+        tempFront = tempRear = auxNode1;
+        auxNode1 = auxNode1->next;
+        auxCounter1++;
+
+    } else if (comparisonResult > 0) {
+        tempFront = tempRear = auxNode2;
+        auxNode2 = auxNode2->next;
+        auxCounter2++;
+
+    } else {
+        tempFront = tempRear = auxNode1;
+
+        auxNode1 = auxNode1->next;
+        auxCounter1++;
+
+        tempRear->next = auxNode2;
+        tempRear = auxNode2;
+        
+        auxNode2 = auxNode2->next;            
+        auxCounter2++;
+    }
+
+    while ((auxCounter1 < size1) && (auxCounter2 < size2)) {        
+        comparisonResult = list->compareF(auxNode1->data, auxNode2->data);
+
+        if (comparisonResult < 0) {
+
+            tempRear->next = auxNode1;
+            tempRear = auxNode1;
+
+            auxNode1 = auxNode1->next;
+            auxCounter1++;
+
+        } else if (comparisonResult > 0) {
+
+            tempRear->next = auxNode2;
+            tempRear = auxNode2;
+
+            auxNode2 = auxNode2->next;
+            auxCounter2++;
+
+        } else {
+
+            tempRear->next = auxNode1;
+            tempRear = auxNode1;
+
+            auxNode1 = auxNode1->next;
+            auxCounter1++;
+
+            tempRear->next = auxNode2;
+            tempRear = auxNode2;
+            
+            auxNode2 = auxNode2->next;            
+            auxCounter2++;
+        }
+    }
+
+    if (auxCounter2 >= size2 && auxCounter1 < size1) {
+        gLinkedListNode* finalNode = tempRear->next;
+
+        while (auxCounter1 < size1) {
+            tempRear->next = auxNode1;
+            tempRear = auxNode1;
+            auxNode1 = auxNode1->next;
+            auxCounter1++;
+        }
+
+        tempRear->next = finalNode;
+    }
+
+    if (auxCounter1 >= size1 && auxCounter2 < size2) {
+        while (auxCounter2 < size2) {
+            tempRear->next = auxNode2;
+            tempRear = auxNode2;
+            auxNode2 = auxNode2->next;
+            auxCounter2++;
+        }
+    }
+    
+    list->front = tempFront;
+    list->rear = tempRear;
+
+    return tempFront;
+}
+
+
+gLinkedListNode* recursiveMergeSortGenericLinkedList(gLinkedListNode* node, uint32_t size, gLinkedList* list, gLinkedListNode** frontResult, gLinkedListNode** rearResult) {
+    
+    if (size <= (uint32_t)0) return NULL;
+    if (size == (uint32_t)1) {
+        list->front = list->rear = node;
+        (*frontResult) = (*rearResult) = node;
+        return node;
+    }
+
+    if (size == (uint32_t)2) {
+
+        int comparisonResult = list->compareF(node->data, node->next->data);
+        if (comparisonResult <= 0) {
+            list->front = node;
+            list->rear = node->next;
+            
+            (*frontResult) = node;
+            (*rearResult) = node->next;
+
+            return node;
+        }
+
+        gLinkedListNode* nextNode = node->next;
+        node->next = nextNode->next;
+        nextNode->next = node;
+
+        list->front = nextNode;
+        list->rear = node;
+
+        (*frontResult) = nextNode;
+        (*rearResult) = nextNode->next;
+
+        return nextNode;        
+    }
+
+    uint32_t middlePoint = (size / (uint32_t)2);
+    uint32_t auxCounter = middlePoint;
+
+    gLinkedListNode* middleNode = node;
+    while (auxCounter > (uint32_t)0) {
+        middleNode = middleNode->next;
+        auxCounter--;
+    }
+
+    gLinkedListNode *leftMergeSortFrontResult, *leftMergeSortRearResult;
+    gLinkedListNode *leftMergeSortResult = recursiveMergeSortGenericLinkedList(node, middlePoint, list, &leftMergeSortFrontResult, &leftMergeSortRearResult);
+    gLinkedListNode *rightMergeSortFrontResult, *rightMergeSortRearResult;
+    gLinkedListNode *rightMergeSortResult = recursiveMergeSortGenericLinkedList(middleNode, size - middlePoint, list, &rightMergeSortFrontResult, &rightMergeSortRearResult);
+
+    leftMergeSortRearResult->next = rightMergeSortFrontResult;
+
+    gLinkedListNode* mergeResult = mergeGenericLinkedList(leftMergeSortResult, middlePoint, rightMergeSortResult, size - middlePoint, list);
+
+    (*frontResult) = list->front;
+    (*rearResult) = list->rear;
+
+    return mergeResult;
+}
+
+
 gLinkedList* initgLinkedList(impressFunctionGenLinkedList printF, compareFunctionGenLinkedList compareF,
                              destroyFuntionGenLinkedList destroyF, deepcopyFunctionGenLinkedList deepcopyF) {
     
@@ -300,6 +468,20 @@ bool gLinkedListSearch(gLinkedList* list, gLinkedListDataPtr data) {
 }
 
 
+void gLinkedListSort(gLinkedList* list) {
+    if (!list) return;
+    if (gLinkedListIsEmpty(list) || gLinkedListSize(list) == (uint32_t)1) return;
+
+    gLinkedListNode *newFront, *newRear;
+    recursiveMergeSortGenericLinkedList(list->front, list->counter, list, &newFront, &newRear);
+
+    //list->front = newFront;
+    //list->rear = newRear;
+
+    return;
+}
+
+
 bool gLinkedListHasSameElements(gLinkedList* list1, gLinkedList* list2) {
     if (!list1 || !list2) return (!list1 && !list2);
 
@@ -398,6 +580,9 @@ gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int32_t index) {
     if (gLinkedListIsEmpty(list)) return NULL;
 
     gLinkedListNode *auxNode = list->front, *previous = NULL;
+    
+    index = (index < (int32_t)0) ? (index + (int32_t)gLinkedListSize(list)) : index;
+    if (index >= (int32_t)gLinkedListSize(list) || index < (int32_t)0) return NULL;
 
     if (index == 0) {
         (list->counter)--;
@@ -407,9 +592,6 @@ gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int32_t index) {
         
         return returnData;
     }
-    
-    index = (index < (int32_t)0) ? (index + (int32_t)gLinkedListSize(list)) : index;
-    if (index >= (int32_t)gLinkedListSize(list) || index < (int32_t)0) return NULL;
 
     while (index > 0) {
         previous = auxNode;

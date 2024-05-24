@@ -51,6 +51,7 @@ void gLinkedListClear(gLinkedList* list);                                       
 void gLinkedListDestroy(gLinkedList** listPointer);                                                                                              // Destroys the generic linked list, freeing all allocated memory for it. Receives a pointer to the pointer of the list as a parameter;
 void gLinkedListImpress(gLinkedList* list);                                                                                                      // Prints the data stored in each node of the linked list;
 void gLinkedListInsert(gLinkedList* list, int32_t index, gLinkedListDataPtr data);                                                               // Inserts a new element into the linked list, positioning it at the index specified by the "index" parameter;
+void gLinkedListSort(gLinkedList* list);
 void gLinkedListRemove(gLinkedList* list, gLinkedListDataPtr data);                                                                              // Removes the first node containing the provided data from the linked list and returns it;
 void gLinkedListReverse(gLinkedList* list);                                                                                                      // Inverts the ordered sequential arrangement of the elements present in the list;
 bool gLinkedListIsEmpty(gLinkedList* list);                                                                                                      // Checks if the generic linked list is empty. Returns 1 if the list is empty and 0 otherwise;
@@ -177,7 +178,15 @@ int main(int argc, char** argv) {
         printf("=> ID from the smallest Person on the List: %u\n", returnValue->id);
     }
 
-    printf("\nFinal State of the List: "); gLinkedListImpress(linkedListOfPersons); printf("\n\n");
+    printf("\nBefore sorting the list: ");
+    gLinkedListImpress(linkedListOfPersons); printf("\n");
+    gLinkedListSort(linkedListOfPersons);
+    printf("After sorting the list: ");
+    gLinkedListImpress(linkedListOfPersons); printf("\n\n");
+
+
+    printf("\nFinal State of the List: ");
+    gLinkedListImpress(linkedListOfPersons); printf("\n\n");
 
     puts("*Copying the Linked List of Persons.");
     gLinkedList* copyLinkedListOfPersons = gLinkedListCopy(linkedListOfPersons);
@@ -245,25 +254,31 @@ void impressFPerson(void* data) {
 
 int compareFPerson(void* data1, void* data2) {
     if (!data1 || !data2) {
-        if (!data1 && !data2) return 0;
-        return (data1 == NULL) ? (-1) : 1;
+        if (!data1 && !data2) return 0;     // Both pointers are NULL
+        return (data1 == NULL) ? (-1) : 1;  // At least one pointer is NULL. The smallest is the NULL pointer.
     }
 
+    // Pointer casting:
     Person* aux1 = (Person *)data1;
     Person* aux2 = (Person *)data2;
 
     do {
         if (!(aux1->name) || !(aux2->name)) {
-            if (!(aux1->name) && !(aux2->name)) break;
+            // At least one of the names is NULL:
+
+            // Both are null and, consequently, equal. 
+            // Ending the loop and proceeding to compare the IDs:
+            if (!(aux1->name) && !(aux2->name)) break; 
+
             return (aux1->name == NULL) ? (-1) : 1;
         } else {
             int nameComparisonResult = strcmp(aux1->name, aux2->name);
             if (nameComparisonResult != 0) return nameComparisonResult;
             break;
         }
-
     } while(false);
 
+    // Comparison of IDs if the names are the same or both are NULL:
     if (aux1->id > aux2->id) return 1;
     if (aux1->id < aux2->id) return -1;
 
