@@ -112,27 +112,26 @@ For demonstration and clarification purposes, there will be comments adjacent to
 
 ## Algorithmic Complexity in Big O Notation for the Linked List Operations:
 
-| Operation               | Big O     |
-|:-----------------------:|:---------:|
-| Append                  | O(1)      |
-| Clear                   | O(n)      |
-| Copy                    | O(n)      |
-| Count                   | O(n)      |
-| Destroy                 | O(n)      |
-| Equals                  | O(n)      |
-| Get Biggest             | O(n)      |
-| Get Smallest            | O(n)      |
-| Has Same Elements       | O(n²)     |
-| Impress                 | O(n)      |
-| Insert                  | O(n)      |
-| Is Empty                | O(1)      |
-| Pop                     | O(n)      |
-| Remove                  | O(n)      |
-| Reverse                 | O(n)      |
-| Search                  | O(n)      |
-| Sort                    | O(n log n)|
-| Share Same Elements     | O(n²)     |
-| Size                    | O(1)      |
-| Space                   | O(n)      |
+| Operation               | Time Complexity | Space Complexity |
+|:-----------------------:|:---------------:|:----------------:|
+| Append                  | O(1)            | O(1)             |
+| Clear                   | O(n)            | O(1)             |
+| Copy                    | O(n)            | O(n)             |
+| Count                   | O(n)            | O(1)             |
+| Destroy                 | O(n)            | O(1)             |
+| Equals                  | O(n)            | O(1)             |
+| Get Biggest             | O(n)            | O(1)             |
+| Get Smallest            | O(n)            | O(1)             |
+| Has Same Elements       | O(n²)           | O(1)             |
+| Impress                 | O(n)            | O(1)             |
+| Insert                  | O(n)            | O(1)             |
+| Is Empty                | O(1)            | O(1)             |
+| Pop                     | O(n)            | O(1)             |
+| Remove                  | O(n)            | O(1)             |
+| Reverse                 | O(n)            | O(1)             |
+| Search                  | O(n)            | O(1)             |
+| Sort                    | O(n log n)      | O(log n)         |
+| Share Same Elements     | O(n²)           | O(1)             |
+| Size                    | O(1)            | O(1)             |
 
 </div>
