@@ -11,15 +11,7 @@ typedef void* genBubbleSorterVectorPtr;
 typedef int (*compareFunctionGenBubbleSorter)(genBubbleSorterVectorPtr data1, genBubbleSorterVectorPtr data2);
 typedef void (*swapFunctionGenBubbleSorter)(genBubbleSorterVectorPtr data1, genBubbleSorterVectorPtr data2);
 
-typedef struct {
-    compareFunctionGenBubbleSorter compareF;
-    swapFunctionGenBubbleSorter swapF;
-} gBubbleSorter;
-
-
-gBubbleSorter* initgBubbleSorter(compareFunctionGenBubbleSorter compareF, swapFunctionGenBubbleSorter swapF);
-void gBubbleSorterDestroy(gBubbleSorter** bubbleSorterPointer);
-void gBubbleSorterSort(gBubbleSorter* sorter, genBubbleSorterVectorPtr arrayPointer, uint64_t arraySize, uint64_t dataSize);
+void gBubbleSort(compareFunctionGenBubbleSorter compareF, swapFunctionGenBubbleSorter swapF, genBubbleSorterVectorPtr arrayPointer, uint64_t arraySize, uint64_t dataSize);
 
 #endif
 
