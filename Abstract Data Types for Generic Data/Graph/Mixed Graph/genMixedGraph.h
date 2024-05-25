@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifndef GENERICMIXEDGRAPH_H
 #define GENERICMIXEDGRAPH_H
@@ -12,15 +13,16 @@
 
 #include "../../Linked List/genLinkedList.h"
 
-typedef void* mixGraphPointerData;
+typedef void* gMiexdGraphDataPtr;
 
-typedef void (*impressFunctionGenMixedGraph)(mixGraphPointerData data);
-typedef int (*compareFunctionGenMixedGraph)(mixGraphPointerData data1, mixGraphPointerData data2);
-typedef void (*destroyFunctionGenMixedGraph)(mixGraphPointerData data);
+typedef void (*impressFunctionGenMixedGraph)(gMiexdGraphDataPtr data);
+typedef int (*compareFunctionGenMixedGraph)(gMiexdGraphDataPtr data1, gMiexdGraphDataPtr data2);
+typedef void (*destroyFunctionGenMixedGraph)(gMiexdGraphDataPtr data);
+typedef gMiexdGraphDataPtr (*deepcopyFunctionGenMixedGraph)(gMiexdGraphDataPtr data);
 
 
 typedef struct GENERICMIXEDGRAPHVERTEX {
-    mixGraphPointerData data;
+    gMiexdGraphDataPtr data;
     gLinkedList* neighboringVertices;
     struct GENERICMIXEDGRAPHVERTEX* nextVertex;
 } gMixedGraphVertex;
@@ -28,30 +30,34 @@ typedef struct GENERICMIXEDGRAPHVERTEX {
 
 typedef struct GENERICMIXEDGRAPH {
     gMixedGraphVertex* currentVertex;
-    size_t counter;
+    uint32_t counter;
     impressFunctionGenMixedGraph printF;
     compareFunctionGenMixedGraph compareF;
     destroyFunctionGenMixedGraph destroyF;
+    deepcopyFunctionGenLinkedList deepcopyF;
 } gMixedGraph;
 
 
-gMixedGraph* initgMixedGraph(impressFunctionGenMixedGraph printF, compareFunctionGenMixedGraph compareF, destroyFunctionGenMixedGraph destroyF);
-void gMixedGraphDestroy(gMixedGraph** graphPointer);
-void gMixedGraphInsertVertex(gMixedGraph* graph, mixGraphPointerData data);
-void gMixedGraphRemoveVertex(gMixedGraph* graph, mixGraphPointerData data);
+gMixedGraph* initgMixedGraph(impressFunctionGenMixedGraph printF, compareFunctionGenMixedGraph compareF,
+                             destroyFunctionGenMixedGraph destroyF, deepcopyFunctionGenLinkedList deepcopyF);
+
+gMixedGraph* gMixedGraphCopy(gMixedGraph* graph);
 void gMixedGraphClear(gMixedGraph* graph);
 void gMixedGraphImpress(gMixedGraph* graph);
-void gMixedGraphCreateEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixGraphPointerData vertex2);
-void gMixedGraphRemoveEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixGraphPointerData vertex2);
-void gMixedGraphCreateUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData sourceVertex, mixGraphPointerData destinationVertex);
-void gMixedGraphRemoveUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData sourceVertex, mixGraphPointerData destinationVertex);
+void gMixedGraphDestroy(gMixedGraph** graphPointer);
+void gMixedGraphInsertVertex(gMixedGraph* graph, gMiexdGraphDataPtr data);
+void gMixedGraphRemoveVertex(gMixedGraph* graph, gMiexdGraphDataPtr data);
+void gMixedGraphCreateEdge(gMixedGraph* graph, gMiexdGraphDataPtr vertex1, gMiexdGraphDataPtr vertex2);
+void gMixedGraphRemoveEdge(gMixedGraph* graph, gMiexdGraphDataPtr vertex1, gMiexdGraphDataPtr vertex2);
+void gMixedGraphCreateUnidirectionalEdge(gMixedGraph* graph, gMiexdGraphDataPtr sourceVertex, gMiexdGraphDataPtr destinationVertex);
+void gMixedGraphRemoveUnidirectionalEdge(gMixedGraph* graph, gMiexdGraphDataPtr sourceVertex, gMiexdGraphDataPtr destinationVertex);
 bool gMixedGraphIsEmpty(gMixedGraph* graph);
-bool gMixedGraphSearchVertex(gMixedGraph* graph, mixGraphPointerData data);
-bool gMixedGraphSearchUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData sourceVertex, mixGraphPointerData destinationVertex);
-bool gMixedGraphSearchEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixGraphPointerData vertex2);
 bool gMixedGraphIsEquals(gMixedGraph* graph1, gMixedGraph* graph2);
-size_t gMixedGraphSize(gMixedGraph* graph);
-size_t gMixedGraphGetVertexDegree(gMixedGraph* graph, mixGraphPointerData vertex);
+bool gMixedGraphSearchVertex(gMixedGraph* graph, gMiexdGraphDataPtr data);
+bool gMixedGraphSearchEdge(gMixedGraph* graph, gMiexdGraphDataPtr vertex1, gMiexdGraphDataPtr vertex2);
+bool gMixedGraphSearchUnidirectionalEdge(gMixedGraph* graph, gMiexdGraphDataPtr sourceVertex, gMiexdGraphDataPtr destinationVertex);
+uint32_t gMixedGraphGetVertexDegree(gMixedGraph* graph, gMiexdGraphDataPtr vertex);
+uint32_t gMixedGraphSize(gMixedGraph* graph);
 
 #endif
 
@@ -82,9 +88,9 @@ int comparef(void* data1, void* data2);
 
 int main(int argc, char** argv) {
 
-    gMixedGraph* graphOfIntegers = initgMixedGraph(impressf, comparef, NULL);
+    gMixedGraph* graphOfIntegers = initgMixedGraph(impressf, comparef, NULL, NULL);
 
-    int val1 = 1, val2 = 2, val3 = 3, val4 = 4, val5 = 5;
+    int val1 = 1, val2 = 2, val3 = 3, val4 = 4, val5 = 5, val6 = 6, val7 = 7;
 
     gMixedGraphInsertVertex(graphOfIntegers, &val1);
     gMixedGraphInsertVertex(graphOfIntegers, &val2);
@@ -121,7 +127,7 @@ int main(int argc, char** argv) {
     printf("\nThere is an edge between val5 and val3: %s\n", gMixedGraphSearchEdge(graphOfIntegers, &val5, &val3) ? "Yes" : "No");
 
     puts("\n*Creating a manual copy of the graph of integers.");
-    gMixedGraph* graphOfIntegersMCopy = initgMixedGraph(impressf, comparef, NULL);
+    gMixedGraph* graphOfIntegersMCopy = initgMixedGraph(impressf, comparef, NULL, NULL);
 
     gMixedGraphInsertVertex(graphOfIntegersMCopy, &val1);
     gMixedGraphInsertVertex(graphOfIntegersMCopy, &val2);
@@ -144,6 +150,7 @@ int main(int argc, char** argv) {
 
     printf("Original Graph and Manual Copy Graph are Equal? %s\n", gMixedGraphIsEquals(graphOfIntegers, graphOfIntegersMCopy) ? "Yes" : "No");
     gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val1, &val4);
+    gMixedGraphCreateUnidirectionalEdge(graphOfIntegersMCopy, &val6, &val7);
 
     puts("\nCopy Graph:");
     gMixedGraphImpress(graphOfIntegersMCopy);
@@ -151,6 +158,8 @@ int main(int argc, char** argv) {
 
     gMixedGraphDestroy(&graphOfIntegers);
     gMixedGraphDestroy(&graphOfIntegersMCopy);
+
+    puts("\nProgram Finished!");
 
     return 0;
 }

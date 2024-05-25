@@ -13,7 +13,7 @@
 */
 
 
-gMixedGraphVertex* getGraphVertex(gMixedGraph* graph, mixGraphPointerData vertex) {
+gMixedGraphVertex* getGraphVertex(gMixedGraph* graph, gMiexdGraphDataPtr vertex) {
     if (!graph) return NULL;
     if (gMixedGraphIsEmpty(graph)) return NULL;
 
@@ -27,24 +27,44 @@ gMixedGraphVertex* getGraphVertex(gMixedGraph* graph, mixGraphPointerData vertex
 }
 
 
-gMixedGraph* initgMixedGraph(impressFunctionGenMixedGraph printF, compareFunctionGenMixedGraph compareF, destroyFunctionGenMixedGraph destroyF) {
+gMixedGraph* initgMixedGraph(impressFunctionGenMixedGraph printF, compareFunctionGenMixedGraph compareF,
+                             destroyFunctionGenMixedGraph destroyF, deepcopyFunctionGenLinkedList deepcopyF) {
 
     if (!compareF) {
         fprintf(stderr, "Error: Compare Function is NULL when creating a new generic Mixed Graph.\n");
         return NULL;
     }
 
-    gMixedGraph* newgraph = (gMixedGraph *)malloc(sizeof(gMixedGraph));
+    gMixedGraph* newgraph = (gMixedGraph *) malloc(sizeof(gMixedGraph));
     if (newgraph == NULL) {
         fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Mixed Graph.\n");
         exit(EXIT_FAILURE);
     }
 
     newgraph->currentVertex = NULL;
-    newgraph->counter = (size_t)0;
+    newgraph->counter = (uint32_t)0;
     newgraph->printF = printF;
     newgraph->compareF = compareF;
     newgraph->destroyF = destroyF;
+    newgraph->deepcopyF = deepcopyF;
+
+    return newgraph;
+}
+
+
+gMixedGraph* gMixedGraphCopy(gMixedGraph* graph) {
+    if (!graph) return NULL;
+    
+    gMixedGraph* newgraph = initgMixedGraph(graph->printF, graph->compareF, graph->destroyF, graph->deepcopyF);
+
+    if (gMixedGraphIsEmpty(graph)) return newgraph;
+
+    gMixedGraphVertex* auxVertex = graph->currentVertex;
+    while (auxVertex) {
+        gMixedGraphInsertVertex(newgraph, (graph->deepcopyF ? graph->deepcopyF(auxVertex->data) : auxVertex->data));
+        newgraph->currentVertex->neighboringVertices = gLinkedListCopy(auxVertex->neighboringVertices);
+        auxVertex->nextVertex;
+    }
 
     return newgraph;
 }
@@ -77,20 +97,23 @@ void gMixedGraphDestroy(gMixedGraph** graphPointer) {
 }
 
 
-void gMixedGraphInsertVertex(gMixedGraph* graph, mixGraphPointerData data) {
+void gMixedGraphInsertVertex(gMixedGraph* graph, gMiexdGraphDataPtr data) {
     if (!graph) return;
 
     // Checking whether the new vertex is already present in the graph:
-    if (gMixedGraphSearchVertex(graph, data)) return;
+    if (gMixedGraphSearchVertex(graph, data)) {
+        if (graph->destroyF) graph->destroyF(data);
+        return;
+    }
 
-    gMixedGraphVertex* newvertex = (gMixedGraphVertex *) malloc (sizeof(gMixedGraphVertex));
+    gMixedGraphVertex* newvertex = (gMixedGraphVertex *) malloc(sizeof(gMixedGraphVertex));
     if (newvertex == NULL) {
         fprintf(stderr, "Error: Failed while trying to allocate memory for a new generic Mixed Graph Vertex.\n");
         exit(EXIT_FAILURE);
     }
 
     newvertex->data = data;
-    newvertex->neighboringVertices = initgLinkedList(graph->printF, graph->compareF, NULL);
+    newvertex->neighboringVertices = initgLinkedList(graph->printF, graph->compareF, NULL, graph->deepcopyF);
     
     if (gMixedGraphIsEmpty(graph)) {
         newvertex->nextVertex = NULL;
@@ -107,7 +130,7 @@ void gMixedGraphInsertVertex(gMixedGraph* graph, mixGraphPointerData data) {
 }
 
 
-void gMixedGraphRemoveVertex(gMixedGraph* graph, mixGraphPointerData data) {
+void gMixedGraphRemoveVertex(gMixedGraph* graph, gMiexdGraphDataPtr data) {
     if (!graph) return;
     if (gMixedGraphIsEmpty(graph)) return;
 
@@ -118,7 +141,10 @@ void gMixedGraphRemoveVertex(gMixedGraph* graph, mixGraphPointerData data) {
     }
 
     // Vertex not found:
-    if (!auxVertex) return;
+    if (!auxVertex) {
+        if (graph->destroyF) graph->destroyF(data);
+        return;
+    }
 
     (graph->counter)--;
 
@@ -188,7 +214,7 @@ void gMixedGraphImpress(gMixedGraph* graph) {
 }
 
 
-void gMixedGraphCreateEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixGraphPointerData vertex2) {
+void gMixedGraphCreateEdge(gMixedGraph* graph, gMiexdGraphDataPtr vertex1, gMiexdGraphDataPtr vertex2) {
     if (!graph) return;
     if (gMixedGraphIsEmpty(graph)) return;
     
@@ -199,7 +225,7 @@ void gMixedGraphCreateEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixG
 }
 
 
-void gMixedGraphRemoveEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixGraphPointerData vertex2) {
+void gMixedGraphRemoveEdge(gMixedGraph* graph, gMiexdGraphDataPtr vertex1, gMiexdGraphDataPtr vertex2) {
     if (!graph) return;
     if (gMixedGraphIsEmpty(graph)) return;
 
@@ -210,7 +236,7 @@ void gMixedGraphRemoveEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixG
 }
 
 
-void gMixedGraphCreateUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData sourceVertex, mixGraphPointerData destinationVertex) {
+void gMixedGraphCreateUnidirectionalEdge(gMixedGraph* graph, gMiexdGraphDataPtr sourceVertex, gMiexdGraphDataPtr destinationVertex) {
     if (!graph) return;
     if (gMixedGraphIsEmpty(graph)) return;
 
@@ -221,39 +247,88 @@ void gMixedGraphCreateUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData
         auxVertex = auxVertex->nextVertex;
     }
 
-    if (!auxVertex) return;
 
-    if (!auxDestinationVertex) {
-        auxDestinationVertex = auxVertex;
+    do {
+        if (!auxVertex) {
+            gMixedGraphInsertVertex(graph, sourceVertex);
+            auxVertex = graph->currentVertex;
 
-        while (auxDestinationVertex) {
-            if (graph->compareF(auxDestinationVertex->data, destinationVertex) == 0) break;
-            auxDestinationVertex = auxDestinationVertex->nextVertex;
+            if (!auxDestinationVertex) {
+                gMixedGraphInsertVertex(graph, destinationVertex);
+                auxDestinationVertex = graph->currentVertex;
+            }
+
+            break;
         }
 
-        if (!auxDestinationVertex) return;
+        if (!auxDestinationVertex) {
+            auxDestinationVertex = auxVertex;
+
+            while (auxDestinationVertex) {
+                if (graph->compareF(auxDestinationVertex->data, destinationVertex) == 0) break;
+                auxDestinationVertex = auxDestinationVertex->nextVertex;
+            }
+
+            if (!auxDestinationVertex) {
+                // The vertex is not found in the graph, so we can insert it:
+                gMixedGraphInsertVertex(graph, destinationVertex);
+                auxDestinationVertex = graph->currentVertex;
+            }
+
+            break;
+        }
+
+        // Edge Alreary Exists:
+        if (gLinkedListSearch(auxVertex->neighboringVertices, auxDestinationVertex)) {
+            // if the function parameters are different objects 
+            // containing the same information, we destroy the duplicate:
+            if (auxVertex->data != sourceVertex) {
+                if (graph->destroyF) graph->destroyF(sourceVertex);
+            }
+
+            if (auxDestinationVertex->data != destinationVertex) {
+                if (graph->destroyF) graph->destroyF(destinationVertex);
+            }
+
+            return;
+        }
+
+    } while (false);
+
+    gLinkedListAppend(auxVertex->neighboringVertices, auxDestinationVertex->data);
+
+    // if the function parameters are different objects 
+    // containing the same information, we destroy the duplicate:
+    if (auxVertex->data != sourceVertex) {
+        if (graph->destroyF) graph->destroyF(sourceVertex);
     }
 
-    // Edge Alreary Exists:
-    if (gLinkedListSearch(auxVertex->neighboringVertices, destinationVertex)) return;
-
-    gLinkedListAppend(auxVertex->neighboringVertices, destinationVertex);
+    if (auxDestinationVertex->data != destinationVertex) {
+        if (graph->destroyF) graph->destroyF(destinationVertex);
+    }
 
     return;
 }
 
 
-void gMixedGraphRemoveUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData sourceVertex, mixGraphPointerData destinationVertex) {
+void gMixedGraphRemoveUnidirectionalEdge(gMixedGraph* graph, gMiexdGraphDataPtr sourceVertex, gMiexdGraphDataPtr destinationVertex) {
     if (!graph) return;
     if (gMixedGraphIsEmpty(graph)) return;
 
-    gMixedGraphVertex* auxVertex = graph->currentVertex;
+    gMixedGraphVertex *auxVertex = graph->currentVertex, *auxDestinationVertex = NULL;
     while (auxVertex) {
         if (graph->compareF(auxVertex->data, sourceVertex) == 0) break;
+        if (graph->compareF(auxVertex->data, destinationVertex) == 0) auxDestinationVertex = auxVertex;
         auxVertex = auxVertex->nextVertex;
     }
 
-    if (!auxVertex) return;
+    if (!auxVertex) {
+        if (graph->destroyF) graph->destroyF(sourceVertex);
+
+        if (auxDestinationVertex && (auxDestinationVertex->data != destinationVertex)) {
+            if (graph->destroyF) graph->destroyF(destinationVertex);
+        }
+    }
 
     gLinkedListRemove(auxVertex->neighboringVertices, destinationVertex);
 
@@ -263,11 +338,11 @@ void gMixedGraphRemoveUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData
 
 bool gMixedGraphIsEmpty(gMixedGraph* graph) {
     if (!graph) return 1;
-    return (graph->counter <= (size_t)0);
+    return (graph->counter <= 0);
 }
 
 
-bool gMixedGraphSearchVertex(gMixedGraph* graph, mixGraphPointerData data) {
+bool gMixedGraphSearchVertex(gMixedGraph* graph, gMiexdGraphDataPtr data) {
     if (!graph) return 0;
     if (gMixedGraphIsEmpty(graph)) return 0;
 
@@ -281,7 +356,7 @@ bool gMixedGraphSearchVertex(gMixedGraph* graph, mixGraphPointerData data) {
 }
 
 
-bool gMixedGraphSearchUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData sourceVertex, mixGraphPointerData destinationVertex) {
+bool gMixedGraphSearchUnidirectionalEdge(gMixedGraph* graph, gMiexdGraphDataPtr sourceVertex, gMiexdGraphDataPtr destinationVertex) {
     if (!graph) return 0;
     if (gMixedGraphIsEmpty(graph)) return 0;
 
@@ -297,7 +372,7 @@ bool gMixedGraphSearchUnidirectionalEdge(gMixedGraph* graph, mixGraphPointerData
 }
 
 
-bool gMixedGraphSearchEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixGraphPointerData vertex2) {
+bool gMixedGraphSearchEdge(gMixedGraph* graph, gMiexdGraphDataPtr vertex1, gMiexdGraphDataPtr vertex2) {
     if (!graph) return 0;
     if (gMixedGraphIsEmpty(graph)) return 0;
 
@@ -305,17 +380,17 @@ bool gMixedGraphSearchEdge(gMixedGraph* graph, mixGraphPointerData vertex1, mixG
 }
 
 
-size_t gMixedGraphSize(gMixedGraph* graph) {
-    if (!graph) return (size_t)0;
+uint32_t gMixedGraphSize(gMixedGraph* graph) {
+    if (!graph) return (uint32_t)0;
     return graph->counter;
 }
 
 
-size_t gMixedGraphGetVertexDegree(gMixedGraph* graph, mixGraphPointerData vertex) {
-    if (!graph) return (size_t)0;
-    if (gMixedGraphIsEmpty(graph)) return (size_t)0;
+uint32_t gMixedGraphGetVertexDegree(gMixedGraph* graph, gMiexdGraphDataPtr vertex) {
+    if (!graph) return (uint32_t)0;
+    if (gMixedGraphIsEmpty(graph)) return (uint32_t)0;
 
-    size_t vertexDegree = (size_t)0;
+    uint32_t vertexDegree = (uint32_t)0;
 
     gMixedGraphVertex* auxVertex = graph->currentVertex;
     while (auxVertex) {
@@ -329,15 +404,15 @@ size_t gMixedGraphGetVertexDegree(gMixedGraph* graph, mixGraphPointerData vertex
         // Vertex Found:
         gLinkedListNode* auxNode = auxVertex->neighboringVertices->front;
         while (auxNode) {
-            if (graph->compareF((mixGraphPointerData)auxNode->data, auxVertex->data) != 0) {
+            if (graph->compareF((gMiexdGraphDataPtr)auxNode->data, auxVertex->data) != 0) {
                 // If it corresponds to a one-sided edge, increment one unit:
-                if (!gMixedGraphSearchEdge(graph, (mixGraphPointerData)auxNode->data, auxVertex->data)) vertexDegree++;
+                if (!gMixedGraphSearchEdge(graph, (gMiexdGraphDataPtr)auxNode->data, auxVertex->data)) vertexDegree++;
                 auxNode = auxNode->next;
                 continue;
             }
 
             // Pointing to himself:
-            vertexDegree += (size_t)2;
+            vertexDegree += (uint32_t)2;
             
             auxNode = auxNode->next;
             continue;
