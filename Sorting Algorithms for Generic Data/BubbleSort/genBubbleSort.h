@@ -25,7 +25,7 @@ void gBubbleSorterSort(gBubbleSorter* sorter, genBubbleSorterVectorPtr arrayPoin
 
 
 //
-// Example of Using the Linked List in a Program:
+// Example of Using the Generic Bubble Sorter in a Program:
 /*
 #include "genBubbleSort.h"
 #include <string.h>
