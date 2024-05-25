@@ -10,10 +10,7 @@ gLinkedListNode* mergeGenericLinkedList(gLinkedListNode* node1, uint32_t size1, 
     // linked list during the merge process:
     gLinkedListNode *tempFront = NULL, *tempRear = NULL;
 
-    // Auxiliary counters to track the progress of 
-    // each half of the linked list during the merge process:
-    uint32_t auxCounter1 = (uint32_t)0, auxCounter2 = (uint32_t)0;
-
+    // Variable to track the results of comparisons:
     int comparisonResult;
 
     /* We perform the first step of the merge outside the loop to avoid 
@@ -25,80 +22,79 @@ gLinkedListNode* mergeGenericLinkedList(gLinkedListNode* node1, uint32_t size1, 
     if (comparisonResult < 0) {
         tempFront = tempRear = auxNode1;
         auxNode1 = auxNode1->next;
-        auxCounter1++;
+        size1--;
 
     } else if (comparisonResult > 0) {
         tempFront = tempRear = auxNode2;
         auxNode2 = auxNode2->next;
-        auxCounter2++;
+        size2--;
 
     } else {
         tempFront = tempRear = auxNode1;
 
         auxNode1 = auxNode1->next;
-        auxCounter1++;
+        size1--;
 
         tempRear->next = auxNode2;
         tempRear = auxNode2;
         
         auxNode2 = auxNode2->next;            
-        auxCounter2++;
+        size2--;
     }
 
-    while ((auxCounter1 < size1) && (auxCounter2 < size2)) {        
+    while ((size1 > 0) && (size2 > 0)) {
         comparisonResult = list->compareF(auxNode1->data, auxNode2->data);
 
         if (comparisonResult < 0) {
-
             tempRear->next = auxNode1;
             tempRear = auxNode1;
 
             auxNode1 = auxNode1->next;
-            auxCounter1++;
+            size1--;
 
         } else if (comparisonResult > 0) {
-
             tempRear->next = auxNode2;
             tempRear = auxNode2;
 
             auxNode2 = auxNode2->next;
-            auxCounter2++;
+            size2--;
 
         } else {
-
             tempRear->next = auxNode1;
             tempRear = auxNode1;
 
             auxNode1 = auxNode1->next;
-            auxCounter1++;
+            size1--;
 
             tempRear->next = auxNode2;
             tempRear = auxNode2;
             
             auxNode2 = auxNode2->next;            
-            auxCounter2++;
+            size2--;
         }
     }
 
-    if (auxCounter2 >= size2 && auxCounter1 < size1) {
+    // If the right side of the merge is exhausted first:
+    if (size2 <= 0 && size1 > 0) {
         gLinkedListNode* finalNode = tempRear->next;
 
-        while (auxCounter1 < size1) {
+        while (size1 > 0) {
             tempRear->next = auxNode1;
             tempRear = auxNode1;
             auxNode1 = auxNode1->next;
-            auxCounter1++;
+            size1--;
         }
 
         tempRear->next = finalNode;
     }
 
-    if (auxCounter1 >= size1 && auxCounter2 < size2) {
-        while (auxCounter2 < size2) {
+    // If the left side of the merge is exhausted first:
+    if (size1 <= 0 && size2 > 0) {
+        while (size2 > 0) {
             tempRear->next = auxNode2;
             tempRear = auxNode2;
             auxNode2 = auxNode2->next;
-            auxCounter2++;
+            size2--;
         }
     }
     
@@ -111,7 +107,7 @@ gLinkedListNode* mergeGenericLinkedList(gLinkedListNode* node1, uint32_t size1, 
 
 gLinkedListNode* recursiveMergeSortGenericLinkedList(gLinkedListNode* node, uint32_t size, gLinkedList* list, gLinkedListNode** frontResult, gLinkedListNode** rearResult) {
     
-    if (size <= (uint32_t)0) return NULL;
+    if (size <= 0) return NULL;
     if (size == (uint32_t)1) {
         list->front = list->rear = node;
         (*frontResult) = (*rearResult) = node;
@@ -148,7 +144,7 @@ gLinkedListNode* recursiveMergeSortGenericLinkedList(gLinkedListNode* node, uint
     uint32_t auxCounter = middlePoint;
 
     gLinkedListNode* middleNode = node;
-    while (auxCounter > (uint32_t)0) {
+    while (auxCounter > 0) {
         middleNode = middleNode->next;
         auxCounter--;
     }
@@ -427,7 +423,7 @@ void gLinkedListReverse(gLinkedList* list) {
 
 bool gLinkedListIsEmpty(gLinkedList* list) {
     if (!list) return 1;
-    return (list->counter <= (uint32_t)0);
+    return (list->counter <= 0);
 }
 
 
@@ -540,7 +536,7 @@ uint32_t gLinkedListCount(gLinkedList* list, gLinkedListDataPtr data) {
 
 
 uint32_t gLinkedListSize(gLinkedList* list) {
-    if (!list) return 0;
+    if (!list) return (uint32_t)0;
     return list->counter;
 }
 
