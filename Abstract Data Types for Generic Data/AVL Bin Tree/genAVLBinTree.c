@@ -636,7 +636,7 @@ gAVLBinTree* gAVLBinTreeCopy(gAVLBinTree* tree) {
 
     // We do not provide a function to destroy elements during stack 
     // creation in order to preserve the information contained in each element:
-    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF, NULL);
+    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF, NULL, NULL);
     
     // We first start by enqueuing the root node of the tree.
     gQueueEnqueue(treeQueue, tree->root);
@@ -831,7 +831,7 @@ void gAVLBinTreeImpressByLevel(gAVLBinTree* tree) {
      data queue will be created to perform this function and assist 
      in the execution of this task:
     */
-    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF, NULL);
+    gQueue* treeQueue = initgQueue(tree->printF, tree->compareF, NULL, NULL);
     // initially enqueuing the root of the tree:
     gQueueEnqueue(treeQueue, tree->root);
 
@@ -885,6 +885,19 @@ void gAVLBinTreeDestroy(gAVLBinTree** treePointer) {
 void gAVLBinTreeRemove(gAVLBinTree* tree, gAVLBinTrPointerData data) {
     if (!tree) return;
     if (gAVLBinTreeIsEmpty(tree)) return;
+
+    if (gAVLBinTreeSize(tree) == (size_t)1) {
+        gAVLBinTreeNode* auxNode = tree->root;
+
+        if (tree->compareF(auxNode->data, data) == 0) {
+            if (tree->destroyF) tree->destroyF(auxNode->data);
+            free(auxNode); auxNode = NULL;
+            tree->root = NULL;
+            tree->counter = (size_t)0;
+        }
+
+        return;
+    }
 
     // Element is Not in the Tree:
     if (!gAVLBinTreeSearch(tree, data)) return;
