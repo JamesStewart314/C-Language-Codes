@@ -1,29 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-#ifndef GENERICBUBBLESORTER_H
-#define GENERICBUBBLESORTER_H
-
-typedef void* genBubbleSorterVectorPtr;
-
-typedef int (*compareFunctionGenBubbleSorter)(genBubbleSorterVectorPtr data1, genBubbleSorterVectorPtr data2);
-typedef void (*swapFunctionGenBubbleSorter)(genBubbleSorterVectorPtr data1, genBubbleSorterVectorPtr data2);
-
-void gBubbleSort(compareFunctionGenBubbleSorter compareF, swapFunctionGenBubbleSorter swapF, genBubbleSorterVectorPtr arrayPointer, uint64_t arraySize, uint64_t dataSize);
-
-#endif
-
-
-//
-// Example of Using the Generic Bubble Sorter in a Program:
-/*
-#include "genBubbleSort.h"
+#include "genSorters.h"
 #include <string.h>
 #include <time.h>
 
 #define ARRAY_SIZE 100
+
+// Compilation Command: gcc gBubbleSortTest.c genSorters.c
 
 typedef struct {
     char* name;
@@ -46,8 +27,6 @@ int main(int argc, char** argv) {
 
     srand((unsigned int)time(NULL));
 
-    gBubbleSorter* bubbleSorterOfIntegers = initgBubbleSorter(compareFIntegers, swapFIntegers);
-
     int random_numbers[ARRAY_SIZE];
 
     // Inserting random values in the array:
@@ -62,7 +41,7 @@ int main(int argc, char** argv) {
     }
     printf("\b\b]");
 
-    gBubbleSorterSort(bubbleSorterOfIntegers, random_numbers, (uint64_t)ARRAY_SIZE, (uint64_t)sizeof(int));
+    gBubbleSort(compareFIntegers, swapFIntegers, random_numbers, (uint64_t)ARRAY_SIZE, (uint64_t)sizeof(int));
 
     puts("\n\n\nArray of Integers Generated After Sorting:\n");
     printf("[");
@@ -70,11 +49,6 @@ int main(int argc, char** argv) {
         printf("%d, ", random_numbers[i]);
     }
     printf("\b\b]\n");
-
-    gBubbleSorterDestroy(&bubbleSorterOfIntegers);
-
-
-    gBubbleSorter* bubbleSorterOfPersons = initgBubbleSorter(compareFPerson, swapFPerson);
 
     Person personArray[ARRAY_SIZE];
     for (int i = 0; i < 100; i++) {
@@ -91,7 +65,7 @@ int main(int argc, char** argv) {
     }
     printf("\b\b]\n");
 
-    gBubbleSorterSort(bubbleSorterOfPersons, personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)));
+    gBubbleSort(compareFPerson, swapFPerson, personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)));
 
     puts("\n\n\nArray of Persons Generated After Sorting:");
     printf("\n[");
@@ -100,8 +74,6 @@ int main(int argc, char** argv) {
         printf(", ");
     }
     printf("\b\b]\n");
-
-    gBubbleSorterDestroy(&bubbleSorterOfPersons);
 
     puts("\nProgram Finished. Thanks for Using!");
 
@@ -233,5 +205,3 @@ char* getRandomName() {
 unsigned int getRandomID() {
     return rand() % 1000 + 1; // IDs entre 1 e 1000
 }
-
-*/

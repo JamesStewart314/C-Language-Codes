@@ -1,14 +1,14 @@
-#include "genBubbleSort.h"
+#include "genSorters.h"
 
-void gBubbleSort(compareFunctionGenBubbleSorter compareF, swapFunctionGenBubbleSorter swapF, genBubbleSorterVectorPtr arrayPointer, uint64_t arraySize, uint64_t dataSize) {
+void gBubbleSort(compareFunctionGenSort compareF, swapFunctionGenSort swapF, genSortVectorPtr arrayPointer, uint64_t arraySize, uint64_t dataSize) {
     if (!compareF) {
-        fprintf(stderr, "Error: Cannot Bubble Sort the Array if the compare function is NULL.\n");
+        fprintf(stderr, "Error: Cannot generic Bubble Sort the Array if the compare function is NULL.\n");
         return;
     }
 
     if (arraySize == 0 || dataSize == 0) {
-        if (arraySize == 0) fprintf(stderr, "Error: ArraySize parameter for gBubbleSorterSort function cannot be zero.\n");
-        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for gBubbleSorterSort function cannot be zero.\n");
+        if (arraySize == 0) fprintf(stderr, "Error: ArraySize parameter for generic Bubble Sort function cannot be zero.\n");
+        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Bubble Sort function cannot be zero.\n");
         return;
     }
 
