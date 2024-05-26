@@ -15,11 +15,11 @@ choice may partially impair the understanding of the algorithm.
 */
 
 // Function used to obtain the maximum value between two size_t variables:
-size_t maxSize_t(size_t a, size_t b) { return (a > b) ? a : b; }
+static inline size_t maxSize_t(size_t a, size_t b) { return (a > b) ? a : b; }
 
 
 // Function used to obtain the height of a binary tree:
-size_t getGenAVLSubTreeHeigt(gAVLBinTreeNode* subtree) {
+static inline size_t getGenAVLSubTreeHeigt(gAVLBinTreeNode* subtree) {
     if (!subtree) return (size_t)0;
     return subtree->height;
 }
