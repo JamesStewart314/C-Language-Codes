@@ -12,6 +12,8 @@ typedef void* genSortDataPtr;
 typedef int (*compareFunctionGenSort)(genSortDataPtr data1, genSortDataPtr data2);
 typedef void (*swapFunctionGenSort)(genSortDataPtr data1, genSortDataPtr data2);
 
+// TODO: USE THREADS IN MERGESORT...?
+
 void gBubbleSort(compareFunctionGenSort compareF, swapFunctionGenSort swapF, genSortArrayPtr arrayPointer, uint64_t arraySize, uint64_t dataSize);
 void gMergeSort(compareFunctionGenSort compareF, swapFunctionGenSort swapF, genSortArrayPtr arrayPointer, uint64_t arraySize, uint64_t dataSize);
 
