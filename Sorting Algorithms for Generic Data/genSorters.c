@@ -241,7 +241,7 @@ void gMergeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
     if (!arrayPointer) return;
 
     if (!compareF) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Merge Sort the Array if the compare function is NULL.\n");
+        fprintf(stderr, "Error: Cannot generic Merge Sort the Array if the compare function is NULL.\n");
         return;
     }
 
