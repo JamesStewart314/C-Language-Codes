@@ -103,7 +103,7 @@ int main(int argc, char** argv) {
     
 
     printf("\n* Time Used to Sort the Persons Array Containing %d Elements: %.2lf\n\n", ARRAY_SIZE, timeSpent);
-    puts("( Trust me bro, it's sorted... You don't want to see 100k array items in your terminal, do you...? ;) )");
+    puts("( Trust me bro, it's sorted... You don't want to see 80k array items in your terminal, do you...? ;) )");
 
     puts("\nProgram Finished. Thanks for Using!");
 
