@@ -3,9 +3,9 @@
 #include <time.h>
 
 
-#define ARRAY_SIZE 100000
+#define ARRAY_SIZE 80000
 
-// Compilation Command: gcc gMergeSortTest.c ../genSorters.c -o executableProgram -I ../ -O
+// Compilation Command: gcc gQuickSortTest.c ../genSorters.c -o executableProgram -I ../ -O
 
 typedef struct {
     char* name;
@@ -24,6 +24,7 @@ unsigned int getRandomID();
 
 int main(int argc, char** argv) {
 
+    
     srand((unsigned int)time(NULL));
     
     clock_t benchmarkInitialTime, benchmarkEndTime;
@@ -31,11 +32,12 @@ int main(int argc, char** argv) {
 
     int random_numbers[ARRAY_SIZE];
 
+    
     // Inserting random values in the array:
     for (int i = 0; i < ARRAY_SIZE; i++) {
         random_numbers[i] = rand() % 10;
     }
-
+    
     /*
     puts("Array of Integers Generated Before Sorting:\n");
     printf("[");
@@ -47,7 +49,7 @@ int main(int argc, char** argv) {
     
 
     benchmarkInitialTime = clock();
-    gMergeSort(compareFIntegers, random_numbers, (uint64_t)ARRAY_SIZE, (uint64_t)sizeof(int));
+    gQuickSort(compareFIntegers, random_numbers, (uint64_t)ARRAY_SIZE, (uint64_t)sizeof(int));
     benchmarkEndTime = clock();
 
     timeSpent = (double)(benchmarkEndTime - benchmarkInitialTime) / CLOCKS_PER_SEC;
@@ -59,10 +61,12 @@ int main(int argc, char** argv) {
         printf("%d, ", random_numbers[i]);
     }
     printf("\b\b]\n");
-    */    
+    */
+    
 
     printf("\n* Time Used to Sort the Integers Array Containing %d Elements: %.2lf\n", ARRAY_SIZE, timeSpent);
 
+    
     Person personArray[ARRAY_SIZE];
     for (int i = 0; i < ARRAY_SIZE; i++) {
         char* name = getRandomName();
@@ -79,9 +83,10 @@ int main(int argc, char** argv) {
     }
     printf("\b\b]\n");
     */
+    
 
     benchmarkInitialTime = clock();
-    gMergeSort(compareFPerson, personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)));
+    gQuickSort(compareFPerson, personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)));
     benchmarkEndTime = clock();
 
     timeSpent = (double)(benchmarkEndTime - benchmarkInitialTime) / CLOCKS_PER_SEC;
@@ -95,6 +100,7 @@ int main(int argc, char** argv) {
     }
     printf("\b\b]\n");
     */
+    
 
     printf("\n* Time Used to Sort the Persons Array Containing %d Elements: %.2lf\n\n", ARRAY_SIZE, timeSpent);
     puts("( Trust me bro, it's sorted... You don't want to see 100k array items in your terminal, do you...? ;) )");
