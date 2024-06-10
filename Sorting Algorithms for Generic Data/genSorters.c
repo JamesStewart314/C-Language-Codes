@@ -127,7 +127,6 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
     void* endPointer = arrayPointer + dataSize * (arraySize - 1);
 
     void* pivotPointer = NULL;
-
     
     do {
         // Checking if the first element corresponds to the median between the three:
@@ -152,10 +151,10 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
     // Swapping the position of the best pivot to the end of the array:
     if (pivotPointer == startPointer) {
         gSwapVariables(pivotPointer, endPointer, dataSize);
-    } else if (pivotPointer == medianPointer) {
+    } 
+    if (pivotPointer == medianPointer) {
         gSwapVariables(pivotPointer, endPointer, dataSize);
     }
-    
 
     // Ensuring that the best pivot of the median between the first, 
     // last and middle elements of the array is at the end of the array:
@@ -173,7 +172,7 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
         }
         while (compareF(auxIndexJ, pivotPointer) > 0 && auxIndexI < auxIndexJ) auxIndexJ -= dataSize;
 
-        if (!(auxIndexI == auxIndexJ)) {
+        if (auxIndexI != auxIndexJ) {
             gSwapVariables(auxIndexI, auxIndexJ, dataSize);
             continue;
         }
