@@ -29,6 +29,7 @@ void gSwapVariables(void* variableA, void* variableB, uint64_t variableSize) {
 
 
 void gMergeArrays(compareFunctionGenSort compareF, void* arrayPointer, uint64_t start, uint64_t middle, uint64_t end, uint64_t dataSize) {
+    if (!arrayPointer) return;
 
     uint64_t arraySize = (end - start + 1);
 
@@ -87,7 +88,8 @@ void gMergeArrays(compareFunctionGenSort compareF, void* arrayPointer, uint64_t 
 
 
 void gRecursiveMergeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
-    
+    if (!arrayPointer) return;
+
     if (arraySize == 0 || arraySize == 1) return;
     if (arraySize == 2) {
         if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
@@ -106,7 +108,8 @@ void gRecursiveMergeSort(compareFunctionGenSort compareF, void* arrayPointer, ui
 
 
 void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
-    
+    if (!arrayPointer) return;
+
     if (arraySize == 0 || arraySize == 1) return;
     if (arraySize == 2) {
         if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
