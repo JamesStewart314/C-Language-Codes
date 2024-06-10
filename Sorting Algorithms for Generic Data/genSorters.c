@@ -261,7 +261,7 @@ void gQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
     if (!arrayPointer) return;
 
     if (!compareF) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Quick Sort the Array if the compare function is NULL.\n");
+        fprintf(stderr, "Error: Cannot generic Quick Sort the Array if the compare function is NULL.\n");
         return;
     }
     
