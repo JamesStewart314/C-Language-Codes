@@ -123,7 +123,7 @@ void gRecursiveMergeSort(compareFunctionGenSort compareF, void* arrayPointer, ui
 void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
     if (!arrayPointer) return;
 
-    if (arraySize == 0 || arraySize == 1) return;
+    if (arraySize <= 1) return;
     if (arraySize == 2) {
         if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
         return;
@@ -135,7 +135,8 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
      obtaining a pivot closer to the central value, promoting more balanced partitions and substantially improving the 
      overall efficiency of Quicksort.
     */
-
+    
+    /*
     uint64_t medianIndex = arraySize / 2;
 
     void* startPointer = arrayPointer;
@@ -151,7 +152,9 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
     // Ensuring that the best pivot of the median between the first, 
     // last and middle elements of the array is at the end of the array:
     gSwapVariables(medianPointer, endPointer, dataSize);
-    void* pivotPointer = endPointer;
+    */
+    
+    void* pivotPointer = arrayPointer + dataSize * (arraySize - 1);
 
     void* auxIndexI = arrayPointer;
     void* auxIndexJ = arrayPointer + (arraySize - 2) * dataSize;

@@ -3,9 +3,10 @@
 #include <time.h>
 
 
-#define ARRAY_SIZE 80000
+#define ARRAY_SIZE 70000
 
-// Compilation Command: gcc gQuickSortTest.c ../genSorters.c -o executableProgram -I ../ -O
+// Compilation Command: gcc gQuickSortTest.c ../genSorters.c -o executableProgram -I ../
+// -O / -O2 / -O3 
 
 typedef struct {
     char* name;
