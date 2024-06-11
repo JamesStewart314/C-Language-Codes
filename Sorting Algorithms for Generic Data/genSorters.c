@@ -1,11 +1,12 @@
 #include "genSorters.h"
 
+
 void gSwapVariables(void* variableA, void* variableB, uint64_t variableSize) {
 
-    /* Function used to swap the content of two variables of any type.
-     The main idea is to swap each byte of the variables, that is, 
-     swap each 8-bit block until all bytes of both variables have 
-     their contents swapped. */
+    // Function used to swap the content of two variables of any type.
+    // The main idea is to swap each byte of the variables, that is, 
+    // swap each 8-bit block until all bytes of both variables have 
+    // their contents swapped.
 
     int8_t tempContentSwapper;
 
@@ -26,6 +27,18 @@ void gSwapVariables(void* variableA, void* variableB, uint64_t variableSize) {
 
     return;
 }
+
+/*
+void gSwapVariables(void* variableA, void* variableB, uint64_t variableSize) {
+    void* auxVariable = malloc(variableSize);
+    memcpy(auxVariable, variableA, variableSize);
+    memcpy(variableA, variableB, variableSize);
+    memcpy(variableB, auxVariable, variableSize);
+    free(auxVariable);
+
+    return;
+}
+*/
 
 
 void gMergeArrays(compareFunctionGenSort compareF, void* arrayPointer, uint64_t start, uint64_t middle, uint64_t end, uint64_t dataSize) {
@@ -128,63 +141,40 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
     void* startPointer = arrayPointer;
     void* medianPointer = arrayPointer + dataSize * medianIndex;
     void* endPointer = arrayPointer + dataSize * (arraySize - 1);
-
-    void* pivotPointer = NULL;
     
-    do {
-        // Checking if the first element corresponds to the median between the three:
-        if (compareF(arrayPointer, medianPointer) <= 0 || compareF(arrayPointer, endPointer) <= 0) {
-            if (compareF(arrayPointer, medianPointer) >= 0) pivotPointer = startPointer;
-            if (compareF(arrayPointer, endPointer) >= 0) pivotPointer = startPointer;
-            if (pivotPointer) break;
-        }
+    if (compareF(startPointer, medianPointer) >= 0) gSwapVariables(startPointer, medianPointer, dataSize);
+    if (compareF(medianPointer, endPointer) >= 0) gSwapVariables(medianPointer, endPointer, dataSize);
+    if (compareF(startPointer, medianPointer) >= 0) gSwapVariables(startPointer, medianPointer, dataSize);
 
-        // Checking if the median element corresponds to the median between the three:
-        if (compareF(medianPointer, arrayPointer) <= 0 || compareF(medianPointer, endPointer) <= 0) {
-            if (compareF(medianPointer, arrayPointer) >= 0) pivotPointer = medianPointer;
-            if (compareF(medianPointer, endPointer) >= 0) pivotPointer = medianPointer;
-            if (pivotPointer) break;
-        }
-
-        pivotPointer = endPointer;
-        break;
-
-    } while (false);
-
-    // Swapping the position of the best pivot to the end of the array:
-    gSwapVariables(pivotPointer, endPointer, dataSize);
+    if (arraySize == 3) return;
 
     // Ensuring that the best pivot of the median between the first, 
     // last and middle elements of the array is at the end of the array:
-    pivotPointer = endPointer;
+    gSwapVariables(medianPointer, endPointer, dataSize);
+    void* pivotPointer = endPointer;
 
     void* auxIndexI = arrayPointer;
     void* auxIndexJ = arrayPointer + (arraySize - 2) * dataSize;
-    // Variable to track the array index of auxIndexI pointer:
-    uint64_t auxIndexCounter = 0;
+
+    while (compareF(auxIndexI, pivotPointer) <= 0 && auxIndexI < auxIndexJ) auxIndexI += dataSize;
+    while (compareF(auxIndexJ, pivotPointer) > 0 && auxIndexI < auxIndexJ) auxIndexJ -= dataSize;
 
     while (auxIndexI < auxIndexJ) {
-        while (compareF(auxIndexI, pivotPointer) <= 0 && auxIndexI < auxIndexJ) {
-            auxIndexI += dataSize;
-            auxIndexCounter++;
-        }
+        gSwapVariables(auxIndexI, auxIndexJ, dataSize);
+        while (compareF(auxIndexI, pivotPointer) <= 0 && auxIndexI < auxIndexJ) auxIndexI += dataSize;
         while (compareF(auxIndexJ, pivotPointer) > 0 && auxIndexI < auxIndexJ) auxIndexJ -= dataSize;
-
-        if (auxIndexI != auxIndexJ) {
-            gSwapVariables(auxIndexI, auxIndexJ, dataSize);
-            continue;
-        }
-
     }
+
+    uint64_t auxIndexIFinalIndex = (uint64_t)(auxIndexI - arrayPointer) / dataSize;
 
     if (compareF(auxIndexI, pivotPointer) >= 0) {
         gSwapVariables(auxIndexI, pivotPointer, dataSize);
-        gRecursiveQuickSort(compareF, arrayPointer, auxIndexCounter, dataSize);
-        gRecursiveQuickSort(compareF, arrayPointer + dataSize * (auxIndexCounter + 1), arraySize - (auxIndexCounter + 1), dataSize);
+        gRecursiveQuickSort(compareF, arrayPointer, auxIndexIFinalIndex, dataSize);
     } else {
-        gRecursiveQuickSort(compareF, arrayPointer, auxIndexCounter + 1, dataSize);
-        gRecursiveQuickSort(compareF, arrayPointer + dataSize * (auxIndexCounter + 1), arraySize - (auxIndexCounter + 1), dataSize);
+        gRecursiveQuickSort(compareF, arrayPointer, auxIndexIFinalIndex + 1, dataSize);
     }
+
+    gRecursiveQuickSort(compareF, auxIndexI + dataSize, arraySize - (auxIndexIFinalIndex + 1), dataSize);
 
     return;  
 }
