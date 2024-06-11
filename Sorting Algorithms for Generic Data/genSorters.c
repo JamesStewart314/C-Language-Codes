@@ -152,12 +152,7 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
     } while (false);
 
     // Swapping the position of the best pivot to the end of the array:
-    if (pivotPointer == startPointer) {
-        gSwapVariables(pivotPointer, endPointer, dataSize);
-    } 
-    if (pivotPointer == medianPointer) {
-        gSwapVariables(pivotPointer, endPointer, dataSize);
-    }
+    gSwapVariables(pivotPointer, endPointer, dataSize);
 
     // Ensuring that the best pivot of the median between the first, 
     // last and middle elements of the array is at the end of the array:
@@ -246,7 +241,7 @@ void gMergeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
     if (!arrayPointer) return;
 
     if (!compareF) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Merge Sort the Array if the compare function is NULL.\n");
+        fprintf(stderr, "Error: Cannot generic Merge Sort the Array if the compare function is NULL.\n");
         return;
     }
 
@@ -266,7 +261,7 @@ void gQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
     if (!arrayPointer) return;
 
     if (!compareF) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Quick Sort the Array if the compare function is NULL.\n");
+        fprintf(stderr, "Error: Cannot generic Quick Sort the Array if the compare function is NULL.\n");
         return;
     }
     

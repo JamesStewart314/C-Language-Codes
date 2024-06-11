@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifndef GENERICBUBBLESORTER_H
-#define GENERICBUBBLESORTER_H
+#ifndef GENERICSORTERS_H
+#define GENERICSORTERS_H
 
 // Threads with sorting...?
 
