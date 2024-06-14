@@ -3,7 +3,7 @@
 #include <time.h>
 
 
-#define ARRAY_SIZE 100000
+#define ARRAY_SIZE 80
 
 // Compilation Command: gcc gMergeSortTest.c ../genSorters.c -o executableProgram -I ../ -O
 
@@ -36,14 +36,14 @@ int main(int argc, char** argv) {
         random_numbers[i] = rand() % 10;
     }
 
-    /*
+    
     puts("Array of Integers Generated Before Sorting:\n");
     printf("[");
     for (int i = 0; i < ARRAY_SIZE; i++) {
         printf("%d, ", random_numbers[i]);
     }
     printf("\b\b]");
-    */
+    
     
 
     benchmarkInitialTime = clock();
@@ -52,14 +52,14 @@ int main(int argc, char** argv) {
 
     timeSpent = (double)(benchmarkEndTime - benchmarkInitialTime) / CLOCKS_PER_SEC;
 
-    /*
+    
     puts("\n\n\nArray of Integers Generated After Sorting:\n");
     printf("[");
     for (int i = 0; i < ARRAY_SIZE; i++) {
         printf("%d, ", random_numbers[i]);
     }
     printf("\b\b]\n");
-    */    
+    
 
     printf("\n* Time Used to Sort the Integers Array Containing %d Elements: %.2lf\n", ARRAY_SIZE, timeSpent);
 

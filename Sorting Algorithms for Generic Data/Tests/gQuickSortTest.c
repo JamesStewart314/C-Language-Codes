@@ -3,7 +3,7 @@
 #include <time.h>
 
 
-#define ARRAY_SIZE 70000
+#define ARRAY_SIZE 50000
 
 // Compilation Command: gcc gQuickSortTest.c ../genSorters.c -o executableProgram -I ../
 // -O / -O2 / -O3 
@@ -62,6 +62,7 @@ int main(int argc, char** argv) {
     }
     printf("\b\b]\n");
     */
+    
 
     // Inserting random values in the array:
     for (int i = 0; i < ARRAY_SIZE; i++) {

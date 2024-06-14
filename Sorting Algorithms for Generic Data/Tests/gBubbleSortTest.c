@@ -2,7 +2,7 @@
 #include <string.h>
 #include <time.h>
 
-#define ARRAY_SIZE 100
+#define ARRAY_SIZE 10000
 
 // Compilation Command: gcc gBubbleSortTest.c ../genSorters.c -o executableProgram -I ../ -O
 
@@ -36,14 +36,14 @@ int main(int argc, char** argv) {
         random_numbers[i] = rand() % 10;
     }
 
-    
+    /*
     puts("Array of Integers Generated Before Sorting:\n");
     printf("[");
     for (int i = 0; i < ARRAY_SIZE; i++) {
         printf("%d, ", random_numbers[i]);
     }
     printf("\b\b]");
-    
+    */
 
     benchmarkInitialTime = clock();
     gBubbleSort(compareFIntegers, random_numbers, (uint64_t)ARRAY_SIZE, (uint64_t)sizeof(int));
@@ -51,14 +51,14 @@ int main(int argc, char** argv) {
 
     timeSpent = (double)(benchmarkEndTime - benchmarkInitialTime) / CLOCKS_PER_SEC;
 
-    
+    /*
     puts("\n\n\nArray of Integers Generated After Sorting:\n");
     printf("[");
     for (int i = 0; i < ARRAY_SIZE; i++) {
         printf("%d, ", random_numbers[i]);
     }
     printf("\b\b]\n");
-    
+    */
 
     printf("\n* Time Used to Sort the Integers Array Containing %d Elements: %.2lf\n", ARRAY_SIZE, timeSpent);
 
@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
         personArray[i] = createPerson(name, id);
     }
 
-    
+    /*
     puts("\n\n\nArray of Persons Generated Before Sorting:");
     printf("\n[");
     for (int i = 0; i < ARRAY_SIZE; i++) {
@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
         printf(", ");
     }
     printf("\b\b]\n");
-    
+    */
 
     benchmarkInitialTime = clock();
     gBubbleSort(compareFPerson, personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)));
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 
     timeSpent = (double)(benchmarkEndTime - benchmarkInitialTime) / CLOCKS_PER_SEC;
 
-    
+    /*
     puts("\n\n\nArray of Persons Generated After Sorting:");
     printf("\n[");
     for (int i = 0; i < ARRAY_SIZE; i++) {
@@ -93,10 +93,10 @@ int main(int argc, char** argv) {
         printf(", ");
     }
     printf("\b\b]\n");
-    
+    */
 
     printf("\n* Time Used to Sort the Persons Array Containing %d Elements: %.2lf\n", ARRAY_SIZE, timeSpent);
-    puts("\n( Trust me bro, it's sorted... You don't want to see 100k array items in your terminal, do you...? ;) )");
+    puts("\n( Trust me bro, it's sorted... You don't want to see 10k array items in your terminal, do you...? ;) )");
 
     puts("\nProgram Finished. Thanks for Using!");
 

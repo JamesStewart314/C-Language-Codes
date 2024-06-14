@@ -351,52 +351,6 @@ void gLinkedListInsert(gLinkedList* list, int32_t index, gLinkedListDataPtr data
 }
 
 
-void gLinkedListRemove(gLinkedList* list, gLinkedListDataPtr data) {
-    if (!list) return;
-    if (gLinkedListIsEmpty(list)) return;
-
-    gLinkedListNode *auxNode = list->front, *previous = NULL;
-    while (auxNode) {
-        if (list->compareF(data, auxNode->data) == 0) break;
-        previous = auxNode;
-        auxNode = auxNode->next;
-    }
-
-    // Element not found:
-    if (!auxNode) return;
-
-    (list->counter)--;
-
-    // Otherwise, element found. Removing:
-
-    // Removing from start:
-    if (!previous) {        
-        list->front = list->front->next;
-        if (list->destroyF) list->destroyF(auxNode->data);
-        free(auxNode); auxNode = NULL;
-
-        return;
-    }
-
-    // Removing from end:
-    if (!auxNode->next) {
-        list->rear = previous;
-        list->rear->next = NULL;
-        if (list->destroyF) list->destroyF(auxNode->data);
-        free(auxNode); auxNode = NULL;
-
-        return;
-    }
-
-    // Removing element in the middle:
-    previous->next = auxNode->next;
-    if (list->destroyF) list->destroyF(auxNode->data);
-    free(auxNode); auxNode = NULL;
-
-    return;
-}
-
-
 void gLinkedListReverse(gLinkedList* list) {
     if (!list) return;
     if (gLinkedListIsEmpty(list) || gLinkedListSize(list) == 1) return;
@@ -421,9 +375,100 @@ void gLinkedListReverse(gLinkedList* list) {
 }
 
 
+void gLinkedListRemoveAll(gLinkedList* list, gLinkedListDataPtr data) {
+    if (!list) return;
+    if (gLinkedListIsEmpty(list)) return;
+
+    gLinkedListNode *auxNode = list->front, *previous = NULL;
+    while (auxNode) {
+        if (list->compareF(auxNode->data, data) != 0) {
+            previous = auxNode;
+            auxNode = auxNode->next;
+            continue;
+        }
+
+        // Element Found:
+
+        (list->counter--);
+        if (previous) {
+            // Not removing from the start:
+            if (auxNode->next) {
+                // Removing in the middle:
+                previous->next = auxNode->next;
+                if (list->destroyF) list->destroyF(auxNode->data);
+                free(auxNode);
+                auxNode = previous->next;
+
+            } else {
+                // Removing from the end:
+                previous->next = NULL;
+                list->rear = previous;
+                if (list->destroyF) list->destroyF(auxNode->data);
+                free(auxNode); auxNode = NULL;
+            }
+
+        } else {
+            // Removing from the start:
+            list->front = list->front->next;
+            if (list->destroyF) list->destroyF(auxNode->data);
+            free(auxNode);
+            auxNode = list->front;
+        }
+    }
+
+    return;
+}
+
+
 bool gLinkedListIsEmpty(gLinkedList* list) {
     if (!list) return 1;
     return (list->counter <= 0);
+}
+
+
+bool gLinkedListRemove(gLinkedList* list, gLinkedListDataPtr data) {
+    if (!list) return 0;
+    if (gLinkedListIsEmpty(list)) return 0;
+
+    gLinkedListNode *auxNode = list->front, *previous = NULL;
+    while (auxNode) {
+        if (list->compareF(data, auxNode->data) == 0) break;
+        previous = auxNode;
+        auxNode = auxNode->next;
+    }
+
+    // Element not found:
+    if (!auxNode) return 0;
+
+    (list->counter)--;
+
+    // Otherwise, element found. Removing:
+
+    // Removing from start:
+    if (!previous) {        
+        list->front = list->front->next;
+        if (list->destroyF) list->destroyF(auxNode->data);
+        free(auxNode); auxNode = NULL;
+
+        return 1;
+    }
+
+    // Removing from end:
+    if (!auxNode->next) {
+        list->rear = previous;
+        list->rear->next = NULL;
+        if (list->destroyF) list->destroyF(auxNode->data);
+        free(auxNode); auxNode = NULL;
+
+        return 1;
+    }
+
+    // Removing element in the middle:
+    previous->next = auxNode->next;
+    if (list->destroyF) list->destroyF(auxNode->data);
+    free(auxNode); auxNode = NULL;
+
+    return 1;
 }
 
 
@@ -571,17 +616,38 @@ gLinkedListDataPtr gLinkedListGetSmallest(gLinkedList* list) {
 }
 
 
-gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int32_t index) {
+gLinkedListDataPtr gLinkedListGet(gLinkedList* list, int64_t index) {
     if (!list) return NULL;
     if (gLinkedListIsEmpty(list)) return NULL;
 
-    gLinkedListNode *auxNode = list->front, *previous = NULL;
+    index = (index < 0) ? (index + (int64_t)gLinkedListSize(list)) : index;
+    if (index >= (int64_t)gLinkedListSize(list) || index < 0) return NULL;
+
+    if (index == 0) return list->front->data;
+    if (index == (int64_t)(gLinkedListSize(list) - 1)) return list->rear->data;
+
+    gLinkedListNode* auxNode = list->front;
+    while ((index--) > 0) {
+        auxNode = auxNode->next;
+    }
+
+    return auxNode->data;
+
+}
+
+
+gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int64_t index) {
+    if (!list) return NULL;
+    if (gLinkedListIsEmpty(list)) return NULL;
     
-    index = (index < (int32_t)0) ? (index + (int32_t)gLinkedListSize(list)) : index;
-    if (index >= (int32_t)gLinkedListSize(list) || index < (int32_t)0) return NULL;
+    index = (index < 0) ? (index + (int64_t)gLinkedListSize(list)) : index;
+    if (index >= (int64_t)gLinkedListSize(list) || index < 0) return NULL;
+
+    (list->counter)--;
+
+    gLinkedListNode *auxNode = list->front, *previous = NULL;
 
     if (index == 0) {
-        (list->counter)--;
         gLinkedListDataPtr returnData = auxNode->data;
         list->front = list->front->next;
         free(auxNode) ; auxNode = NULL;
@@ -589,13 +655,10 @@ gLinkedListDataPtr gLinkedListPop(gLinkedList* list, int32_t index) {
         return returnData;
     }
 
-    while (index > 0) {
+    while ((index--) > 0) {
         previous = auxNode;
         auxNode = auxNode->next;
-        index--;
     }
-
-    (list->counter)--;
 
     // Removing from end:
     if (!auxNode->next) {
